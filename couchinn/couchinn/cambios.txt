@@ -1,0 +1,43 @@
+Modificaciones en index.html y registro.html:
+	27/04/2016:
+	Se corrigió el espacio blanco inferior que aparecía luego del parallax que muestra la imagen de fondo.
+		Esto se corrigio modificando en materialize.css la clase footer: se le quitó el margen superior que era de 20px
+	
+	27/04/2016:
+	Se corrigió el problema de las imágenes de data fiscal y todopago del footer, ya que no ofrecía buen tamaño en smartphones
+		Se hizo uso de cuadriculas responsivas para corregir este problema. Se estableció un ancho de dos columnas para pantallas de smartphones 
+		y solo una columna de ancho para pantallas de escritorio
+	
+	27/04/2016:
+	Se agregaron algunos comentarios e indentaciones a index.html y registro.html
+	
+	08/05/2016:
+	Se utiliza ahora <script type="text/javascript" src="js/materialize.js"> en vez de <script type="text/javascript" src="js/materialize.min.js">
+	
+Modificaciones en registro.html
+	27/04/2016:
+	Se corrigió un problema en el enlace del boton "Registrarse" en la pagina de registro.
+		El enlace de dicho boton apuntaba a una pagina inexistente. Se efectuó un cambio por el valor correcto.
+	
+	27/04/2016:
+	Se corrigió un inconveniente con los botones del formulario del registro, estos se mostraban de manera incorrecta en smartphones.
+		Se creó una nueva clase en materialize.css cuyo nombre es s12registro que pertenece a row. Se utilizo nuevamente cuadriculas responsivas.
+	
+	27/04/2016:	
+	Se corrigió un inconveniente al lograr una correcta visualizacion de los botones smartphones, que hacia que estos botones queden fuera del 
+	parallax.
+		Se modificó la clase parallax-container-mio en materialize.css cambiando el valor de la altura (height) a auto.
+	
+	27/04/2016:	
+	Se cambio el color de los campos del formulario cuando se hace click.
+		Antes aparecían medio azul, ahora aparecen con un verde que respeta al verde usado en todo el sitio. Esto se logro modificando
+		las clases correspondientes en materialize.css
+	
+	08/05/2016:
+	Se usa la clase datepicker para seleccionar la fecha de cumpleaños.
+		Antes se usaba el campo de fecha de HTML5 porque no se mostraban correctamente los años en el datepicker. Se corrigió esto llamando a ciertos
+		metodos de la clase datepicker en la parte de <script type="text/javascript">. 
+		Además se tradujeron los días, meses y años del datepicker
+		modificando el archivo materialize.js
+		
+Para encontrar los cambios en el materialize.css buscar Leonardo.		
