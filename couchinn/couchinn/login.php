@@ -1,8 +1,17 @@
 <!doctype html>
+<?php
+	require_once("funciones/sesion.class.php");
+	
+	$sesion = new sesion();
+	$usuario = $sesion->get("usuario");
+	
+	if( $usuario == false )
+	{	
+?>
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>CouchInn - Registro</title>
+		<title>CouchInn - Iniciar Sesión</title>
 		<!-- Importacion Iconos de Google -->
  	 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Importacion de materialize css-->
@@ -25,8 +34,8 @@
 					<ul class="right hide-on-med-and-down">
 						<li><a href="registro.php"  class="light-green-text">Registrarse</a></li>
 						<li><a href="login.php"  class="light-green-text">Iniciar Sesión</a></li>
-				  </ul>
-                  <!-- Opciones  de menu al costado-->
+					</ul>
+					<!-- Opciones  de menu al costado-->
 					<ul class="side-nav" id="menulateral">
 						<li><a href="registro.php"  class="light-green-text">Registrarse</a></li>
 						<li><a href="login.php" class="light-green-text">Iniciar Sesión</a></li>
@@ -41,51 +50,20 @@
     	    	<div class="row">
                 	<br>
         	    	<div class="col s12 center grey-text text-darken-2">
-                        <h1> Formulario de Registro </h1>
+                        <h1> Iniciar Sesión </h1>
                     </div>
 					<!-- Inicio del Formulario-->
-                    <form class="col s12" name="inscripcion" method="post" onSubmit="return validarFormulario()" action="funciones/reg_user.php">
+                    <form class="col s12 center" name="login" method="POST" action="funciones/iniciar_sesion.php">
       					<div class="row">
-       				 		<div class="input-field col s6">
-          						<input name="nombre" type="text" pattern="[A-Za-z]+" title="Solo se admiten letras" class="validate" required="required">
-          						<label for="nombre" data-error="Solo se admiten letras">Nombre</label>
-        					</div>
-        					<div class="input-field col s6">
-					        	<input name="apellido" type="text" pattern="[A-Za-z]+" title="Solo se admiten letras" class="validate" required="required">
-	        					<label for="apellido" data-error="Solo se admiten letras">Apellido</label>
-        					</div>
-						</div>
-                        <div class="row">
-        					<div class="input-field col s6">
+       				 		<div class="input-field col s4 offset-s4">
           						<input name="email" id="email" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Ej: micorreo@correo.com" class="validate" required="required">
           						<label for="email" data-error="Ingrese una dirección del tipo micorreo@correo.com">Correo</label>
         					</div>
-                            <div class="input-field col s6">
-          						<input name="email_re" id="email_re" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Ej: micorreo@correo.com" class="validate" required="required">
-          						<label for="email" data-error="Ingrese una dirección del tipo micorreo@correo.com">Confirmar Correo</label>
-        					</div>
-      					</div>
-      					<div class="row">
-        					<div class="input-field col s6" data-tip="La contraseña debe contener 8 carácteres como mínimo">
-          						<input name="password" id="password" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+        					<div class="input-field col s4 offset-s4 center" data-tip="La contraseña debe contener 8 carácteres como mínimo">
+					        	<input name="password" id="password" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
           						<label for="password" data-error="La contraseña ingresada es menor a 8.">Contraseña</label>
         					</div>
-                            <div class="input-field col s6" data-tip="La contraseña debe contener 8 carácteres como mínimo">
-          						<input name="password_re" id="password_re" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
-          						<label for="password" data-error="La contraseña ingresada es menor a 8.">Confirmar Contraseña</label>
-        					</div>
-      					</div>
-                        <div class="row">
-	      					<div class="input-field col s6">
-	                        	<div class="grey-text"> Fecha de nacimiento</div>
-								<input name="f_nac" type="date" class="datepicker" required="required" id="f_nac" title="Fecha de Nacimiento">
-	                        </div>
-                            <br>
-                            <div class="input-field col s6" data-tip="Ingrese el codigo de area sequido de su numero telefonico.">
-					            <input name="telefono" id="telefono" type="tel" pattern="^[0-9]{6,13}" class="validate" required="required">
-					            <label for="telefono" data-error="Se permiten solo de 6 a 13 digitos.">Teléfono</label>
-					        </div>
-                         </div>
+						</div>
                          <br>
                          <br>
                          <div class="row">
@@ -96,7 +74,7 @@
     	                     	<input class="waves-effect waves-light btn light-green z-depth-2" type="reset" value="Limpiar">
                             </div>
                             <div class="col s12registro l4 center">
-        	                	<input class="waves-effect waves-light btn light-green z-depth-2" type="submit" value="Aceptar">
+        	                	<input class="waves-effect waves-light btn light-green z-depth-2" type="submit" value="Iniciar Sesión">
                             </div>
                     	</div>
     				</form>
@@ -108,7 +86,7 @@
         
         <!-- Pie de pagina-->
 		<footer class="page-footer light-green">
-          <div class="container">
+        <div class="container">
             <div class="row">
               <div class="col s2 l1 right">
                 <img src="imagenes/data_fiscal.jpg" class="responsive-img" alt=""/>
@@ -134,16 +112,13 @@
   			$(document).ready(function(){
 			$(".parallax").parallax();
 			$(".button-collapse").sideNav();
-			$('.datepicker').pickadate({
-				min: [1900,1,1],
-				max: -6575, //hace que se muestre siempre como última fecha el día de hoy pero de 18 años atras. Solo se pueden registrar personas mayores de 18 años.
-				selectYears: 116,
-				selectMonths: true,
-				formatSubmit: 'yyyy-mm-dd',
-				hiddenName: true
-			});
   			});
   		</script>
 	</body>
 
 </html>
+<?php 
+	}else{	
+		header("Location: index_login.php");
+	}
+?>
