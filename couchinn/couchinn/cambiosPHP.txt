@@ -1,0 +1,14 @@
+23/05/2016
+	Creado config.php para la conexion a la base de datos.
+	Renombre de index.html y registro.html a index.php y registro.php respectivamente.
+	En ambos archivos se editaron los hipervinculos y ahora enlazan a index.php y registro.php.
+	En archivo registro.php:
+		 se cambió <form class="col s12" name="inscripcion" mthod="post"  action="reg_user.php"> por
+				   <form class="col s12" name="inscripcion" method="post"  action="reg_user.php
+		 se cambió <input id="nombre" type="text" class="validate" required="required"> por
+				   <input name="nombre" type="text" class="validate" required="required">
+		 se agregó, para convertir la fecha para la base de datos. En $('.datepicker').pickadate({ 
+					formatSubmit: 'yyyy-mm-dd',
+				    hiddenName: true
+
+
