@@ -47,11 +47,11 @@
                     <form class="col s12" name="inscripcion" method="post" onSubmit="return validarFormulario()" action="funciones/reg_user.php">
       					<div class="row">
        				 		<div class="input-field col s6">
-          						<input name="nombre" type="text" pattern="[A-Za-z]+" title="Solo se admiten letras" class="validate" required="required">
+          						<input name="nombre" type="text" pattern="[A-Za-z\s]+" title="Solo se admiten letras" class="validate" required="required">
           						<label for="nombre" data-error="Solo se admiten letras">Nombre</label>
         					</div>
         					<div class="input-field col s6">
-					        	<input name="apellido" type="text" pattern="[A-Za-z]+" title="Solo se admiten letras" class="validate" required="required">
+					        	<input name="apellido" type="text" pattern="[A-Za-z\s]+" title="Solo se admiten letras" class="validate" required="required">
 	        					<label for="apellido" data-error="Solo se admiten letras">Apellido</label>
         					</div>
 						</div>

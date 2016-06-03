@@ -3,9 +3,9 @@
 	require_once("funciones/sesion.class.php");
 	
 	$sesion = new sesion();
-	$usuario = $sesion->get("usuario");
+	$idusuario = $sesion->get("id");
 	
-	if( $usuario == false )
+	if( $idusuario == false )
 	{	
 ?>
 <html>
@@ -33,8 +33,8 @@
 					<ul class="right hide-on-med-and-down">
 						<li><a href="registro.php"  class="light-green-text">Registrarse</a></li>
 						<li><a href="login.php" class="light-green-text">Iniciar Sesión</a></li>
-				  </ul>
-                  <!-- Opciones  de menu al costado-->
+					</ul>
+					<!-- Opciones  de menu al costado-->
 					<ul class="side-nav" id="menulateral">
 						<li><a href="registro.php"  class="light-green-text">Registrarse</a></li>
 						<li><a href="login.php" class="light-green-text">Iniciar Sesión</a></li>

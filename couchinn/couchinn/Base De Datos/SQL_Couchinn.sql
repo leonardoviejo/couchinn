@@ -32,6 +32,8 @@ CREATE TABLE IF NOT EXISTS `CouchInn`.`Usuario` (
   `Password` VARCHAR(80) NOT NULL,
   `FechaNac` DATE NOT NULL,
   `Telefono` TINYTEXT NOT NULL,
+  `Premium` TINYINT(1) NOT NULL DEFAULT 0,
+  `Visible` TINYINT(1) NOT NULL  DEFAULT 1,
   `FechaAlta` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`Id_Usuario`),
   INDEX (`Id_TipoDeUsuario`),
@@ -48,7 +50,7 @@ DROP TABLE IF EXISTS `CouchInn`.`TipoDeCouch` ;
 CREATE TABLE IF NOT EXISTS `CouchInn`.`TipoDeCouch` (
   `Id_Tipo` INT NOT NULL AUTO_INCREMENT,
   `Nombre` VARCHAR(45) NOT NULL,
-  `Visible` TINYINT(1) NOT NULL,
+  `Visible` TINYINT(1) NOT NULL  DEFAULT 1,
   PRIMARY KEY (`Id_Tipo`)
   )
 ENGINE = InnoDB;
@@ -65,9 +67,13 @@ CREATE TABLE IF NOT EXISTS `CouchInn`.`Couch` (
   `Id_TipoDeCouch` INT NOT NULL,
   `Id_Usuario` INT NOT NULL,
   `Titulo` VARCHAR(200) NOT NULL,
-  `Ciudad` VARCHAR(200) NOT NULL,
+  `Ciudad` VARCHAR(100) NOT NULL,
   `Descripcion` TEXT NOT NULL,
   `Capacidad` INT NOT NULL,
+  `Foto1` VARCHAR(100) NOT NULL,
+  `Foto2` VARCHAR(100) NULL,
+  `Foto3` VARCHAR(100) NULL,
+  `Visible` TINYINT(1) NOT NULL  DEFAULT 1,
   `FechaAlta` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`Id_Couch`),
   INDEX (`Id_Usuario`),
@@ -91,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `CouchInn`.`Comentario` (
   `Publicado` TINYINT(1) NOT NULL,
   `Respondido` TINYINT(1) NOT NULL,
   `Responde_A` INT NOT NULL,
+  `Visible` TINYINT(1) NOT NULL  DEFAULT 1,
   `FechaAlta` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`Id_Comentario`),
   INDEX (`Id_Usuario`),
@@ -112,6 +119,7 @@ CREATE TABLE IF NOT EXISTS `CouchInn`.`Punt_Couch` (
   `Id_Couch` INT NOT NULL,
   `Mensaje` TEXT NOT NULL,
   `Puntaje` TINYINT NOT NULL,
+  `Visible` TINYINT(1) NOT NULL  DEFAULT 1,
   `FechaAlta` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`Id_Puntaje`),
   INDEX (`Id_Usuario`),
@@ -133,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `CouchInn`.`Reserva` (
   `FechaInicio` DATE NOT NULL,
   `FechaFin` DATE NOT NULL,
   `Estado` ENUM('espera','confirmada','rechazada') NOT NULL,
+  `Visible` TINYINT(1) NOT NULL  DEFAULT 1,
   `FechaAlta` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`Id_Reserva`),
   INDEX (`Id_Usuario`),
@@ -153,6 +162,7 @@ CREATE TABLE IF NOT EXISTS `CouchInn`.`Punt_Usuario` (
   `Id_Usuario_Punt` INT NOT NULL,
   `Mensaje` TEXT NOT NULL,
   `Puntaje` TINYINT NOT NULL,
+  `Visible` TINYINT(1) NOT NULL  DEFAULT 1,
   `FechaAlta` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`Id_Puntaje`),
   INDEX (`Id_Usuario`),
@@ -170,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `CouchInn`.`Provincias` (
   `Id` int(10) NOT NULL AUTO_INCREMENT,
   `Provincia` varchar(255) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB AUTO_INCREMENT=26 ;
 
 -- -----------------------------------------------------
 -- Data for table `CouchInn`.`Provincias`
@@ -214,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `CouchInn`.`Localidades` (
   `Id_Provincia` int(11) NOT NULL,
   `Localidad` varchar(255) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE= InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2383 ;
+) ENGINE= InnoDB  AUTO_INCREMENT=2383 ;
 
 -- -----------------------------------------------------
 -- Data for table `CouchInn`.`Localidades`
@@ -2610,12 +2620,53 @@ INSERT INTO `CouchInn`.`Localidades` (`Id`, `Id_Provincia`, `Localidad`) VALUES
 
 
 -- -----------------------------------------------------
--- Data for table `CouchInn`.`TipoDeUsuario``
+-- Data for table `CouchInn`.`TipoDeUsuario`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `CouchInn`;
 INSERT INTO `CouchInn`.`TipoDeUsuario` (`Nombre`) VALUES ('normal');
-INSERT INTO `CouchInn`.`TipoDeUsuario` (`Nombre`) VALUES ('premium');
 INSERT INTO `CouchInn`.`TipoDeUsuario` (`Nombre`) VALUES ('admin');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `CouchInn`.`Usuario`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `CouchInn`;
+INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1,'Leonardo', 'Consolini', 'leonardo.consolini@gmail.com', '123456789', '1989-08-08', '4548988');
+INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (2, 'Miguel', 'Macagno', 'miguel.macagno@gmail.com', '123456789', '1989-11-07', '4215335');
+INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Sandra', 'Lopez', 'sandralopez@outlook.com', '12345678', '1973-09-25', '45682231');
+INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Carlos', 'Rodriguez', 'carlos_r@yahoo.com.ar', '12345abc', '1993-01-20', '4451856');
+INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Clara', 'Gonzalez', 'clara_94@live.com', 'abc12345', '1994-03-18', '45895982');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `CouchInn`.`TipoDeCouch`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `CouchInn`;
+INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Cabaña');
+INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Dormis');
+INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Departamento');
+INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Contenedor');
+INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Bungalow');
+INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Garage');
+INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Sótano');
+INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Casa Rodante');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `CouchInn`.`Couch`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `CouchInn`;
+INSERT INTO `CouchInn`.`Couch` (`Id_Couch`, `Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Ciudad`, `Descripcion`, `Capacidad`, `Foto1`, `Foto2`, `Foto3`) VALUES (1, 2, 1, 'Espectacular lugar en La Plata', 'La Plata', 'Hermosa casa, ideal para tener un momento de relax y tranquilidad. Tengo una habitación extra para alojar visitantes.', 6, 'imagenes/couchs/1/1.jpg', 'imagenes/couchs/1/2.jpg', 'imagenes/couchs/1/3.jpg');
+INSERT INTO `CouchInn`.`Couch` (`Id_Couch`, `Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Ciudad`, `Descripcion`, `Capacidad`, `Foto1`, `Foto2`, `Foto3`) VALUES (2, 1, 4, 'Gran Bungalow del Sur', 'Bariloche', 'Hermosa casa, ideal para tener un momento de relax y tranquilidad viendo las majestuosas montañas de la patagonia. Tengo una habitación extra para alojar visitantes.', 7, 'imagenes/couchs/2/1.jpg', 'imagenes/couchs/2/2.jpg', '');
 
 COMMIT;

@@ -21,24 +21,15 @@
 	$apellido=$resultado["Apellido"];
 	$fechanac=$resultado["FechaNac"];
 	$telefono=$resultado["Telefono"];
-	$premium=$resultado["Premium"];
-	$fechaalta=$resultado["FechaAlta"];
 	$email=$resultado["Email"];
-		
-	$consulta = "SELECT * FROM tipodeusuario WHERE Id_Tipo='$tipo'";
-	$consulta_execute = $conexion->query($consulta);
-	$resultado=$consulta_execute->fetch_assoc();
-	$tipousuario=$resultado['Nombre'];
-	//Calculo edad
-		$fecha = time() - strtotime($fechanac);
-		$edad = floor($fecha /31556926);
-		
+	
 	$fechanac=strtotime($fechanac);
+	
 ?>
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>CouchInn - Mi Perfil</title>
+		<title>CouchInn - Modificar Perfil</title>
 		<!-- Importacion Iconos de Google -->
  	 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Importacion de materialize css-->
@@ -88,8 +79,8 @@
 						?>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_cuenta">Mi cuenta</a></li>
 						<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
-					</ul>
-					<!-- Opciones  de menu lateral-->
+				  </ul>
+                  <!-- Opciones  de menu lateral-->
 					<ul class="side-nav" id="menulateral">
 						<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
 						<li><a href="#"  class="light-green-text">Couchs y Reservas</a></li>
@@ -106,118 +97,105 @@
     	    	<div class="row">
                 	<br>
         	    	<div class="col s12 center grey-text text-darken-2">
-                        <h1> Mi Perfil </h1>
+                        <h1> Modificar Perfil </h1>
+						<h6> Edite el o los campos que quiera modificar, reingrese su contraseña y a continuacion presione Guardar.</h6>
                     </div>
 				</div>
 				<!-- Inicio del Formulario-->
-				<div class="row">
+                <form name="modificarperfil" method="post" onSubmit="return validarFormularioPerfil()" action="funciones/modificar_perfil.php">
+					<div class="row">
 						<div class="col s4">
 							<p class="left">Nombre </p>
 						</div>
-						<div class="col s8">
-							<p class="left"><?php echo $nombre?></p>
+						<div class="input-field col s4">
+							<?php 
+								echo ' <input type="hidden" name="id" value="'.$idusuario.'">
+										<input name="nombre" type="text" pattern="[A-Za-z\s]+" value="'.$nombre.'" title="Solo se admiten letras" class="validate" required="required">
+										<label for="nombre" data-error="Solo se admiten letras"></label>';
+							?>
 						</div>
-				</div>
-				<div class="divider"></div>
-				<div class="row">
+					</div>
+					<div class="divider"></div>
+					<div class="row">
 						<div class="col s4">
 							<p class="left">Apellido </p>
+						</div>	
+						<div class="input-field col s4">
+							<?php 
+								echo '<input name="apellido" type="text" pattern="[A-Za-z]+" value="'.$apellido.'" title="Solo se admiten letras" class="validate" required="required">
+										<label for="apellido" data-error="Solo se admiten letras"></label>';
+							?>
 						</div>
-						<div class="col s8">
-							<p class="left"><?php echo $apellido?></p>
-						</div>
-				</div>
-				<div class="divider"></div>
-				<div class="row">
+					</div>
+					<div class="divider"></div>
+					<div class="row">
 						<div class="col s4">
 							<p class="left">Correo </p>
 						</div>
-						<div class="col s8">
-							<p class="left"><?php echo $email?></p>
+						<div class="input-field col s4">
+							<?php 
+								echo '<input name="email" id="email" value="'.$email.'" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="email" class="validate" required="required">
+          						    <label class="active" for="email" data-error="Ingrese una dirección del tipo micorreo@correo.com"></label>';
+							?>
 						</div>
-				</div>
-				<div class="divider"></div>
-				<div class="row">
+					</div>
+					<div class="row">
 						<div class="col s4">
-							<p class="left">Tipo de Cuenta </p>
+							<p class="left">Reingrese Correo </p>
 						</div>
-						<?php 	
-						if ($premium==1){
-							echo 	'<div class="col s8">
-										<p class="left"> Cuenta Premium </p> 
-									</div>';
-						}else{
-							echo	'<div class="col s4">
-										<p class="left"> Cuenta Normal </p> 
-									</div>
-									<div class="col s4">
-										<input class="waves-effect waves-light btn light-green darken-3 z-depth-2" type="button" value="Quiero ser Premium" onClick="location.href=`altapremium.php`">
-									</div>';
-						}					
-						?>
-				</div>
-				<?php
-					if ($tipo==2)
-					echo'	
-						<div class="divider"></div>
-						<div class="row">
-								<div class="col s4">
-									<p class="left">Nivel de Permisos </p>
-								</div>
-								<div class="col s8">
-									<p class="left">'.ucwords($tipousuario).'</p>
-								</div>
-						</div>'
-				?>
-				<div class="divider"></div>
-				<div class="row">
-						<div class="col s4">
-							<p class="left">Edad </p>
+						<div class="input-field col s4">
+							<?php 
+								echo '<input name="email_re" id="email_re" value="'.$email.'" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="email" class="validate" required="required">
+          						    <label class="active" for="email_re" data-error="Ingrese una dirección del tipo micorreo@correo.com"></label>';
+							?>
 						</div>
-						<div class="col s8">
-							<p class="left"><?php echo $edad?></p>
-						</div>
-				</div>
-				<div class="divider"></div>
-				<div class="row">
+					</div>
+					<div class="divider"></div>
+					<div class="row">
 						<div class="col s4">
 							<p class="left">Fecha de Nacimiento </p>
 						</div>
-						<div class="col s8">
-							<p class="left"><?php echo date('d-m-Y',$fechanac);?></p>
+						<div class="input-field col s4">
+							<?php echo '<input name="f_nac" type="date" class="datepicker" value="'.date('d-m-Y',$fechanac).'" required="required" id="f_nac" title="Fecha de Nacimiento">';
+							?>
 						</div>
-				</div>
-				<div class="divider"></div>
-				<div class="row">
+					</div>
+					<div class="divider"></div>
+					<div class="row">
 						<div class="col s4">
 							<p class="left">Telefono </p>
 						</div>
-						<div class="col s8">
-							<p class="left"><?php echo $telefono?></p>
-						</div>
-				</div>
-				<div class="divider"></div>
-				<div class="row">
+						<div class="input-field col s4" data-tip="Ingrese el codigo de area sequido de su numero telefonico.">
+							<?php
+								echo '<input name="telefono" id="telefono" value="'.$telefono.'" type="tel" pattern="^[0-9]{6,13}" class="validate" required="required">
+										<label for="telefono" data-error="Se permiten solo de 6 a 13 digitos."></label>';
+							?>	
+					    </div>
+					</div>
+					<div class="divider"></div>
+					<div class="row">
 						<div class="col s4">
-							<p class="left">Usuario desde </p>
+							<p class="left">Contraseña Actual </p>
 						</div>
-						<div class="col s8">
-							<p class="left"><?php echo date("d-m-Y",strtotime($fechaalta))?></p>
-						</div>
-				</div>
-				<div class="divider"></div>
-				<br>
-				<div class="row">
-	        		<div class="col s12registro l4 center">
-                       	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='index.php'">
+						<div class="input-field col s4" data-tip="La contraseña debe contener 8 carácteres como mínimo">
+          					<input name="password" id="password" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+          					<label for="password" data-error="La contraseña ingresada es menor a 8.">Contraseña Actual</label>
+        				</div>                        
+					</div>
+					<div class="divider"></div>
+					<br>
+					<div class="row">
+	        			<div class="col s12registro l4 center">
+                          	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='index_login.php'">
+                        </div>
+                        <div class="col s12registro l4 center">
+        	              	<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Guardar">
+                        </div>
+						<div class="col s12registro l4 center">
+        	              	<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Cambiar Contraseña" onClick="location.href='modificarpassword.php'">
+                        </div>
                     </div>
-                    <div class="col s12registro l4 center">
-						<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Modificar Perfil" onClick="location.href='modificarperfil.php'">
-                    </div>
-                    <div class="col s12registro l4 center">
-        	          	<input class="waves-effect waves-light btn red z-depth-2" type="button" value="Eliminar Cuenta" onClick="location.href='eliminarcuenta.php'">
-                    </div>
-                </div>
+				</form>
 				<!--Fin del Formulario-->
     	    </div>        
         </div>
@@ -244,12 +222,21 @@
  		<!-- Adjuntando los archivos JQuery -->
 		<script type="text/javascript" src="js/jquery.min.js"></script>
   		<script type="text/javascript" src="js/materialize.js"></script>
+		<script type="text/javascript" src="js/funciones.js"></script>
   		<!-- Inicializacion de JS -->
   		<script type="text/javascript">
   			$(document).ready(function(){
 				$(".parallax").parallax();
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
+				$('.datepicker').pickadate({
+				min: [1900,1,1],
+				max: -6575, //hace que se muestre siempre como última fecha el día de hoy pero de 18 años atras. Solo se pueden registrar personas mayores de 18 años.
+				selectYears: 116,
+				selectMonths: true,
+				formatSubmit: 'yyyy-mm-dd',
+				hiddenName: true
+			});
   			});
   		</script>
 	</body>

@@ -4,7 +4,7 @@
 	
 	$sesion = new sesion();
 	$idusuario = $sesion->get("id");
-	
+		
 	if( $idusuario == false )
 	{	
 		header("Location: login.php");		
@@ -12,7 +12,7 @@
 	else 
 	{
 	include('funciones/config.php');
-	//SQL
+	//Consultas SQL
 	$consulta="SELECT * FROM usuario WHERE Id_Usuario='$idusuario'";
 	$consulta_execute = $conexion->query($consulta);
 	$resultado=$consulta_execute->fetch_assoc();
@@ -21,7 +21,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>CouchInn - Inicio</title>
+		<title>CouchInn - Modificar Contraseña</title>
 		<!-- Importacion Iconos de Google -->
  	 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Importacion de materialize css-->
@@ -52,7 +52,7 @@
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="eliminarcuenta.php">Eliminar Cuenta</a></li>
 		</ul>
-    	<!-- Encabezado fijo -->
+		<!-- Encabezado fijo -->
 		<div class="navbar-fixed">
 			<!-- Barra de navagacion -->
 			<nav>
@@ -83,30 +83,61 @@
 			</nav>
 		</div>
 		<!-- Contenido de pagina--> 
-        <div class="parallax-container-mio-home z-depth-3">
-        	<div class="parallax transparencia"><img src="imagenes/fondo.jpg" alt=""></div>
+        <div class="parallax-container-mio  z-depth-3">
+        	<div class="parallax fondo-registro"></div>
         	<div class="container"> 
     	    	<div class="row">
-        	    	<div class="col s12">
-                    	<br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <div class="input-field white z-depth-3">
-							<input id="search" type="search" required>
-							<label for="search"><i class="material-icons">search</i></label>
-							<i class="material-icons">close</i>
-						</div>
+                	<br>
+        	    	<div class="col s12 center grey-text text-darken-2">
+                        <h1> Modificar Contraseña </h1>
                     </div>
-	            </div>
+				</div>
+				<!-- Inicio del Formulario-->
+                <form name="modificarpassword" method="post" onSubmit="return validarFormularioPassword()" action="funciones/actualiza_password.php">
+					<div class="divider"></div>
+					<div class="row">
+						<div class="col s4">
+							<p class="left">Contraseña Actual </p>
+						</div>
+						<div class="input-field col s4" data-tip="La contraseña debe contener 8 carácteres como mínimo">
+          					<?php echo '<input type="hidden" name="id" value="'.$idusuario.'">'?>							
+							<input name="passwordact" id="passwordact" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+          					<label for="password" data-error="La contraseña ingresada es menor a 8.">Contraseña Actual</label>
+        				</div>                        
+					</div>
+					<div class="row">
+						<div class="col s4">
+							<p class="left">Nueva Contraseña </p>
+						</div>
+						<div class="input-field col s4" data-tip="La contraseña debe contener 8 carácteres como mínimo">
+          					<input name="password_nueva" id="password_nueva" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+          					<label for="password" data-error="La contraseña ingresada es menor a 8.">Nueva Contraseña</label>
+        				</div>
+					</div>
+					<div class="row">
+						<div class="col s4">
+							<p class="left">Confirmar Contraseña </p>
+						</div>
+						<div class="input-field col s4" data-tip="La contraseña debe contener 8 carácteres como mínimo">
+          					<input name="password_re_nueva" id="password_re_nueva" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+          					<label for="password" data-error="La contraseña ingresada es menor a 8.">Confirmar Contraseña</label>
+        				</div>
+					</div>
+					<div class="divider"></div>
+					<br>
+					<div class="row">
+	        			<div class="col s12registro l6 center">
+                          	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='modificarperfil.php'">
+                        </div>
+                        <div class="col s12registro l6 center">
+        	              	<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Guardar">
+                        </div>
+                    </div>
+				</form>
+				<!--Fin del Formulario-->
     	    </div>        
         </div>
-        <!-- Contenido de pagina--> 
+        <!-- Contenido de pagina-->
         
         <!-- Pie de pagina-->
 		<footer class="page-footer light-green">
@@ -125,16 +156,25 @@
           </div>
         </footer>
         <!-- Pie de pagina-->
-        
+         
  		<!-- Adjuntando los archivos JQuery -->
 		<script type="text/javascript" src="js/jquery.min.js"></script>
   		<script type="text/javascript" src="js/materialize.js"></script>
+		<script type="text/javascript" src="js/funciones.js"></script>
   		<!-- Inicializacion de JS -->
   		<script type="text/javascript">
   			$(document).ready(function(){
 				$(".parallax").parallax();
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
+				$('.datepicker').pickadate({
+				min: [1900,1,1],
+				max: -6575, //hace que se muestre siempre como última fecha el día de hoy pero de 18 años atras. Solo se pueden registrar personas mayores de 18 años.
+				selectYears: 116,
+				selectMonths: true,
+				formatSubmit: 'yyyy-mm-dd',
+				hiddenName: true
+			});
   			});
   		</script>
 	</body>

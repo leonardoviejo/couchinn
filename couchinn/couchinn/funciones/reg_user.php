@@ -1,16 +1,13 @@
 <?php include('config.php');
 	//Variables
 	$nombre = $_POST['nombre'];
+	$nombre=ucwords(strtolower($nombre));
 	$apellido = $_POST['apellido'];
+	$apellido=ucwords(strtolower($apellido));
 	$email = $_POST['email'];
 	$password = $_POST['password'];
 	$f_nac = $_POST['f_nac'];
 	$telefono = $_POST['telefono'];
-	
-	//Conexion a la base de datos
-	if($conexion->connect_errno > 0){
-		die('Unable to connect to database [' . $conexion->connect_error . ']');
-	}
 	
 	//Busqueda de usuario existente
 	$consulta= "SELECT * FROM usuario WHERE Email='$email'";
@@ -25,7 +22,7 @@
 		$insertar = "INSERT INTO usuario (`Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES ('$nombre', '$apellido', '$email', '$password', '$f_nac', '$telefono')";
 		if (mysqli_query($conexion, $insertar)) {
 			?>	<script> alert("Cuenta creada correctamente. Bienvenido a CouchInn.");
-				location.href='../index.php';
+				location.href='../login.php';
 				</script>
 			<?php
 		} else {

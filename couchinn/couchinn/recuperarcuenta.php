@@ -11,7 +11,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>CouchInn - Iniciar Sesión</title>
+		<title>CouchInn - Recuperar Cuenta</title>
 		<!-- Importacion Iconos de Google -->
  	 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Importacion de materialize css-->
@@ -50,34 +50,26 @@
     	    	<div class="row">
                 	<br>
         	    	<div class="col s12 center grey-text text-darken-2">
-                        <h1> Iniciar Sesión </h1>
+                        <h1> Recuperar Cuenta </h1>
+                    </div>
+					<div class="col s12 center grey-text text-darken-2">
+                        <h6>Ingrese su direccion de correo electrónico y le enviaremos a la brevedad la contraseña de su cuenta.</h6>
                     </div>
 					<!-- Inicio del Formulario-->
-                    <form class="col s12 center" name="login" method="POST" action="funciones/iniciar_sesion.php">
+                    <form class="col s12 center" name="login" method="POST" action="funciones/recuperar_cuenta.php">
       					<div class="row">
        				 		<div class="input-field col s4 offset-s4">
           						<input name="email" id="email" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Ej: micorreo@correo.com" class="validate" required="required">
           						<label for="email" data-error="Ingrese una dirección del tipo micorreo@correo.com">Correo</label>
         					</div>
-        					<div class="input-field col s4 offset-s4" data-tip="La contraseña debe contener 8 carácteres como mínimo">
-					        	<input name="password" id="password" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
-          						<label for="password" data-error="La contraseña ingresada es menor a 8.">Contraseña</label>
-        					</div>
 						</div>
-						<div class="center">
-								<ins><big><b><a href="recuperarcuenta.php" class="grey-text text-darken-2">Olvidé mi contraseña</a></b></big></ins>
-							</div>
-                         <br>
-                         <br>
-                         <div class="row">
-	        				<div class="col s12registro l4 center">
+                        <br>
+					    <div class="row">
+	        				<div class="col s4 left">
                              	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='index.php'">
                             </div>
-                            <div class="col s12registro l4 center">
-    	                     	<input class="waves-effect waves-light btn light-green z-depth-2" type="reset" value="Limpiar">
-                            </div>
-                            <div class="col s12registro l4 center">
-        	                	<input class="waves-effect waves-light btn light-green z-depth-2" type="submit" value="Iniciar Sesión">
+                            <div class="col s4 right">
+        	                	<input class="waves-effect waves-light btn light-green z-depth-2" type="submit" value="Recuperar">
                             </div>
                     	</div>
     				</form>

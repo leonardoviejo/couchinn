@@ -17,11 +17,14 @@
 	$consulta_execute = $conexion->query($consulta);
 	$resultado=$consulta_execute->fetch_assoc();
 	$tipo=$resultado['Id_TipoDeUsuario'];
+	$premium=$resultado['Premium'];
+	if ($premium==0){
+		
 ?>
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>CouchInn - Inicio</title>
+		<title>CouchInn - Volverme Premium</title>
 		<!-- Importacion Iconos de Google -->
  	 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Importacion de materialize css-->
@@ -52,7 +55,7 @@
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="eliminarcuenta.php">Eliminar Cuenta</a></li>
 		</ul>
-    	<!-- Encabezado fijo -->
+		<!-- Encabezado fijo -->
 		<div class="navbar-fixed">
 			<!-- Barra de navagacion -->
 			<nav>
@@ -83,30 +86,78 @@
 			</nav>
 		</div>
 		<!-- Contenido de pagina--> 
-        <div class="parallax-container-mio-home z-depth-3">
-        	<div class="parallax transparencia"><img src="imagenes/fondo.jpg" alt=""></div>
+        <div class="parallax-container-mio  z-depth-3">
+        	<div class="parallax fondo-registro"></div>
         	<div class="container"> 
     	    	<div class="row">
-        	    	<div class="col s12">
-                    	<br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <div class="input-field white z-depth-3">
-							<input id="search" type="search" required>
-							<label for="search"><i class="material-icons">search</i></label>
-							<i class="material-icons">close</i>
-						</div>
+                	<br>
+        	    	<div class="col s12 center grey-text text-darken-2">
+                        <h1> Volverme Premium </h1>
                     </div>
+					<!-- Inicio del Formulario-->
+                    <form class="col s12" name="inscripcion" method="post" action="funciones/alta_premium.php">
+      					<div class="row">
+       				 		<div class="input-field col s4 offset-s1">
+          						<input name="nombre" type="text" pattern="[A-Za-z]+" title="Solo se admiten letras" class="validate" required="required">
+          						<label for="nombre" data-error="Solo se admiten letras.">Nombre del titular</label>
+        					</div>
+							<div class="input-field col s6 right">
+          						El nombre del titular debe coincidir con el que figura en la tarjeta.
+        					</div>
+        				</div>
+						<div class="row">							
+							<div class="input-field col s4 offset-s1" data-tip="Ingrese el numero de su tarjeta de credito.">
+					            <input name="tarjeta" id="tarjeta" type="number" pattern="^[0-9]{16,16}" class="validate" required="required">
+					            <label for="tarjeta" data-error="Se permiten 16 digitos.">Número de Tarjeta</label>
+					        </div>
+							<div class="input-field col s6 right">
+          						Ingrese el número que figura en frente de su tarjeta de credito.
+        					</div>
+						</div>
+                        <div class="row">
+	      					<div class="input-field col s4 offset-s1">
+	                        	<div class="grey-text"> Vencimiento</div>
+								<input name="vencimiento" type="date" class="datepicker" required="required" id="vencimiento" title="Fecha de vencimientomiento de su tarjeta.">
+	                        </div>
+						</div>
+						<div class="row">
+							<div class="input-field col s4 offset-s1" data-tip="Ingrese el codigo de seguridad de su tarjeta.">
+					            <input name="codigo" id="codigo" type="number" pattern="^[0-9]{3,3}" class="validate" required="required">
+					            <label for="codigo" data-error="Se permiten 3 digitos.">Codigo de Seguridad</label>
+					        </div>
+							<div class="input-field col s6 right">
+          						El código de seguridad se encuentra en el reverso de su tarjeta.
+        					</div>
+						</div>
+						<div class="row">
+                            <div class="input-field col s4 offset-s1" data-tip="Ingrese el codigo de area sequido de su numero telefonico.">
+					            <input name="telefono" id="telefono" type="tel" pattern="^[0-9]{6,13}" class="validate" required="required">
+					            <label for="telefono" data-error="Se permiten solo de 6 a 13 digitos.">Teléfono</label>
+					        </div>
+                         </div>
+						 <!-- Envio de usuario -->
+						 <?php 
+							echo '<input type="hidden" name="email" value="'.$usuario.'">';
+						 ?>
+                         <br>
+                         <br>
+                         <div class="row">
+	        				<div class="col s12registro l4 center">
+                             	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='miperfil.php'">
+                            </div>
+                            <div class="col s12registro l4 center">
+    	                     	<input class="waves-effect waves-light btn light-green z-depth-2" type="reset" value="Limpiar">
+                            </div>
+                            <div class="col s12registro l4 center">
+        	                	<input class="waves-effect waves-light btn light-green z-depth-2" type="submit" value="Aceptar">
+                            </div>
+                    	</div>
+    				</form>
+					<!--Fin del Formulario-->
 	            </div>
     	    </div>        
         </div>
-        <!-- Contenido de pagina--> 
+        <!-- Contenido de pagina-->
         
         <!-- Pie de pagina-->
 		<footer class="page-footer light-green">
@@ -125,7 +176,7 @@
           </div>
         </footer>
         <!-- Pie de pagina-->
-        
+         
  		<!-- Adjuntando los archivos JQuery -->
 		<script type="text/javascript" src="js/jquery.min.js"></script>
   		<script type="text/javascript" src="js/materialize.js"></script>
@@ -135,11 +186,23 @@
 				$(".parallax").parallax();
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
+				$('.datepicker').pickadate({
+					min: [2016,6,4],
+					max: 1825, //hace que se muestre siempre como última fecha el día de hoy pero de 18 años atras. Solo se pueden registrar personas mayores de 18 años.
+					selectYears: 5,
+					selectMonths: true,
+					formatSubmit: 'yyyy-mm',
+					hiddenName: true
+				});
   			});
   		</script>
 	</body>
 
 </html>
 <?php 
-	}	
+		
+		}else{
+			header("Location: index_login.php");
+		}
+	}
 ?>

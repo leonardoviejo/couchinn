@@ -3,18 +3,20 @@
 	require_once("funciones/sesion.class.php");
 	
 	$sesion = new sesion();
-	$usuario = $sesion->get("usuario");
+	$idusuario = $sesion->get("id");
 	
-	if( $usuario == false )
+	if( $idusuario == false )
 	{	
 		header("Location: login.php");		
 	}
 	else 
 	{
 	include('funciones/config.php');
-	//Consultas SQL
-	$consulta = "SELECT Nombre FROM tipodecouch WHERE Visible=1 ORDER BY Nombre ASC";
+	//SQL
+	$consulta="SELECT * FROM usuario WHERE Id_Usuario='$idusuario'";
 	$consulta_execute = $conexion->query($consulta);
+	$resultado=$consulta_execute->fetch_assoc();
+	$tipo=$resultado['Id_TipoDeUsuario'];
 ?>
 <html>
 	<head>
@@ -37,16 +39,16 @@
 			<li><a class="light-green-text" href="misreservas.php">Mis Reservas</a></li>
 		</ul>
 		<ul class="dropdown-content" id="desplegable_admin">
-			<li><a class="light-green-text" href="administracion.php">Administración</a></li>
+			<li><a class="light-green-text" href="admin/administracion.php">Administración</a></li>
 			<li class="divider"></li>
-			<li><a class="light-green-text" href="tiposdecouch.php">Tipos de Couchs</a></li>
+			<li><a class="light-green-text" href="admin/tiposdecouch.php">Tipos de Couchs</a></li>
 			<li class="divider"></li>
-			<li><a class="light-green-text" href="usuarios.php">Usuarios</a></li>
+			<li><a class="light-green-text" href="admin/listarusuarios.php">Usuarios</a></li>
 		</ul>
 		<ul class="dropdown-content" id="desplegable_cuenta">
 			<li><a class="light-green-text" href="miperfil.php">Mi Perfil</a></li>
 			<li class="divider"></li>
-			<li><a class="light-green-text" href="modificardatos.php">Modificar Datos</a></li>
+			<li><a class="light-green-text" href="modificarperfil.php">Modificar Perfil</a></li>
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="eliminarcuenta.php">Eliminar Cuenta</a></li>
 		</ul>
@@ -62,7 +64,11 @@
 					<ul class="right hide-on-med-and-down">
 						<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_couchs">Couchs y Reservas</a></li>
-						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_admin">Panel Administrador</a></li>
+						<?php
+							if($tipo==2){
+								echo '<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_admin">Panel Administrador</a></li>';
+							}
+						?>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_cuenta">Mi cuenta</a></li>
 						<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
 				  </ul>
@@ -70,7 +76,6 @@
 					<ul class="side-nav" id="menulateral">
 						<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
 						<li><a href="#"  class="light-green-text">Couchs y Reservas</a></li>
-						<li><a href="#"  class="light-green-text">Panel Administrador</a></li>
 						<li><a href="#"  class="light-green-text">Mi cuenta</a></li>
 						<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
 					</ul>
