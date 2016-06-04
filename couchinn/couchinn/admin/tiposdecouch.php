@@ -104,108 +104,102 @@
         	    	<div class="col s12 center grey-text text-darken-2">
                         <h1> Tipos de Couchs </h1>
                     </div>
-					<!-- Inicio del Formulario-->
-                    <form class="col s12" name="inscripcion" method="post"  action="funciones/alta_tipo.php">
-      					<div class="divider"></div>
-						<div class="section">
-    						<h5>Agregar tipo de Couch</h5>
-						    <div class="input-field col s6">
-          						<input name="tipo" type="text" pattern="[A-Za-z\s]+" class="validate" required="required">
-          						<label for="tipo" data-error="Solo se admiten letras">Nombre del tipo</label>								
-        					</div>
-                            <div class="col s12registro l4 right">
-								<input class="waves-effect waves-light btn light-green z-depth-2" type="submit" value="Agregar">
-                            </div>
-						</div>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-						<br>
-					</form>
-					<!--Fin del Formulario-->
-					<div class="divider"></div>
-					<div class="section">
-						<h5>Tipos de Couch</h5>
-						<!-- Tabla-->
-                           <?php if($consulta_execute->num_rows) { ?>
-                           <table class="col s12 highlight responsive-table">
-        					<thead>
-								<tr>
-									<th data-field="id">Tipo</th>
-          						</tr>
-        					</thead>
-							<?php 
-							while($query_result = $consulta_execute->fetch_array()) {
-								$nombre = $query_result['Nombre'];
-								$id = $query_result['Id_Tipo'];
-							echo '
-        					<tbody>
-          						<tr>
-            						<td>'.$nombre.'</td>
-            						<td class="right">
-										<form action="modificar_tipoc.php" method="post">
-											<input type="hidden" name="nombretipo" value="'.$id.'">
-											<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Modificar">
-										</form>
-									</td>
-									<td class="right">
-										<form action="funciones/baja_tipo.php" method="post">
-											<input type="hidden" name="id" value="'.$id.'">
-											<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
-										</form>
-									</td>
-										
-								</tr>
-        					</tbody>';
-							} ?>
-      					</table>
-                           <?php
-						} else{
-							echo '<tr>
-            						<td class="center">No existen tipos de Couchs</td>
-          						</tr>';
-						}
-						?>
-					</div>
 				</div>
-					<div class="section">
-						<ul class="pagination center">
-							<?php
-								if ($pagina==1){
-									if ($total_paginas==1){
-										echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
-										echo '<li class="disabled"><a href="#">1</a></li>';
-										echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
-									}else{
-										echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
-									}
-								}else{
-									$paginaant=$pagina-1;
-									echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
-								}
-								if ($total_paginas > 1){
-									for ($i=1;$i<=$total_paginas;$i++){ 
-										if ($pagina == $i){
-											//si muestro el índice de la página actual, no coloco enlace 
-											echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
-										}else{
-											echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$i.'">'.$i.'</a></li>';
-										}
-									}
-									if ($pagina==$total_paginas){
-										echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
-									}else{
-										$paginapos=$pagina+1;
-										echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
-									}
-									
-								}
-							?>
-						</ul>
+				<!-- Inicio del Formulario-->
+				<form class="col s12" name="inscripcion" method="post"  action="funciones/alta_tipo.php">
+					<div class="row">
+    					<h5>Agregar tipo de Couch</h5>
+					    <div class="input-field col s6">
+         					<input name="tipo" type="text" pattern="[A-Za-z\s]+" class="validate" required="required">
+         					<label for="tipo" data-error="Solo se admiten letras">Nombre del tipo</label>								
+        				</div>
+                        <div class="col s12registro l4 right">
+							<input class="waves-effect waves-light btn light-green z-depth-2" type="submit" value="Agregar">
+                        </div>
 					</div>
-	        </div>
-    	</div>
+				</form>
+				<!--Fin del Formulario-->
+				<div class="divider"></div>
+				<div class="section">
+					<h5>Tipos de Couch</h5>
+					<!-- Tabla-->
+                    <?php if($consulta_execute->num_rows) { ?>
+                    <table class="col s12 highlight responsive-table">
+						<thead>
+							<tr>
+								<th data-field="id">Tipo</th>
+							</tr>
+						</thead>
+						<?php 
+						while($query_result = $consulta_execute->fetch_array()) {
+							$nombre = $query_result['Nombre'];
+							$id = $query_result['Id_Tipo'];
+						echo '
+        				<tbody>
+         						<tr>
+           						<td>'.$nombre.'</td>
+           						<td class="right">
+									<form action="modificar_tipoc.php" method="post">
+										<input type="hidden" name="nombretipo" value="'.$id.'">
+										<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Modificar">
+									</form>
+								</td>
+								<td class="right">
+									<form action="funciones/baja_tipo.php" method="post">
+										<input type="hidden" name="id" value="'.$id.'">
+										<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
+									</form>
+								</td>
+									
+							</tr>
+        				</tbody>';
+						} ?>
+      				</table>
+                        <?php
+					}else{
+						echo '<tr>
+           						<td class="center">No existen tipos de Couchs</td>
+         						</tr>';
+					}
+					?>
+				</div>
+			</div>
+			<div class="section">
+				<ul class="pagination center">
+					<?php
+						if ($pagina==1){
+							if ($total_paginas==1){
+								echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
+								echo '<li class="disabled"><a href="#">1</a></li>';
+								echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+							}else{
+								echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
+							}
+						}else{
+							$paginaant=$pagina-1;
+							echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+						}
+						if ($total_paginas > 1){
+							for ($i=1;$i<=$total_paginas;$i++){ 
+								if ($pagina == $i){
+									//si muestro el índice de la página actual, no coloco enlace 
+									echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
+								}else{
+									echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$i.'">'.$i.'</a></li>';
+								}
+							}
+							if ($pagina==$total_paginas){
+								echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+							}else{
+								$paginapos=$pagina+1;
+								echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+							}
+							
+						}
+					?>
+				</ul>
+			</div>
+		</div>
         <!-- Fin Contenido de pagina-->
         
         <!-- Pie de pagina-->

@@ -7,7 +7,7 @@
 	$email = $_POST["email"];
 	$password = $_POST["password"];
 	
-	$consulta = "SELECT * FROM usuario WHERE Email='$email'";
+	$consulta = "SELECT * FROM usuario WHERE Email='$email' AND Visible=1";
 	$result = $conexion->query($consulta);
 		
 	if($result->num_rows > 0){

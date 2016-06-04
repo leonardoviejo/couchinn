@@ -7,15 +7,13 @@
 	
 	include('funciones/config.php');
 	//Recuperar couch concerniente
-	/*if (empty($_POST['id'])){
-		header("Location: ../index.php");
+	if (empty($_POST['id'])){
+		header("Location: index.php");
 	}
 	else
 	{
 		$couchId = $_POST["id"];
 	}
-	*/
-	$couchId=2;
 	//Consultas SQL Usuario
 	$consulta = "SELECT * FROM usuario WHERE Id_Usuario='$idusuario'";
 	$consulta_execute = $conexion->query($consulta);

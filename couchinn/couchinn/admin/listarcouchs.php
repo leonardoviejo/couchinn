@@ -17,11 +17,27 @@
 		$resultado=$consulta_execute->fetch_assoc();
 		$tipo=$resultado['Id_TipoDeUsuario'];
 		if ($tipo == 2){
+		//Conteo de paginado de resultado.
+		$TAMANO_PAGINA=10;
+		if(!isset($_GET['pagina'])) {
+			$pagina=1;
+			$inicio=0;
+		}else{
+			$pagina = $_GET["pagina"];
+			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+		}
+		//Consultas SQL
+		$consulta = "SELECT * FROM couch WHERE Visible=1 ORDER BY Titulo ASC";
+		$consulta_execute = $conexion->query($consulta);
+		$total_resultados=$consulta_execute->num_rows;
+		$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
+		$consulta = "SELECT c.Id_Couch, c.Id_TipoDeCouch, c.Id_Usuario, c.Titulo, c.Ciudad, c.Capacidad, c.FechaAlta, c.Foto1, u.Nombre, u.Apellido, u.Premium, t.Nombre AS NombreTipo FROM couch c inner JOIN usuario u ON c.Id_Usuario = u.Id_Usuario inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo WHERE c.Visible=1 ORDER BY Titulo ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+		$consulta_execute = $conexion->query($consulta);
 ?>
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>CouchInn - Administración</title>
+		<title>CouchInn - Listar Couchs</title>
 		<!-- Importacion Iconos de Google -->
  	 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Importacion de materialize css-->
@@ -82,42 +98,120 @@
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
-        	<div class="container"> 
-    	    	<div class="row">
+        	<div class="container">
+				<div class="row">
                 	<br>
-        	    	<div class="col s12 center grey-text text-darken-2">
-                        <h1> Administración </h1>
+					<div class="center grey-text text-darken-2">
+                        <h1> Lista de Couchs </h1>
                     </div>
 				</div>
-				<!-- Inicio del Formulario-->
-                <div class="row">
-					<table class="col s6 offset-s3 highlight responsive-table">
+				<div class="section">
+					<!-- Tabla-->
+					<?php if($consulta_execute->num_rows) { ?>
+					<div class="row">
+					<table class="col s12 highlight responsive-table">
         				<thead>
 							<tr>
-								<th class="center" data-field="name">Operaciones</th>
+								<th class="center" data-field="name"></th>
+								<th class="center" data-field="name">Titulo</th>
+								<th class="center" data-field="name">Ciudad</th>
+								<th class="center" data-field="name">Propietario</th>
+								<th class="center" data-field="name">Capacidad</th>
+								<th class="center" data-field="name">Tipo</th>
+								<th class="center" data-field="name">Fecha de Alta</th>
           					</tr>
         				</thead>
-						<tbody>
-							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Couch" onClick="location.href='listarcouchs.php'"></td>
-							</tr>
-							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Usuarios" onClick="location.href='listarusuarios.php'"></td>
-							</tr>
-							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Listar Usuarios Premium" onClick="location.href='listarusuariospremium.php'"></td>
-							</tr>
-							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Tipos de Couch" onClick="location.href='tiposdecouch.php'"></td>
-							</tr>
-        				</tbody>
-      				</table>
+						<?php 
+						while($query_result = $consulta_execute->fetch_array()) {
+							$id=$query_result['Id_Couch'];
+							$titulo = $query_result['Titulo'];
+							$ciudad = $query_result['Ciudad'];
+							$propietario = $query_result["Nombre"] . " " . $query_result["Apellido"];
+							$capacidad = $query_result['Capacidad'];
+							$tipocouch = $query_result['NombreTipo'];
+							$fechaalta = $query_result['FechaAlta'];
+							$premium= $query_result['Premium'];
+							$foto1= $query_result['Foto1'];
 				
+        				echo'
+						<tbody>
+          					<tr>';
+								if($premium==1){
+									echo '<td class="center" ><img width="70" height="70" src="../'.$foto1.'"></td>';
+								}else{
+									echo '<td class="center" ><img width="70" height="70" src="../imagenes/mini.png"></td>';
+								}
+								echo 
+								'<td class="center" >'.$titulo.'</td>
+								<td class="center" >'.$ciudad.'</td>
+								<td class="center" >'.$propietario.'</td>
+								<td class="center" >'.$capacidad.'</td>
+								<td class="center" >'.$tipocouch.'</td>
+								<td class="center" >'.$fechaalta.'</td>
+            					<td class="right">
+									<form action="../vercouch.php" method="post">
+										<input type="hidden" name="id" value="'.$id.'">
+										<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Ver Couch">
+									</form>
+								</td>
+								<td class="right">
+									<form action="../vercouch.php" method="post">
+										<input type="hidden" name="id" value="'.$id.'">
+										<input class="disabled waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
+									</form>
+								</td>
+									
+							</tr>
+        				</tbody>';
+						} ?>
+      				</table>
+                          <?php
+						} else{
+						echo '<tr>
+            					<td class="center">No existen tipos de Couchs</td>
+          					</tr>';
+						}
+					?>
+					</div>
 				</div>
-				<!--Fin del Formulario-->
-    	    </div>        
-        </div>
-        <!-- Contenido de pagina-->
+				<div class="section">
+					<ul class="pagination center">
+						<?php
+							if ($pagina==1){
+								if ($total_paginas==1){
+									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
+									echo '<li class="disabled"><a href="#">1</a></li>';
+									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+								}else{
+									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
+								}
+							}else{
+								$paginaant=$pagina-1;
+								echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+							}
+							if ($total_paginas > 1){
+								for ($i=1;$i<=$total_paginas;$i++){ 
+									if ($pagina == $i){
+										//si muestro el índice de la página actual, no coloco enlace 
+										echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
+									}else{
+										echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$i.'">'.$i.'</a></li>';
+									}
+								}
+								if ($pagina==$total_paginas){
+									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+								}else{
+									$paginapos=$pagina+1;
+									echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+								}
+								
+							}
+						?>
+					</ul>
+				</div>
+	        </div>
+    	</div>
+        <!-- Fin Contenido de pagina-->
         
         <!-- Pie de pagina-->
 		<footer class="page-footer light-green">

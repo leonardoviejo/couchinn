@@ -2635,7 +2635,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `CouchInn`;
-INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1,'Leonardo', 'Consolini', 'leonardo.consolini@gmail.com', '123456789', '1989-08-08', '4548988');
+INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`, `Premium`) VALUES (1,'Leonardo', 'Consolini', 'leonardo.consolini@gmail.com', '123456789', '1989-08-08', '4548988',1);
 INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (2, 'Miguel', 'Macagno', 'miguel.macagno@gmail.com', '123456789', '1989-11-07', '4215335');
 INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Sandra', 'Lopez', 'sandralopez@outlook.com', '12345678', '1973-09-25', '45682231');
 INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Carlos', 'Rodriguez', 'carlos_r@yahoo.com.ar', '12345abc', '1993-01-20', '4451856');

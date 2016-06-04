@@ -89,12 +89,35 @@
     	    	<div class="row">
                 	<br>
         	    	<div class="col s12 center grey-text text-darken-2">
-                        <h1> Eliminar Cuenta </h1>
+                        <h1><b> Eliminar Cuenta </b></h1>
+						<h5><b>ATENCION: Está a punto de eliminar su cuenta de usuario, este paso no puede deshacerse y también borrará sus couchs y reservas.</b></h5>
                     </div>
-					<!-- Inicio del Formulario-->
-                    				
-					<!--Fin del Formulario-->
-	            </div>
+				</div>
+				<!-- Inicio del Formulario-->
+				<form name="eliminarusuario" method="post" action="funciones/baja_usuario.php">
+					<div class="row">
+						<div class="col s4">
+							<p class="left">Contraseña </p>
+						</div>
+						
+						<div class="input-field col s4" data-tip="La contraseña debe contener 8 carácteres como mínimo">
+          					<?php echo '<input type="hidden" name="id" value="'.$idusuario.'">'?>							
+							<input name="password" id="password" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+          					<label for="password" data-error="La contraseña ingresada es menor a 8.">Contraseña Actual</label>
+        				</div>                        
+					</div>
+					<div class="divider"></div>
+					<br>
+					<div class="row">
+	        			<div class="col s12registro l6 center">
+                          	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='miperfil.php'">
+                        </div>
+                        <div class="col s12registro l6 center">
+        	              	<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Eliminar Cuenta">
+                        </div>
+                    </div>
+				</form>
+				<!--Fin del Formulario-->
     	    </div>        
         </div>
         <!-- Contenido de pagina-->
