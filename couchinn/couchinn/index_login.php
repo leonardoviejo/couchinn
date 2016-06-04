@@ -19,7 +19,7 @@
 	$tipo=$resultado['Id_TipoDeUsuario'];
 	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 	//Conteo de paginado de resultado.
-		$TAMANO_PAGINA=10;
+		$TAMANO_PAGINA=5;
 		if(!isset($_GET['pagina'])) {
 			$pagina=1;
 			$inicio=0;
@@ -206,7 +206,7 @@
 								}
 							}else{
 								$paginaant=$pagina-1;
-								echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+								echo '<li class="waves-effect"><a href="index_login.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
 							}
 							if ($total_paginas > 1){
 								for ($i=1;$i<=$total_paginas;$i++){ 
@@ -214,14 +214,14 @@
 										//si muestro el índice de la página actual, no coloco enlace 
 										echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
 									}else{
-										echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$i.'">'.$i.'</a></li>';
+										echo '<li class="waves-effect"><a href="index_login.php?pagina='.$i.'">'.$i.'</a></li>';
 									}
 								}
 								if ($pagina==$total_paginas){
 									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 								}else{
 									$paginapos=$pagina+1;
-									echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+									echo '<li class="waves-effect"><a href="index_login.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
 								}
 								
 							}

@@ -215,7 +215,7 @@
 				<div class="divider"></div>
 				<div class="row">
 						<div class="col s4">
-							<p class="left">Telefono </p>
+							<p class="left">Teléfono </p>
 						</div>
 						<div class="col s8">
 							<p class="left"><?php echo $telefono?></p>

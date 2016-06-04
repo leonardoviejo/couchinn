@@ -119,8 +119,14 @@
         	    	<div class="col s12 center grey-text text-darken-2">
                         <h1> Volverme Premium </h1>
                     </div>
+					<br>
+					<br>
+					<br>
+					<br>
+				</div>
 					<!-- Inicio del Formulario-->
-                    <form class="col s12" name="inscripcion" method="post" onSubmit="return validarTarjeta()" action="funciones/alta_premium.php">
+				<div class="row">
+                    <form class="col s12" name="inscripcion" method="post" onSubmit="return validarFormularioTarjeta()" action="funciones/alta_premium.php">
       					<div class="row">
        				 		<div class="input-field col s4 offset-s1">
           						<input name="nombre" type="text" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" title="Solo se admiten letras" class="validate" required="required">
@@ -153,10 +159,38 @@
         					</div>
 						</div>
                         <div class="row">
-	      					<div class="input-field col s4 offset-s1">
-	                        	<div class="grey-text"> Vencimiento</div>
-								<input name="vencimiento" type="date" class="datepicker" required="required" id="vencimiento" title="Fecha de vencimientomiento de su tarjeta.">
-	                        </div>
+	      					<div class="input-field col s2 offset-s1">
+								<select id="mes">
+									<option value="" disabled selected>Elija el mes</option>
+									<option value="1">Enero</option>
+									<option value="2">Febrero</option>
+									<option value="3">Marzo</option>
+									<option value="1">Abril</option>
+									<option value="2">Mayo</option>
+									<option value="3">Junio</option>
+									<option value="1">Julio</option>
+									<option value="2">Agosto</option>
+									<option value="3">Septiembre</option>
+									<option value="1">Octubre</option>
+									<option value="2">Noviembre</option>
+									<option value="3">Diciembre</option>
+								</select>
+								<label>Seleccione el mes</label>
+							</div>
+							<div class="input-field col s2">
+								<select id="anio">
+									<option value="" disabled selected>Elija el año</option>
+									<option value="1">2016</option>
+									<option value="2">2017</option>
+									<option value="3">2018</option>
+									<option value="2">2019</option>
+									<option value="3">2020</option>
+								</select>
+								<label>Seleccione el año</label>
+							</div>
+							<div class="input-field col s6 right">
+          						Ingrese la fecha de vencimiento de su tarjeta de credito.
+        					</div>
 						</div>
 						<div class="row">
 							<div class="input-field col s4 offset-s1" data-tip="Ingrese el codigo de seguridad de su tarjeta.">
@@ -168,7 +202,7 @@
         					</div>
 						</div>
 						<div class="row">
-                            <div class="input-field col s4 offset-s1" data-tip="Ingrese el codigo de area seguido de su numero telefonico.">
+                            <div class="input-field col s4 offset-s1" data-tip="Ingrese el codigo de area seguido de su numero telefónico.">
 					            <input name="telefono" id="telefono" type="tel" maxlength="13" pattern="^[0-9]{6,13}" class="validate" required="required">
 					            <label for="telefono" data-error="Se permiten solo de 6 a 13 digitos.">Teléfono</label>
 					        </div>
@@ -192,7 +226,7 @@
                     	</div>
     				</form>
 					<!--Fin del Formulario-->
-	            </div>
+				</div>
     	    </div>        
         </div>
         <!-- Contenido de pagina-->

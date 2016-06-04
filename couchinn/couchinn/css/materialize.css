@@ -2871,7 +2871,7 @@ video.responsive-video {
 .parallax-container-mio-home {
   position: relative;
   overflow: hidden;
-  height: 600px;
+  height: auto;
 }
 
 .parallax {

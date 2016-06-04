@@ -47,11 +47,11 @@
                     <form class="col s12" name="inscripcion" method="post" onSubmit="return validarFormulario()" action="funciones/reg_user.php">
       					<div class="row">
        				 		<div class="input-field col s6">
-          						<input name="nombre" type="text" maxlength="30" pattern="[A-Za-z\s]+" title="Solo se admiten letras" class="validate" required="required">
+          						<input name="nombre" type="text" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" title="Solo se admiten letras" class="validate" required="required">
           						<label for="nombre" data-error="Solo se admiten letras">Nombre</label>
         					</div>
         					<div class="input-field col s6">
-					        	<input name="apellido" type="text" maxlength="30"  pattern="[A-Za-z\s]+" title="Solo se admiten letras" class="validate" required="required">
+					        	<input name="apellido" type="text" maxlength="30"  pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" title="Solo se admiten letras" class="validate" required="required">
 	        					<label for="apellido" data-error="Solo se admiten letras">Apellido</label>
         					</div>
 						</div>
@@ -81,7 +81,7 @@
 								<input name="f_nac" type="date" class="datepicker" required="required" id="f_nac" title="Fecha de Nacimiento">
 	                        </div>
                             <br>
-                            <div class="input-field col s6" data-tip="Ingrese el codigo de area sequido de su numero telefonico.">
+                            <div class="input-field col s6" data-tip="Ingrese el codigo de area seguido de su numero telefónico.">
 					            <input name="telefono" id="telefono" type="tel" maxlength="13" pattern="^[0-9]{6,13}" class="validate" required="required">
 					            <label for="telefono" data-error="Se permiten solo de 6 a 13 digitos.">Teléfono</label>
 					        </div>

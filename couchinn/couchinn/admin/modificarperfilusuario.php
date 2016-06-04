@@ -181,9 +181,9 @@
 					<div class="divider"></div>
 					<div class="row">
 						<div class="col s4">
-							<p class="left">Telefono </p>
+							<p class="left">Teléfono </p>
 						</div>
-						<div class="input-field col s4" data-tip="Ingrese el codigo de area sequido de su numero telefonico.">
+						<div class="input-field col s4" data-tip="Ingrese el codigo de area seguido de su numero telefónico.">
 							<?php
 								echo '<input name="telefono" id="telefono" value="'.$telefono.'" type="tel" maxlength="13" pattern="^[0-9]{6,13}" class="validate" required="required">
 										<label for="telefono" data-error="Se permiten solo de 6 a 13 digitos."></label>';

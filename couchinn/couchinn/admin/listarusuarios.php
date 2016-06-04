@@ -137,7 +137,7 @@
 								<th class="center" data-field="name">Correo</th>
 								<th class="center" data-field="name">Permiso de Usuario</th>
 								<th class="center" data-field="name">Fecha de Nacimiento</th>
-								<th class="center" data-field="name">Telefono</th>
+								<th class="center" data-field="name">Teléfono</th>
 								<th class="center" data-field="name">Premium</th>
 								<th class="center" data-field="name">Fecha de Alta</th>
           					</tr>

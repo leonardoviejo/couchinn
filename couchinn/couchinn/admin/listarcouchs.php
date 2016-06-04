@@ -134,7 +134,7 @@
         				<thead>
 							<tr>
 								<th class="center" data-field="name"></th>
-								<th class="center" data-field="name">Titulo</th>
+								<th class="center" data-field="name">Título</th>
 								<th class="center" data-field="name">Ciudad</th>
 								<th class="center" data-field="name">Propietario</th>
 								<th class="center" data-field="name">Capacidad</th>

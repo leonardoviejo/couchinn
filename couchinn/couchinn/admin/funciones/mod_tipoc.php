@@ -7,6 +7,8 @@
 	$nombre_actual = $_POST['nombretipo'];
 	$nombre_nuevo = $_POST['tipocouch'];
 	$nombre_nuevo=ucwords(strtolower($nombre_nuevo));
+	$nombre_actual=utf8_encode($nombre_actual);
+	$nombre_nuevo=utf8_encode($nombre_nuevo);
 	
 	//Validar datos
 	$consulta = "SELECT * FROM tipodecouch WHERE Nombre= '$nombre_actual'";

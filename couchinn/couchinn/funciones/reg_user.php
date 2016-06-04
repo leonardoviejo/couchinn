@@ -20,7 +20,7 @@
 	$consulta= "SELECT * FROM usuario WHERE Email='$email'";
 	$consulta_execute = $conexion->query($consulta);
 	if($consulta_execute->num_rows){
-		?>	<script> alert("Ya existe una cuenta con ese correco electronico.");
+		?>	<script> alert("Ya existe una cuenta con ese correo electronico.");
 				location.href='../registro.php';
 				</script>
 		<?php

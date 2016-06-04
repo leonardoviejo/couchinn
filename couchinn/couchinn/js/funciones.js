@@ -53,15 +53,35 @@
 		}
 	}
 	
-	function validarTarjeta(){
+	function validarFormularioTarjeta(){
 		var tarjeta = document.getElementById("tarjeta").value;
-		if (tarjeta !== "") {
+		var mes = document.getElementById("mes").value;
+		var anio = document.getElementById("anio").value;
+		var mensaje="Se ha/n encontrado el/los siguente/s error/es: ";
+		var error=false;
+		
+		if (tarjeta == "") {
+			mensaje=mensaje +"Seleccione su tarjeta, ";
+			error=true;
+		}
+		
+		if (mes == "" ) {
+			mensaje=mensaje +"Seleccione mes de vencimiento, ";
+			error=true; 
+		}
+		
+		if (anio == "" ) {
+			mensaje=mensaje +"Seleccione año de vencimiento, ";
+			error=true; 
+		}
+		
+		if (error){
+			alert(mensaje);
+			return false;
+		}else{
 			return true;
 		}
-		alert("Ingrese una tarjeta");
-		return false;
 	}
-	
 	
 	
 	

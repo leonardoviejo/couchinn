@@ -10,10 +10,12 @@
 	$consulta= "SELECT * FROM usuario WHERE Email='$email' AND Visible=1";
 	$consulta_execute = $conexion->query($consulta);
 	if($consulta_execute->num_rows){
+		$resultado=$consulta_execute->fetch_assoc();
+		$nombre=$resultado["Nombre"].' '.$resultado["Apellido"];
 		$password_nuevo= substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
 		$consulta = "UPDATE `usuario` SET `Password` = '$password_nuevo' WHERE `usuario`.`Email` = '$email'";
 		$conexion->query($consulta);
-		enviarEmail($email,$password_nuevo);
+		enviarEmail($email,$password_nuevo,$nombre);
 		?>	<script> alert("La nueva contraseña fue enviada a su direccion de correo electronico.");
 				location.href='../login.php';
 				</script>
@@ -26,14 +28,16 @@
 	}
 	}
 	
-	function enviarEmail( $email, $password_nuevo ){
+	function enviarEmail($email, $password_nuevo,$nombre){
 		$mensaje = '	<html>
 						<head>
 							<title>Restablece tu contraseña</title>
 						</head>
 						<body>
+							<p>Hola '.$nombre.':</p>
 							<p>Hemos recibido una petición para restablecer la contraseña de tu cuenta.</p>
 							<p>Esta es tu nueva contraseña: '.$password_nuevo.'</p>
+							<p>Si lo deseas puedes modificarla en tu perfil.</p>
 						</body>
 						</html>';
 	

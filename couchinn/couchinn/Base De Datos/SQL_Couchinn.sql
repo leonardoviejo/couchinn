@@ -2624,8 +2624,8 @@ INSERT INTO `CouchInn`.`Localidades` (`Id`, `Id_Provincia`, `Localidad`) VALUES
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `CouchInn`;
-INSERT INTO `CouchInn`.`TipoDeUsuario` (`Nombre`) VALUES ('normal');
-INSERT INTO `CouchInn`.`TipoDeUsuario` (`Nombre`) VALUES ('admin');
+INSERT INTO `CouchInn`.`TipoDeUsuario` (`Nombre`) VALUES ('Normal');
+INSERT INTO `CouchInn`.`TipoDeUsuario` (`Nombre`) VALUES ('Admin');
 
 COMMIT;
 
@@ -2637,9 +2637,9 @@ START TRANSACTION;
 USE `CouchInn`;
 INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`, `Premium`) VALUES (1,'Leonardo', 'Consolini', 'leonardo.consolini@gmail.com', '123456789', '1989-08-08', '4548988',1);
 INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (2, 'Miguel', 'Macagno', 'miguel.macagno@gmail.com', '123456789', '1989-11-07', '4215335');
-INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Sandra', 'Lopez', 'sandralopez@outlook.com', '12345678', '1973-09-25', '45682231');
-INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Carlos', 'Rodriguez', 'carlos_r@yahoo.com.ar', '12345abc', '1993-01-20', '4451856');
-INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Clara', 'Gonzalez', 'clara_94@live.com', 'abc12345', '1994-03-18', '45895982');
+INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Sandra', 'Lopez', 'sandra@outlook.com', '123456789', '1973-09-25', '45682231');
+INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Carlos', 'Rodriguez', 'carlos@yahoo.com.ar', '123456789', '1993-01-20', '4451856');
+INSERT INTO `CouchInn`.`Usuario` (`Id_TipoDeUsuario`, `Nombre`, `Apellido`, `Email`, `Password`, `FechaNac`, `Telefono`) VALUES (1, 'Clara', 'Gonzalez', 'clara@live.com', '123456789', '1994-03-18', '45895982');
 
 COMMIT;
 
@@ -2652,11 +2652,10 @@ USE `CouchInn`;
 INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Cabaña');
 INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Dormis');
 INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Departamento');
-INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Contenedor');
+INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Casa Rodante');
 INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Bungalow');
 INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Garage');
 INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Sótano');
-INSERT INTO `CouchInn`.`TipoDeCouch` (`Nombre`) VALUES ('Casa Rodante');
 
 COMMIT;
 
@@ -2666,7 +2665,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `CouchInn`;
-INSERT INTO `CouchInn`.`Couch` (`Id_Couch`, `Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Ciudad`, `Descripcion`, `Capacidad`, `Foto1`, `Foto2`, `Foto3`) VALUES (1, 2, 1, 'Espectacular lugar en La Plata', 'La Plata', 'Hermosa casa, ideal para tener un momento de relax y tranquilidad. Tengo una habitación extra para alojar visitantes.', 6, 'imagenes/couchs/1/1.jpg', 'imagenes/couchs/1/2.jpg', 'imagenes/couchs/1/3.jpg');
-INSERT INTO `CouchInn`.`Couch` (`Id_Couch`, `Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Ciudad`, `Descripcion`, `Capacidad`, `Foto1`, `Foto2`, `Foto3`) VALUES (2, 1, 4, 'Gran Bungalow del Sur', 'Bariloche', 'Hermosa casa, ideal para tener un momento de relax y tranquilidad viendo las majestuosas montañas de la patagonia. Tengo una habitación extra para alojar visitantes.', 7, 'imagenes/couchs/2/1.jpg', 'imagenes/couchs/2/2.jpg', '');
+INSERT INTO `CouchInn`.`Couch` (`Id_Couch`, `Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Ciudad`, `Descripcion`, `Capacidad`, `Foto1`, `Foto2`, `Foto3`) VALUES (1, 1, 1, 'Espectacular lugar en La Plata', 'La Plata', 'Hermosa casa, ideal para tener un momento de relax y tranquilidad. Tengo una habitación extra para alojar visitantes.', 6, 'imagenes/couchs/1/1.jpg', 'imagenes/couchs/1/2.jpg', 'imagenes/couchs/1/3.jpg');
+INSERT INTO `CouchInn`.`Couch` (`Id_Couch`, `Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Ciudad`, `Descripcion`, `Capacidad`, `Foto1`, `Foto2`, `Foto3`) VALUES (2, 5, 2, 'Gran Bungalow del Sur', 'Bariloche', 'Hermosa casa, ideal para tener un momento de relax y tranquilidad viendo las majestuosas montañas de la patagonia. Tengo una habitación extra para alojar visitantes.', 7, 'imagenes/couchs/2/1.jpg', 'imagenes/couchs/2/2.jpg', '');
+INSERT INTO `CouchInn`.`Couch` (`Id_Couch`, `Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Ciudad`, `Descripcion`, `Capacidad`, `Foto1`, `Foto2`, `Foto3`) VALUES (3, 3, 3, 'Muy buen departamento', 'Capital Federal', 'Amplio departamento para vivir como nunca una experiencia porteña, a cuadras del obelisco y la peatonal florida.', 2, 'imagenes/couchs/3/1.jpg', 'imagenes/couchs/3/2.jpg', 'imagenes/couchs/3/3.jpg');
+INSERT INTO `CouchInn`.`Couch` (`Id_Couch`, `Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Ciudad`, `Descripcion`, `Capacidad`, `Foto1`, `Foto2`, `Foto3`) VALUES (4, 7, 4, 'Impecable sotano amoblado', 'Mar del Plata', 'Situada en camet norte ofrece una bajada a la playa exclusiva.', 1, 'imagenes/couchs/4/1.jpg', '', '');
+INSERT INTO `CouchInn`.`Couch` (`Id_Couch`, `Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Ciudad`, `Descripcion`, `Capacidad`, `Foto1`, `Foto2`, `Foto3`) VALUES (5, 2, 5, 'Dormis a la orilla del rio', 'Rio Cuarto', 'Pequeños pero muy pintorescos ofrecen una flexibilidad sin igual para recorrer cuando quieras la zona.', 2, 'imagenes/couchs/5/1.jpg', 'imagenes/couchs/5/2.jpg', '');
+INSERT INTO `CouchInn`.`Couch` (`Id_Couch`, `Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Ciudad`, `Descripcion`, `Capacidad`, `Foto1`, `Foto2`, `Foto3`) VALUES (6, 6, 1, 'Amplio Garage', 'Viedma', 'Amoblado y reacondicionado para que tu estadia sea inolvidable, este garage es mucho mas de lo que parece.', 3, 'imagenes/couchs/6/1.jpg', '', '');
 
 COMMIT;
