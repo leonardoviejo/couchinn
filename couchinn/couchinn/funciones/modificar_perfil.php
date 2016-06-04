@@ -1,5 +1,9 @@
 <?php include('config.php');
 	//Variables
+	if ((empty($_POST['nombre']))||(empty($_POST['apellido']))||(empty($_POST['id']))||(empty($_POST['email']))||(empty($_POST['password']))||(empty($_POST['f_nac']))||(empty($_POST['telefono']))){
+		header("Location: ../index.php");
+	}
+	else{	
 	$nombre = $_POST['nombre'];
 	$nombre=ucwords(strtolower($nombre));
 	$apellido = $_POST['apellido'];
@@ -56,6 +60,7 @@
 				location.href='cerrar_sesion.php';
 				</script>
 		<?php
+	}
 	}
 ?>
 

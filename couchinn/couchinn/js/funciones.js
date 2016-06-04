@@ -52,3 +52,20 @@
 			return true;
 		}
 	}
+	
+	function validarTarjeta(){
+		var tarjeta = document.getElementById("tarjeta").value;
+		if (tarjeta !== "") {
+			return true;
+		}
+		alert("Ingrese una tarjeta");
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	

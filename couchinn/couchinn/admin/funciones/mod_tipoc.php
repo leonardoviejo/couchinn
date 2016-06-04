@@ -1,5 +1,9 @@
 <?php include('../../funciones/config.php');
 	//Variables
+	if ((empty($_POST['nombretipo']))||(empty($_POST['tipocouch']))){
+		header("Location: ../../index.php");
+	}
+	else{
 	$nombre_actual = $_POST['nombretipo'];
 	$nombre_nuevo = $_POST['tipocouch'];
 	$nombre_nuevo=ucwords(strtolower($nombre_nuevo));
@@ -37,5 +41,6 @@
 				</script>';			
 		
 		}
+	}
 	}
 ?>

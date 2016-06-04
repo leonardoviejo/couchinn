@@ -1,5 +1,12 @@
 <?php include('config.php');
 	//Variables
+	if ((empty($_POST['nombre']))||(empty($_POST['apellido']))||(empty($_POST['email']))||(empty($_POST['password']))||(empty($_POST['f_nac']))||(empty($_POST['telefono']))){
+		?><script> alert("Por favor complete el campo fecha de nacimiento y vuelva a intentarlo.");
+			location.href='../registro.php';
+		</script>
+		<?php
+	}
+	else{	
 	$nombre = $_POST['nombre'];
 	$nombre=ucwords(strtolower($nombre));
 	$apellido = $_POST['apellido'];
@@ -28,6 +35,7 @@
 		} else {
 			echo "ERROR. " . mysqli_error($conexion);
 		}
+	}
 	}
 ?>
 

@@ -24,6 +24,7 @@
 	$premium=$resultado["Premium"];
 	$fechaalta=$resultado["FechaAlta"];
 	$email=$resultado["Email"];
+	$nombreusuario=$nombre.' '.$apellido;
 		
 	$consulta = "SELECT * FROM tipodeusuario WHERE Id_Tipo='$tipo'";
 	$consulta_execute = $conexion->query($consulta);
@@ -55,7 +56,7 @@
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="misreservas.php">Mis Reservas</a></li>
 		</ul>
-		<ul class="dropdown-content" id="desplegable_admin">
+			<ul class="dropdown-content" id="desplegable_admin">
 			<li><a class="light-green-text" href="admin/administracion.php">Administración</a></li>
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="admin/tiposdecouch.php">Tipos de Couchs</a></li>
@@ -63,6 +64,25 @@
 			<li><a class="light-green-text" href="admin/listarusuarios.php">Usuarios</a></li>
 		</ul>
 		<ul class="dropdown-content" id="desplegable_cuenta">
+			<li><a class="light-green-text" href="miperfil.php">Mi Perfil</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="modificarperfil.php">Modificar Perfil</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="eliminarcuenta.php">Eliminar Cuenta</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_couchs">
+			<li><a class="light-green-text" href="miscouchs.php">Mis Couchs</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="misreservas.php">Mis Reservas</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_admin">
+			<li><a class="light-green-text" href="admin/administracion.php">Administración</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="admin/tiposdecouch.php">Tipos de Couchs</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="admin/listarusuarios.php">Usuarios</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_cuenta">
 			<li><a class="light-green-text" href="miperfil.php">Mi Perfil</a></li>
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="modificarperfil.php">Modificar Perfil</a></li>
@@ -79,6 +99,7 @@
                     <a href="#" data-activates="menulateral" class="button-collapse"><i class="material-icons light-green">menu</i></a>
 					<!-- Opciones -->
 					<ul class="right hide-on-med-and-down">
+						<li><a href="miperfil.php"  class="grey-text text-darken-2">Bienvenido, <?php echo $nombreusuario;?>!!!</a></li>
 						<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_couchs">Couchs y Reservas</a></li>
 						<?php
@@ -92,8 +113,12 @@
 					<!-- Opciones  de menu lateral-->
 					<ul class="side-nav" id="menulateral">
 						<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
-						<li><a href="#"  class="light-green-text">Couchs y Reservas</a></li>
-						<li><a href="#"  class="light-green-text">Mi cuenta</a></li>
+						<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_couchs">Couchs y Reservas</a></li>
+						<?php	if($tipo==2){
+								echo '<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_lateral_admin">Panel Administrador</a></li>';
+								}
+						?>
+						<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_cuenta">Mi cuenta</a></li>
 						<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
 					</ul>
 			  </div>		

@@ -19,6 +19,7 @@
 	$consulta_execute = $conexion->query($consulta);
 	$resultado=$consulta_execute->fetch_assoc();
 	$tipo= $resultado["Id_TipoDeUsuario"];
+	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 	
 	//Busqueda de couch
 	$consulta= "SELECT * FROM couch WHERE Id_Couch='$couchId'";
@@ -27,7 +28,7 @@
 		// Data de los detalles del couch
 		$row = $resulta->fetch_assoc();
 		$tipoId = $row["Id_TipoDeCouch"];
-		$usuarioId = $row["Id_Usuario"];
+		$idusuariocouch = $row["Id_Usuario"];
 		$titulo = $row["Titulo"];
 		$ciudad = $row["Ciudad"];
 		$capacidad = $row["Capacidad"];
@@ -44,13 +45,14 @@
 		$tipoDeCouch = $row2["Nombre"];
 		
 		//Busqueda de nombre de usuario
-		$consulta3= "SELECT Nombre, Apellido, Premium FROM usuario WHERE Id_Usuario='$usuarioId'";
+		$consulta3= "SELECT Nombre, Apellido, Premium FROM usuario WHERE Id_Usuario='$idusuariocouch'";
 		$resulta3 = $conexion->query($consulta3);
 		$row3 = $resulta3->fetch_assoc();
 		$usuarioCouch = $row3["Nombre"] . " " . $row3["Apellido"];
 		$premium =$row3['Premium'];
 	} else {
 		echo"<script> alert('Couch inexistente.');</script>";
+		header("Location: index.php");
 	}
 ?>
 <html>
@@ -89,6 +91,25 @@
 						<li><a class="light-green-text" href="modificarperfil.php">Modificar Perfil</a></li>
 						<li class="divider"></li>
 						<li><a class="light-green-text" href="eliminarcuenta.php">Eliminar Cuenta</a></li>
+					</ul>
+					<ul class="dropdown-content" id="desplegable_lateral_couchs">
+						<li><a class="light-green-text" href="miscouchs.php">Mis Couchs</a></li>
+						<li class="divider"></li>
+						<li><a class="light-green-text" href="misreservas.php">Mis Reservas</a></li>
+					</ul>
+					<ul class="dropdown-content" id="desplegable_lateral_admin">
+						<li><a class="light-green-text" href="admin/administracion.php">Administración</a></li>
+						<li class="divider"></li>
+						<li><a class="light-green-text" href="admin/tiposdecouch.php">Tipos de Couchs</a></li>
+						<li class="divider"></li>
+						<li><a class="light-green-text" href="admin/listarusuarios.php">Usuarios</a></li>
+					</ul>
+					<ul class="dropdown-content" id="desplegable_lateral_cuenta">
+						<li><a class="light-green-text" href="miperfil.php">Mi Perfil</a></li>
+						<li class="divider"></li>
+						<li><a class="light-green-text" href="modificarperfil.php">Modificar Perfil</a></li>
+						<li class="divider"></li>
+						<li><a class="light-green-text" href="eliminarcuenta.php">Eliminar Cuenta</a></li>
 					</ul>';
 			}
 		?>
@@ -105,6 +126,7 @@
 						<?php
 							if($tipo==1||$tipo==2){
 								echo '
+									<li><a href="miperfil.php"  class="grey-text text-darken-2">Bienvenido, '.$nombreusuario.'!!!</a></li>
 									<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
 									<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_couchs">Couchs y Reservas</a></li>';
 										if($tipo==2){
@@ -113,14 +135,18 @@
 									echo '
 									<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_cuenta">Mi cuenta</a></li>
 									<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
-					</ul>
+							</ul>
 							<!-- Opciones  de menu lateral-->
 								<ul class="side-nav" id="menulateral">
 									<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
-									<li><a href="#"  class="light-green-text">Couchs y Reservas</a></li>
-									<li><a href="#"  class="light-green-text">Mi cuenta</a></li>
+									<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_couchs">Couchs y Reservas</a></li>';
+										if($tipo==2){
+											echo '<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_lateral_admin">Panel Administrador</a></li>';
+										}
+									echo '
+									<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_cuenta">Mi cuenta</a></li>
 									<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
-							</ul>';}
+								</ul>';}
 							else{ echo '
 								<li><a href="registro.php"  class="light-green-text">Registrarse</a></li>
 								<li><a href="login.php" class="light-green-text">Iniciar Sesión</a></li>
@@ -152,13 +178,13 @@
 						<ul class="slides">
 						<?php echo'
 							<li>
-								<img src="'.$foto1.'" onerror="src=`imagenes/Logo_mini.png`">
+								<img src="'.$foto1.'" onerror="src=`imagenes/Logo_mini.jpg`">
 							</li>
 							<li>
-								<img src="'.$foto2.'" onerror="src=`imagenes/Logo_mini.png`">
+								<img src="'.$foto2.'" onerror="src=`imagenes/Logo_mini.jpg`">
 							</li>
 							<li>
-								<img src="'.$foto3.'" onerror="src=`imagenes/Logo_mini.png`">
+								<img src="'.$foto3.'" onerror="src=`imagenes/Logo_mini.jpg`">
 							</li>'?>
 						</ul>
 					</div>
@@ -169,12 +195,23 @@
 							<h4>Detalles</h4>
 						</div>
                     </div>
-					<div class="col s4">
-                    	<input class="right waves-effect waves-light btn light-green z-depth-2" type="button" value="Reservar" onClick="#">
-                    </div>
-					<div class="col s4">
-                    	<input class="right waves-effect waves-light btn light-green z-depth-2" type="button" value="Calificar" onClick="#">
-                    </div>
+					<?php 	if ($idusuario==$idusuariocouch){
+								echo'<div class="col s4">
+										<input class="right waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Modificar" onClick="#">
+									</div>
+									<div class="col s4">
+										<input class="right waves-effect waves-light btn red z-depth-2 disabled" type="button" value="Eliminar" onClick="#">
+									</div>';
+							}else{
+								echo'
+									<div class="col s4">
+										<input class="right waves-effect waves-light btn light-green z-depth-2 disabled" type="button" value="Reservar" onClick="#">
+									</div>
+									<div class="col s4">
+										<input class="right waves-effect waves-light btn light-green z-depth-2 disabled" type="button" value="Calificar" onClick="#">
+									</div>';
+							}
+					?>
 				</div>
 				<div class="row">
 					<div class="col s4">

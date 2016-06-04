@@ -17,6 +17,7 @@
 		$resultado=$consulta_execute->fetch_assoc();
 		$tipo=$resultado['Id_TipoDeUsuario'];
 		if ($tipo == 2){
+		$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 		//Conteo de paginado de resultado.
 		$TAMANO_PAGINA=10;
 		if(!isset($_GET['pagina'])) {
@@ -68,6 +69,25 @@
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="../eliminarcuenta.php">Eliminar Cuenta</a></li>
 		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_couchs">
+			<li><a class="light-green-text" href="../miscouchs.php">Mis Couchs</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="../misreservas.php">Mis Reservas</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_admin">
+			<li><a class="light-green-text" href="administracion.php">Administración</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="tiposdecouch.php">Tipos de Couchs</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="listarusuarios.php">Usuarios</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_cuenta">
+			<li><a class="light-green-text" href="../miperfil.php">Mi Perfil</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="../modificarperfil.php">Modificar Perfil</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="../eliminarcuenta.php">Eliminar Cuenta</a></li>
+		</ul>
 		<!-- Encabezado fijo -->
 		<div class="navbar-fixed">
 			<!-- Barra de navagacion -->
@@ -78,18 +98,19 @@
                     <a href="#" data-activates="menulateral" class="button-collapse"><i class="material-icons light-green">menu</i></a>
 					<!-- Opciones -->
 					<ul class="right hide-on-med-and-down">
+						<li><a href="../miperfil.php"  class="grey-text text-darken-2">Bienvenido, <?php echo $nombreusuario;?>!!!</a></li>
 						<li><a href="../index_login.php"  class="light-green-text">Inicio</a></li>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_couchs">Couchs y Reservas</a></li>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_admin">Panel Administrador</a></li>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_cuenta">Mi cuenta</a></li>
 						<li><a href="../funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
-				  </ul>
-                  <!-- Opciones  de menu lateral-->
+					</ul>
+					<!-- Opciones  de menu lateral-->
 					<ul class="side-nav" id="menulateral">
 						<li><a href="../index_login.php"  class="light-green-text">Inicio</a></li>
-						<li><a href="#"  class="light-green-text">Couchs y Reservas</a></li>
-						<li><a href="#"  class="light-green-text">Panel Administrador</a></li>
-						<li><a href="#"  class="light-green-text">Mi cuenta</a></li>
+						<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_couchs">Couchs y Reservas</a></li>
+						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_lateral_admin">Panel Administrador</a></li>
+						<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_cuenta">Mi cuenta</a></li>
 						<li><a href="../funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
 					</ul>
 			  </div>		
@@ -132,6 +153,8 @@
 							$fechaalta = $query_result['FechaAlta'];
 							$premium= $query_result['Premium'];
 							$foto1= $query_result['Foto1'];
+							$fechaalta=strtotime($fechaalta);
+							
 				
         				echo'
 						<tbody>
@@ -147,7 +170,7 @@
 								<td class="center" >'.$propietario.'</td>
 								<td class="center" >'.$capacidad.'</td>
 								<td class="center" >'.$tipocouch.'</td>
-								<td class="center" >'.$fechaalta.'</td>
+								<td class="center" >'; echo date('d-m-Y',$fechaalta);echo '</td>
             					<td class="right">
 									<form action="../vercouch.php" method="post">
 										<input type="hidden" name="id" value="'.$id.'">
@@ -168,7 +191,7 @@
                           <?php
 						} else{
 						echo '<tr>
-            					<td class="center">No existen tipos de Couchs</td>
+            					<td class="center">No existen Couchs</td>
           					</tr>';
 						}
 					?>

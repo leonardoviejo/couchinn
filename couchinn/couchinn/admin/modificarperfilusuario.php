@@ -17,6 +17,7 @@
 		$resultado=$consulta_execute->fetch_assoc();
 		$tipo=$resultado['Id_TipoDeUsuario'];
 		if ($tipo == 2){
+		$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
     //Variables
 			if(empty($_POST['id'])){	
 				header("Location: listarusuarios.php");
@@ -32,6 +33,8 @@
 			$fechanac=$resultado["FechaNac"];
 			$telefono=$resultado["Telefono"];
 			$email=$resultado["Email"];
+			
+			$fechanac=strtotime($fechanac);
 	
 			
 ?>
@@ -70,30 +73,50 @@
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="../eliminarcuenta.php">Eliminar Cuenta</a></li>
 		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_couchs">
+			<li><a class="light-green-text" href="../miscouchs.php">Mis Couchs</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="../misreservas.php">Mis Reservas</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_admin">
+			<li><a class="light-green-text" href="administracion.php">Administración</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="tiposdecouch.php">Tipos de Couchs</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="listarusuarios.php">Usuarios</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_cuenta">
+			<li><a class="light-green-text" href="../miperfil.php">Mi Perfil</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="../modificarperfil.php">Modificar Perfil</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="../eliminarcuenta.php">Eliminar Cuenta</a></li>
+		</ul>
 		<!-- Encabezado fijo -->
 		<div class="navbar-fixed">
 		<!-- Barra de navagacion -->
 		<nav>
 			<div class="nav-wrapper white z-depth-3">
-			<!-- Logo -->
-			<a href="../index.php" class="brand-logo"><img src="../imagenes/Logo.png" alt="CouchInn" width="270" class="responsive-img" id="logo"/></a>
-			<a href="#" data-activates="menulateral" class="button-collapse"><i class="material-icons light-green">menu</i></a>
-			<!-- Opciones -->
-			<ul class="right hide-on-med-and-down">
-				<li><a href="../index_login.php"  class="light-green-text">Inicio</a></li>
-				<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_couchs">Couchs y Reservas</a></li>
-				<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_admin">Panel Administrador</a></li>
-				<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_cuenta">Mi cuenta</a></li>
-				<li><a href="../funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
-			</ul>
-            <!-- Opciones  de menu lateral-->
-			<ul class="side-nav" id="menulateral">
-				<li><a href="../index_login.php"  class="light-green-text">Inicio</a></li>
-				<li><a href="#"  class="light-green-text">Couchs y Reservas</a></li>
-				<li><a href="#"  class="light-green-text">Panel Administrador</a></li>
-				<li><a href="#"  class="light-green-text">Mi cuenta</a></li>
-				<li><a href="../funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
-			</ul>
+				<!-- Logo -->
+				<a href="../index.php" class="brand-logo"><img src="../imagenes/Logo.png" alt="CouchInn" width="270" class="responsive-img" id="logo"/></a>
+				<a href="#" data-activates="menulateral" class="button-collapse"><i class="material-icons light-green">menu</i></a>
+				<!-- Opciones -->
+				<ul class="right hide-on-med-and-down">
+					<li><a href="../miperfil.php"  class="grey-text text-darken-2">Bienvenido, <?php echo $nombreusuario;?>!!!</a></li>
+					<li><a href="../index_login.php"  class="light-green-text">Inicio</a></li>
+					<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_couchs">Couchs y Reservas</a></li>
+					<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_admin">Panel Administrador</a></li>
+					<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_cuenta">Mi cuenta</a></li>
+					<li><a href="../funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
+				</ul>
+				<!-- Opciones  de menu lateral-->
+				<ul class="side-nav" id="menulateral">
+					<li><a href="../index_login.php"  class="light-green-text">Inicio</a></li>
+					<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_couchs">Couchs y Reservas</a></li>
+					<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_lateral_admin">Panel Administrador</a></li>
+					<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_cuenta">Mi cuenta</a></li>
+					<li><a href="../funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
+				</ul>
 			</div>    
 		</nav>
 		</div>
@@ -116,7 +139,7 @@
 						<div class="input-field col s4">
 							<?php 
 								echo ' <input type="hidden" name="id" value="'.$id.'">
-										<input name="nombre" type="text" pattern="[A-Za-z\s]+" value="'.$nombre.'" title="Solo se admiten letras" class="validate" required="required">
+										<input name="nombre" type="text" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" value="'.$nombre.'" title="Solo se admiten letras" class="validate" required="required">
 										<label for="nombre" data-error="Solo se admiten letras"></label>';
 							?>
 						</div>
@@ -128,7 +151,7 @@
 						</div>	
 						<div class="input-field col s4">
 							<?php 
-								echo '<input name="apellido" type="text" pattern="[A-Za-z]+" value="'.$apellido.'" title="Solo se admiten letras" class="validate" required="required">
+								echo '<input name="apellido" type="text" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" value="'.$apellido.'" title="Solo se admiten letras" class="validate" required="required">
 										<label for="apellido" data-error="Solo se admiten letras"></label>';
 							?>
 						</div>
@@ -140,7 +163,7 @@
 						</div>
 						<div class="input-field col s4">
 							<?php 
-								echo '<input name="email" id="email" value="'.$email.'" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="email" class="validate" required="required">
+								echo '<input name="email" id="email" value="'.$email.'" maxlength="50" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="email" class="validate" required="required">
           						    <label class="active" for="email" data-error="Ingrese una dirección del tipo micorreo@correo.com"></label>';
 							?>
 						</div>
@@ -151,7 +174,7 @@
 							<p class="left">Fecha de Nacimiento </p>
 						</div>
 						<div class="input-field col s4">
-							<?php echo '<input name="f_nac" type="date" class="datepicker" value="'.$fechanac.'" required="required" id="f_nac" title="Fecha de Nacimiento">';
+							<?php echo '<input name="f_nac" type="date" class="datepicker" value="'.date('d-m-Y',$fechanac).'" required="required" id="f_nac" title="Fecha de Nacimiento">';
 							?>
 						</div>
 					</div>
@@ -162,7 +185,7 @@
 						</div>
 						<div class="input-field col s4" data-tip="Ingrese el codigo de area sequido de su numero telefonico.">
 							<?php
-								echo '<input name="telefono" id="telefono" value="'.$telefono.'" type="tel" pattern="^[0-9]{6,13}" class="validate" required="required">
+								echo '<input name="telefono" id="telefono" value="'.$telefono.'" type="tel" maxlength="13" pattern="^[0-9]{6,13}" class="validate" required="required">
 										<label for="telefono" data-error="Se permiten solo de 6 a 13 digitos."></label>';
 							?>	
 					    </div>
@@ -211,6 +234,14 @@
 				$(".parallax").parallax();
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
+				$('.datepicker').pickadate({
+				min: [1900,1,1],
+				max: -6575, //hace que se muestre siempre como última fecha el día de hoy pero de 18 años atras. Solo se pueden registrar personas mayores de 18 años.
+				selectYears: 116,
+				selectMonths: true,
+				formatSubmit: 'yyyy-mm-dd',
+				hiddenName: true
+				});
   			});
   		</script>
 	</body>

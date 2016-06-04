@@ -1,5 +1,10 @@
-<?php include('../../funciones/config.php');
+<?php 
+	include('../../funciones/config.php');
 	//Variables
+	if ((empty($_POST['nombre']))||(empty($_POST['apellido']))||(empty($_POST['email']))||(empty($_POST['f_nac']))||(empty($_POST['telefono']))||(empty($_POST['id']))){
+		header("Location: ../../index.php");
+	}
+	else{
 	$nombre = $_POST['nombre'];
 	$nombre=ucwords(strtolower($nombre));
 	$apellido = $_POST['apellido'];
@@ -43,10 +48,10 @@
 				}
 		}
 	}else{
-		?>	<script> alert("La cuenta que desea eliminar no existe.");
-				location.href='../listarusuarios.php';
-				</script>
-		<?php
+		echo'	<script> alert("La cuenta que desea eliminar no existe.");
+				location.href="../listarusuarios.php";
+				</script>';
+		
+	}
 	}
 ?>
-

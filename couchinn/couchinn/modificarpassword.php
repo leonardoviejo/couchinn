@@ -17,6 +17,7 @@
 	$consulta_execute = $conexion->query($consulta);
 	$resultado=$consulta_execute->fetch_assoc();
 	$tipo=$resultado['Id_TipoDeUsuario'];
+	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 ?>
 <html>
 	<head>
@@ -38,7 +39,7 @@
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="misreservas.php">Mis Reservas</a></li>
 		</ul>
-		<ul class="dropdown-content" id="desplegable_admin">
+			<ul class="dropdown-content" id="desplegable_admin">
 			<li><a class="light-green-text" href="admin/administracion.php">Administración</a></li>
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="admin/tiposdecouch.php">Tipos de Couchs</a></li>
@@ -46,6 +47,25 @@
 			<li><a class="light-green-text" href="admin/listarusuarios.php">Usuarios</a></li>
 		</ul>
 		<ul class="dropdown-content" id="desplegable_cuenta">
+			<li><a class="light-green-text" href="miperfil.php">Mi Perfil</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="modificarperfil.php">Modificar Perfil</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="eliminarcuenta.php">Eliminar Cuenta</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_couchs">
+			<li><a class="light-green-text" href="miscouchs.php">Mis Couchs</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="misreservas.php">Mis Reservas</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_admin">
+			<li><a class="light-green-text" href="admin/administracion.php">Administración</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="admin/tiposdecouch.php">Tipos de Couchs</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="admin/listarusuarios.php">Usuarios</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_cuenta">
 			<li><a class="light-green-text" href="miperfil.php">Mi Perfil</a></li>
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="modificarperfil.php">Modificar Perfil</a></li>
@@ -62,6 +82,7 @@
                     <a href="#" data-activates="menulateral" class="button-collapse"><i class="material-icons light-green">menu</i></a>
 					<!-- Opciones -->
 					<ul class="right hide-on-med-and-down">
+						<li><a href="miperfil.php"  class="grey-text text-darken-2">Bienvenido, <?php echo $nombreusuario;?>!!!</a></li>
 						<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_couchs">Couchs y Reservas</a></li>
 						<?php
@@ -75,8 +96,12 @@
                   <!-- Opciones  de menu lateral-->
 					<ul class="side-nav" id="menulateral">
 						<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
-						<li><a href="#"  class="light-green-text">Couchs y Reservas</a></li>
-						<li><a href="#"  class="light-green-text">Mi cuenta</a></li>
+						<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_couchs">Couchs y Reservas</a></li>
+						<?php	if($tipo==2){
+								echo '<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_lateral_admin">Panel Administrador</a></li>';
+								}
+						?>
+						<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_cuenta">Mi cuenta</a></li>
 						<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
 					</ul>
 			  </div>		
@@ -101,7 +126,7 @@
 						</div>
 						<div class="input-field col s4" data-tip="La contraseña debe contener 8 carácteres como mínimo">
           					<?php echo '<input type="hidden" name="id" value="'.$idusuario.'">'?>							
-							<input name="passwordact" id="passwordact" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+							<input name="passwordact" id="passwordact" type="password" maxlength="32" pattern="(?=.*).{8,}" class="validate" required="required">
           					<label for="password" data-error="La contraseña ingresada es menor a 8.">Contraseña Actual</label>
         				</div>                        
 					</div>
@@ -110,7 +135,7 @@
 							<p class="left">Nueva Contraseña </p>
 						</div>
 						<div class="input-field col s4" data-tip="La contraseña debe contener 8 carácteres como mínimo">
-          					<input name="password_nueva" id="password_nueva" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+          					<input name="password_nueva" id="password_nueva" type="password" maxlength="32" pattern="(?=.*).{8,}" class="validate" required="required">
           					<label for="password" data-error="La contraseña ingresada es menor a 8.">Nueva Contraseña</label>
         				</div>
 					</div>
@@ -119,7 +144,7 @@
 							<p class="left">Confirmar Contraseña </p>
 						</div>
 						<div class="input-field col s4" data-tip="La contraseña debe contener 8 carácteres como mínimo">
-          					<input name="password_re_nueva" id="password_re_nueva" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+          					<input name="password_re_nueva" id="password_re_nueva" type="password" maxlength="32" pattern="(?=.*).{8,}" class="validate" required="required">
           					<label for="password" data-error="La contraseña ingresada es menor a 8.">Confirmar Contraseña</label>
         				</div>
 					</div>

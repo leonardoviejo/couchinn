@@ -1,9 +1,13 @@
 <?php include('config.php');
 	//Variables
+	if ((empty($_POST['email']))){
+		header("Location: ../index.php");
+	}
+	else{
 	$email = $_POST['email'];
 	
 	//Busqueda de usuario existente
-	$consulta= "SELECT * FROM usuario WHERE Email='$email'";
+	$consulta= "SELECT * FROM usuario WHERE Email='$email' AND Visible=1";
 	$consulta_execute = $conexion->query($consulta);
 	if($consulta_execute->num_rows){
 		$password_nuevo= substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 8);
@@ -20,7 +24,7 @@
 				</script>
 		<?php
 	}
-	
+	}
 	
 	function enviarEmail( $email, $password_nuevo ){
 		$mensaje = '	<html>

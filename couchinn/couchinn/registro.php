@@ -47,31 +47,31 @@
                     <form class="col s12" name="inscripcion" method="post" onSubmit="return validarFormulario()" action="funciones/reg_user.php">
       					<div class="row">
        				 		<div class="input-field col s6">
-          						<input name="nombre" type="text" pattern="[A-Za-z\s]+" title="Solo se admiten letras" class="validate" required="required">
+          						<input name="nombre" type="text" maxlength="30" pattern="[A-Za-z\s]+" title="Solo se admiten letras" class="validate" required="required">
           						<label for="nombre" data-error="Solo se admiten letras">Nombre</label>
         					</div>
         					<div class="input-field col s6">
-					        	<input name="apellido" type="text" pattern="[A-Za-z\s]+" title="Solo se admiten letras" class="validate" required="required">
+					        	<input name="apellido" type="text" maxlength="30"  pattern="[A-Za-z\s]+" title="Solo se admiten letras" class="validate" required="required">
 	        					<label for="apellido" data-error="Solo se admiten letras">Apellido</label>
         					</div>
 						</div>
                         <div class="row">
         					<div class="input-field col s6">
-          						<input name="email" id="email" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Ej: micorreo@correo.com" class="validate" required="required">
+          						<input name="email" id="email" type="email" maxlength="50" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Ej: micorreo@correo.com" class="validate" required="required">
           						<label for="email" data-error="Ingrese una dirección del tipo micorreo@correo.com">Correo</label>
         					</div>
                             <div class="input-field col s6">
-          						<input name="email_re" id="email_re" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Ej: micorreo@correo.com" class="validate" required="required">
+          						<input name="email_re" id="email_re" type="email" maxlength="50" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Ej: micorreo@correo.com" class="validate" required="required">
           						<label for="email" data-error="Ingrese una dirección del tipo micorreo@correo.com">Confirmar Correo</label>
         					</div>
       					</div>
       					<div class="row">
         					<div class="input-field col s6" data-tip="La contraseña debe contener 8 carácteres como mínimo">
-          						<input name="password" id="password" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+          						<input name="password" id="password" type="password" maxlength="32" pattern="(?=.*).{8,}" class="validate" required="required">
           						<label for="password" data-error="La contraseña ingresada es menor a 8.">Contraseña</label>
         					</div>
                             <div class="input-field col s6" data-tip="La contraseña debe contener 8 carácteres como mínimo">
-          						<input name="password_re" id="password_re" type="password" pattern="(?=.*).{8,}" class="validate" required="required">
+          						<input name="password_re" id="password_re" type="password" maxlength="32" pattern="(?=.*).{8,}" class="validate" required="required">
           						<label for="password" data-error="La contraseña ingresada es menor a 8.">Confirmar Contraseña</label>
         					</div>
       					</div>
@@ -82,7 +82,7 @@
 	                        </div>
                             <br>
                             <div class="input-field col s6" data-tip="Ingrese el codigo de area sequido de su numero telefonico.">
-					            <input name="telefono" id="telefono" type="tel" pattern="^[0-9]{6,13}" class="validate" required="required">
+					            <input name="telefono" id="telefono" type="tel" maxlength="13" pattern="^[0-9]{6,13}" class="validate" required="required">
 					            <label for="telefono" data-error="Se permiten solo de 6 a 13 digitos.">Teléfono</label>
 					        </div>
                          </div>
@@ -123,8 +123,8 @@
           </div>
         </footer>
         <!-- Pie de pagina-->
-        
-        
+		
+		
  		<!-- Adjuntando los archivos JQuery -->
 		<script type="text/javascript" src="js/jquery.min.js"></script>
   		<script type="text/javascript" src="js/materialize.js"></script>

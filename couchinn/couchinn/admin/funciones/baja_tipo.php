@@ -1,5 +1,9 @@
 <?php include('../../funciones/config.php');
 	//Variables
+	if (empty($_POST['id'])){
+		header("Location: ../../index.php");
+	}
+	else{
 	$id_tipo = $_POST['id'];
 	
 	$consulta= "SELECT * FROM tipodecouch WHERE Id_Tipo= '$id_tipo'";
@@ -16,5 +20,6 @@
 		} else {
 			echo "ERROR. " . mysqli_error($conexion);
 		}		
+	}
 	}
 ?>

@@ -4,6 +4,11 @@
 	
 	$sesion = new sesion();
 	
+	if ((empty($_POST['email']))||(empty($_POST['password']))){
+		header("Location: ../index.php");
+	}
+	else{
+	
 	$email = $_POST["email"];
 	$password = $_POST["password"];
 	
@@ -28,6 +33,7 @@
 			location.href="../login.php";
 		</script>
 		<?php
+	}
 	}
 ?>
 

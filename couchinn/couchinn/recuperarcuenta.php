@@ -59,7 +59,7 @@
                     <form class="col s12 center" name="login" method="POST" action="funciones/recuperar_cuenta.php">
       					<div class="row">
        				 		<div class="input-field col s4 offset-s4">
-          						<input name="email" id="email" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Ej: micorreo@correo.com" class="validate" required="required">
+          						<input name="email" id="email" type="email" maxlength="50" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Ej: micorreo@correo.com" class="validate" required="required">
           						<label for="email" data-error="Ingrese una dirección del tipo micorreo@correo.com">Correo</label>
         					</div>
 						</div>

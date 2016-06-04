@@ -1,5 +1,9 @@
 <?php include('config.php');
 	//Variables
+	if ((empty($_POST['password']))||(empty($_POST['id']))){
+		header("Location: ../index.php");
+	}
+	else{
 	$password = $_POST['password'];
 	$id=$_POST['id'];
 	
@@ -28,6 +32,7 @@
 				location.href='cerrar_sesion.php';
 				</script>
 		<?php
+	}
 	}
 ?>
 

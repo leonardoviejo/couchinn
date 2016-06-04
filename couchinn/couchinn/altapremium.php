@@ -17,6 +17,7 @@
 	$consulta_execute = $conexion->query($consulta);
 	$resultado=$consulta_execute->fetch_assoc();
 	$tipo=$resultado['Id_TipoDeUsuario'];
+	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 	$premium=$resultado['Premium'];
 	if ($premium==0){
 		
@@ -41,7 +42,7 @@
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="misreservas.php">Mis Reservas</a></li>
 		</ul>
-		<ul class="dropdown-content" id="desplegable_admin">
+			<ul class="dropdown-content" id="desplegable_admin">
 			<li><a class="light-green-text" href="admin/administracion.php">Administración</a></li>
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="admin/tiposdecouch.php">Tipos de Couchs</a></li>
@@ -49,6 +50,25 @@
 			<li><a class="light-green-text" href="admin/listarusuarios.php">Usuarios</a></li>
 		</ul>
 		<ul class="dropdown-content" id="desplegable_cuenta">
+			<li><a class="light-green-text" href="miperfil.php">Mi Perfil</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="modificarperfil.php">Modificar Perfil</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="eliminarcuenta.php">Eliminar Cuenta</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_couchs">
+			<li><a class="light-green-text" href="miscouchs.php">Mis Couchs</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="misreservas.php">Mis Reservas</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_admin">
+			<li><a class="light-green-text" href="admin/administracion.php">Administración</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="admin/tiposdecouch.php">Tipos de Couchs</a></li>
+			<li class="divider"></li>
+			<li><a class="light-green-text" href="admin/listarusuarios.php">Usuarios</a></li>
+		</ul>
+		<ul class="dropdown-content" id="desplegable_lateral_cuenta">
 			<li><a class="light-green-text" href="miperfil.php">Mi Perfil</a></li>
 			<li class="divider"></li>
 			<li><a class="light-green-text" href="modificarperfil.php">Modificar Perfil</a></li>
@@ -65,6 +85,7 @@
                     <a href="#" data-activates="menulateral" class="button-collapse"><i class="material-icons light-green">menu</i></a>
 					<!-- Opciones -->
 					<ul class="right hide-on-med-and-down">
+						<li><a href="miperfil.php"  class="grey-text text-darken-2">Bienvenido, <?php echo $nombreusuario;?>!!!</a></li>
 						<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_couchs">Couchs y Reservas</a></li>
 						<?php
@@ -74,12 +95,16 @@
 						?>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_cuenta">Mi cuenta</a></li>
 						<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
-				  </ul>
-                  <!-- Opciones  de menu lateral-->
+					</ul>
+					<!-- Opciones  de menu lateral-->
 					<ul class="side-nav" id="menulateral">
 						<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
-						<li><a href="#"  class="light-green-text">Couchs y Reservas</a></li>
-						<li><a href="#"  class="light-green-text">Mi cuenta</a></li>
+						<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_couchs">Couchs y Reservas</a></li>
+						<?php	if($tipo==2){
+								echo '<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_lateral_admin">Panel Administrador</a></li>';
+								}
+						?>
+						<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_cuenta">Mi cuenta</a></li>
 						<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
 					</ul>
 			  </div>		
@@ -95,10 +120,10 @@
                         <h1> Volverme Premium </h1>
                     </div>
 					<!-- Inicio del Formulario-->
-                    <form class="col s12" name="inscripcion" method="post" action="funciones/alta_premium.php">
+                    <form class="col s12" name="inscripcion" method="post" onSubmit="return validarTarjeta()" action="funciones/alta_premium.php">
       					<div class="row">
        				 		<div class="input-field col s4 offset-s1">
-          						<input name="nombre" type="text" pattern="[A-Za-z]+" title="Solo se admiten letras" class="validate" required="required">
+          						<input name="nombre" type="text" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" title="Solo se admiten letras" class="validate" required="required">
           						<label for="nombre" data-error="Solo se admiten letras.">Nombre del titular</label>
         					</div>
 							<div class="input-field col s6 right">
@@ -106,12 +131,25 @@
         					</div>
         				</div>
 						<div class="row">							
+							<div class="input-field col s4 offset-s1">
+								<select class="icons" id="tarjeta">
+									<option value="" disabled selected>Elija su tarjeta</option>
+									<option value="american" data-icon="imagenes/tarjetas/american.jpg" class="left circle">American Express</option>
+									<option value="master" data-icon="imagenes/tarjetas/master.jpg" class="left circle">MasterCard</option>
+									<option value="naranja" data-icon="imagenes/tarjetas/naranja.jpg" class="left circle">Naranja</option>
+									<option value="nativa" data-icon="imagenes/tarjetas/nativa.jpg" class="left circle">Nativa</option>
+									<option value="visa" data-icon="imagenes/tarjetas/visa.jpg" class="left circle">Visa</option>
+								</select>
+								<label>Seleccione su tarjeta preferida</label>
+							</div>
+						</div>
+						<div class="row">							
 							<div class="input-field col s4 offset-s1" data-tip="Ingrese el numero de su tarjeta de credito.">
-					            <input name="tarjeta" id="tarjeta" type="number" pattern="^[0-9]{16,16}" class="validate" required="required">
+					            <input name="tarjeta" id="tarjeta" type="text" maxlength="16" pattern="^[0-9]{16,16}" class="validate" required="required">
 					            <label for="tarjeta" data-error="Se permiten 16 digitos.">Número de Tarjeta</label>
 					        </div>
 							<div class="input-field col s6 right">
-          						Ingrese el número que figura en frente de su tarjeta de credito.
+          						Ingrese los 16 digitos de su tarjeta de credito.
         					</div>
 						</div>
                         <div class="row">
@@ -122,7 +160,7 @@
 						</div>
 						<div class="row">
 							<div class="input-field col s4 offset-s1" data-tip="Ingrese el codigo de seguridad de su tarjeta.">
-					            <input name="codigo" id="codigo" type="number" pattern="^[0-9]{3,3}" class="validate" required="required">
+					            <input name="codigo" id="codigo" type="text" maxlength="3" pattern="^[0-9]{3,3}" class="validate" required="required">
 					            <label for="codigo" data-error="Se permiten 3 digitos.">Codigo de Seguridad</label>
 					        </div>
 							<div class="input-field col s6 right">
@@ -130,14 +168,14 @@
         					</div>
 						</div>
 						<div class="row">
-                            <div class="input-field col s4 offset-s1" data-tip="Ingrese el codigo de area sequido de su numero telefonico.">
-					            <input name="telefono" id="telefono" type="tel" pattern="^[0-9]{6,13}" class="validate" required="required">
+                            <div class="input-field col s4 offset-s1" data-tip="Ingrese el codigo de area seguido de su numero telefonico.">
+					            <input name="telefono" id="telefono" type="tel" maxlength="13" pattern="^[0-9]{6,13}" class="validate" required="required">
 					            <label for="telefono" data-error="Se permiten solo de 6 a 13 digitos.">Teléfono</label>
 					        </div>
                          </div>
 						 <!-- Envio de usuario -->
 						 <?php 
-							echo '<input type="hidden" name="email" value="'.$usuario.'">';
+							echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';
 						 ?>
                          <br>
                          <br>
@@ -180,6 +218,7 @@
  		<!-- Adjuntando los archivos JQuery -->
 		<script type="text/javascript" src="js/jquery.min.js"></script>
   		<script type="text/javascript" src="js/materialize.js"></script>
+		<script type="text/javascript" src="js/funciones.js"></script>
   		<!-- Inicializacion de JS -->
   		<script type="text/javascript">
   			$(document).ready(function(){
@@ -194,6 +233,7 @@
 					formatSubmit: 'yyyy-mm',
 					hiddenName: true
 				});
+				$('select').material_select();
   			});
   		</script>
 	</body>

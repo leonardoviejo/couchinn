@@ -1,11 +1,15 @@
 <?php include('config.php');
 	//Variables
-	$email = $_POST['email'];
+	if ((empty($_POST['idusuario']))||(empty($_POST['tarjeta']))){
+		header("Location: ../index.php");
+	}
+	else{	
+	$idusuario = $_POST['idusuario'];
 	$tarjeta = $_POST['tarjeta'];
 	$invalidas = 1111111111111111;
 	
 	//Validar datos
-	$consulta = "SELECT * FROM usuario WHERE Email= '$email'";
+	$consulta = "SELECT * FROM usuario WHERE Id_Usuario= '$idusuario'";
 	$consulta_execute = $conexion->query($consulta);
 	
 	if($consulta_execute->num_rows){
@@ -18,10 +22,10 @@
 					location.href="../altapremium.php";
 					</script>';
 			} else {
-				$sql = "UPDATE `usuario` SET `Premium` = '1' WHERE `usuario`.`Email` = '$email'";
+				$sql = "UPDATE `usuario` SET `Premium` = '1' WHERE `usuario`.`Id_Usuario` = '$idusuario'";
 				if (mysqli_query($conexion, $sql)) {
 					echo 
-						'<script> alert("Felicitaciones '.$email.', ahora sos PREMIUM!!!");
+						'<script> alert("Felicitaciones, ahora eres PREMIUM!!!");
 						location.href="../miperfil.php";
 						</script>';
 				} else {
@@ -30,10 +34,18 @@
 			}
 		} else {
 			echo 
-				'<script> alert("El usuario '.$email.', fue borrado del sistema.");
+				'<script> alert("El usuario fue borrado del sistema.");
 				location.href="cerrar_sesion.php";
 				</script>';			
 		
 		}
+		
+	}else{
+			echo 
+				'<script> alert("El usuario no existe.");
+				location.href="cerrar_sesion.php";
+				</script>';			
+		
+	}
 	}
 ?>

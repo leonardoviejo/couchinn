@@ -1,11 +1,12 @@
 <?php include('../../funciones/config.php');
 	//Variables
-	$nombre = $_POST['tipo'];
-	$nombre=ucwords(strtolower($nombre));
-	//Conexion a la base de datos
-	if($conexion->connect_errno > 0){
-		die('Unable to connect to database [' . $conexion->connect_error . ']');
+	if (empty($_POST['tipo'])){
+		header("Location: ../../index.php");
 	}
+	else{
+		
+	$nombre = $_POST["tipo"];
+	$nombre=ucwords(strtolower($nombre));
 	
 	//Validar datos
 	$consulta= "SELECT * FROM tipodecouch WHERE Nombre= '$nombre'";
@@ -40,5 +41,6 @@
 		} else {
 			echo "ERROR. " . mysqli_error($conexion);
 		}
+	}
 	}
 ?>
