@@ -13,14 +13,33 @@
 	if($consulta_execute->num_rows){
 		$fila = $consulta_execute->fetch_assoc();
 		if($password==$fila['Password']){
-			$sql = "UPDATE usuario u left JOIN couch c ON u.Id_Usuario=c.Id_Usuario left JOIN reserva r ON u.Id_Usuario=r.Id_Usuario  SET u.Visible = 0, c.Visible=0, r.Visible=0  WHERE u.Id_Usuario = '$id';";
-			if (mysqli_query($conexion, $sql)) {
-				echo '<script> alert("Se ha eliminado su cuenta!!!");
-						location.href="cerrar_sesion.php";
-					</script>';
+			if ($fila['Id_TipoDeUsuario']==2){
+				$consultaadmin= "SELECT * FROM usuario WHERE Id_TipoDeUsuario=2 and Visible=1";
+				$consulta_execute = $conexion->query($consultaadmin);
+				if($consulta_execute->num_rows>1){
+					$sql = "UPDATE usuario u left JOIN couch c ON u.Id_Usuario=c.Id_Usuario left JOIN reserva r ON u.Id_Usuario=r.Id_Usuario  SET u.Visible = 0, c.Visible=0, r.Visible=0  WHERE u.Id_Usuario = '$id';";
+					if (mysqli_query($conexion, $sql)) {
+						echo '<script> alert("Se ha eliminado su cuenta ADMINISTRADOR!!!");
+								location.href="cerrar_sesion.php";
+							</script>';
+					}else{
+						echo "ERROR. " . mysqli_error($conexion);
+					}
+				}else{
+					echo '<script> alert("No puedes eliminar esta cuenta ya que eres el último ADMINISTRADOR del sistema!!!");
+							location.href="../miperfil.php";
+						</script>';
+				}
 			}else{
-				echo "ERROR. " . mysqli_error($conexion);
-				}				
+				$sql = "UPDATE usuario u left JOIN couch c ON u.Id_Usuario=c.Id_Usuario left JOIN reserva r ON u.Id_Usuario=r.Id_Usuario  SET u.Visible = 0, c.Visible=0, r.Visible=0  WHERE u.Id_Usuario = '$id';";
+				if (mysqli_query($conexion, $sql)) {
+					echo '<script> alert("Se ha eliminado su cuenta!!!");
+							location.href="cerrar_sesion.php";
+						</script>';
+				}else{
+					echo "ERROR. " . mysqli_error($conexion);
+				}
+			}	
 		}else{?><script> 
 					alert("Verifica tu contraseña actual.");
 					location.href="../eliminarcuenta.php";
