@@ -18,6 +18,7 @@
 	$resultado=$consulta_execute->fetch_assoc();
 	$tipo=$resultado['Id_TipoDeUsuario'];
 	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
+	$premium=$resultado["Premium"];
 ?>
 <html>
 	<head>
@@ -83,6 +84,10 @@
 					<!-- Opciones -->
 					<ul class="right hide-on-med-and-down">
 						<li><a href="miperfil.php"  class="grey-text text-darken-2">Bienvenido, <?php echo $nombreusuario;?>!!!</a></li>
+						<?php if ($premium==1) echo'
+						<li><a href="#" class="light-green">Cuenta Premium</a></li>
+						<li><a href="#" class="light-green"><i class="large material-icons">star</i></a></li>
+						'?>
 						<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_couchs">Couchs y Reservas</a></li>
 						<?php

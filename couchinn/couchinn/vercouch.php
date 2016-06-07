@@ -20,6 +20,7 @@
 	$resultado=$consulta_execute->fetch_assoc();
 	$tipo= $resultado["Id_TipoDeUsuario"];
 	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
+	$premiumusuario=$resultado["Premium"];
 	
 	//Busqueda de couch
 	$consulta= "SELECT * FROM couch WHERE Id_Couch='$couchId'";
@@ -126,12 +127,18 @@
 						<?php
 							if($tipo==1||$tipo==2){
 								echo '
-									<li><a href="miperfil.php"  class="grey-text text-darken-2">Bienvenido, '.$nombreusuario.'!!!</a></li>
+									<li><a href="miperfil.php"  class="grey-text text-darken-2">Bienvenido, '.$nombreusuario.'!!!</a></li>';
+									if ($premiumusuario==1){ 
+										echo'
+										<li><a href="#" class="light-green">Cuenta Premium</a></li>
+										<li><a href="#" class="light-green"><i class="large material-icons">star</i></a></li>';
+									}
+									echo '
 									<li><a href="index_login.php"  class="light-green-text">Inicio</a></li>
 									<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_couchs">Couchs y Reservas</a></li>';
-										if($tipo==2){
-											echo '<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_admin">Panel Administrador</a></li>';
-										}
+									if($tipo==2){
+										echo '<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_admin">Panel Administrador</a></li>';
+									}
 									echo '
 									<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_cuenta">Mi cuenta</a></li>
 									<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
