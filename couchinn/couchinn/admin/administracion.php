@@ -128,17 +128,25 @@
 								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Couch" onClick="location.href='listarcouchs.php'"></td>
 							</tr>
 							<tr>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Tipos de Couch" onClick="location.href='tiposdecouch.php'"></td>
+							</tr>
+							<tr>
 								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Usuarios" onClick="location.href='listarusuarios.php'"></td>
 							</tr>
 							<tr>
 								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Listar Usuarios Premium" onClick="location.href='listarusuariospremium.php'"></td>
 							</tr>
 							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Tipos de Couch" onClick="location.href='tiposdecouch.php'"></td>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Listar Administradores" onClick="location.href='listarusuariospremium.php'"></td>
+							</tr>
+							<tr>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Listar Reservas" onClick="location.href='listarusuariospremium.php'"></td>
+							</tr>
+							<tr>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Calcular Ganancias" onClick="location.href='listarusuariospremium.php'"></td>
 							</tr>
         				</tbody>
       				</table>
-				
 				</div>
 				<!--Fin del Formulario-->
     	    </div>        

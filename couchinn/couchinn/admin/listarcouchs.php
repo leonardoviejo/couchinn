@@ -33,7 +33,8 @@
 		$consulta_execute = $conexion->query($consulta);
 		$total_resultados=$consulta_execute->num_rows;
 		$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
-		$consulta = "SELECT c.Id_Couch, c.Id_TipoDeCouch, c.Id_Usuario, c.Titulo, c.Ciudad, c.Capacidad, c.FechaAlta, c.Foto1, u.Nombre, u.Apellido, u.Premium, t.Nombre AS NombreTipo FROM couch c inner JOIN usuario u ON c.Id_Usuario = u.Id_Usuario inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo WHERE c.Visible=1 ORDER BY Titulo ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+		$consulta = "SELECT c.Id_Couch, c.Id_TipoDeCouch, c.Id_Usuario, c.Titulo, c.Id_Localidad, c.Capacidad, c.FechaAlta, c.Foto1, u.Premium, u.Nombre as Nombre, u.Apellido as Apellido, t.Nombre AS NombreTipo, l.localidad AS Ciudad FROM couch c inner JOIN usuario u ON c.Id_Usuario = u.Id_Usuario inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo inner JOIN localidades l ON c.Id_Localidad=l.Id WHERE c.Visible=1 ORDER BY Titulo ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+		//$consulta = "SELECT c.Id_Couch, c.Id_TipoDeCouch, c.Id_Usuario, c.Titulo, c.Ciudad, c.Capacidad, c.FechaAlta, c.Foto1, u.Nombre, u.Apellido, u.Premium, t.Nombre AS NombreTipo FROM couch c inner JOIN usuario u ON c.Id_Usuario = u.Id_Usuario inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo WHERE c.Visible=1 ORDER BY Titulo ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
 		$consulta_execute = $conexion->query($consulta);
 ?>
 <html>
@@ -124,7 +125,6 @@
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
-        	<div class="container">
 				<div class="row">
                 	<br>
 					<div class="center grey-text text-darken-2">
@@ -210,8 +210,6 @@
 									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
 									echo '<li class="disabled"><a href="#">1</a></li>';
 									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
-								}else{
-									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
 								}
 							}else{
 								$paginaant=$pagina-1;
@@ -227,7 +225,7 @@
 									}
 								}
 								if ($pagina==$total_paginas){
-									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+									//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 								}else{
 									$paginapos=$pagina+1;
 									echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
@@ -237,7 +235,6 @@
 						?>
 					</ul>
 				</div>
-	        </div>
     	</div>
         <!-- Fin Contenido de pagina-->
         

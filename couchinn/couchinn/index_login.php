@@ -174,7 +174,6 @@
       								}
       							?>
     						</select>
-    						<label></label>
   						</div>
   						<div class="input-field col s2">
           					<input id="cant_visitantes" name="cant_visitantes" maxlength="2" value="" pattern="^[0-9]{1,2}" type="text" class="validate">
