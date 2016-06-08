@@ -23,21 +23,28 @@
 	$premiumusuario=$resultado["Premium"];
 	
 	//Busqueda de couch
-	$consulta= "SELECT * FROM couch WHERE Id_Couch='$couchId'";
+	$consulta= "SELECT * FROM couch WHERE Id_Couch='$couchId' and Visible=1";
 	$resulta = $conexion->query($consulta);
 	if ($resulta->num_rows > 0) {
 		// Data de los detalles del couch
 		$row = $resulta->fetch_assoc();
 		$tipoId = $row["Id_TipoDeCouch"];
+		$idprovincia=$row["Id_Provincia"];
+		$idlocalidad=$row["Id_Localidad"];
 		$idusuariocouch = $row["Id_Usuario"];
 		$titulo = $row["Titulo"];
-		$ciudad = $row["Ciudad"];
 		$capacidad = $row["Capacidad"];
 		$fechaAlta = $row["FechaAlta"];
 		$descripcion = $row["Descripcion"];
 		$foto1=$row["Foto1"];
 		$foto2=$row["Foto2"];
 		$foto3=$row["Foto3"];
+		
+		//Busqueda de ciudad y provincia
+		$consultaubicacion= "SELECT l.Localidad as Localidad, p.Provincia as Provincia FROM localidades l inner JOIN provincias p ON l.Id_Provincia=p.Id WHERE l.Id='$idlocalidad'";
+		$resultadoubicacion = $conexion->query($consultaubicacion);
+		$resultado = $resultadoubicacion->fetch_assoc();
+		$ubicacion = $resultado["Localidad"].', '.$resultado["Provincia"];
 		
 		//Busqueda de tipo de couch
 		$consulta2= "SELECT Nombre FROM tipodecouch WHERE Id_Tipo='$tipoId'";
@@ -46,11 +53,10 @@
 		$tipoDeCouch = $row2["Nombre"];
 		
 		//Busqueda de nombre de usuario
-		$consulta3= "SELECT Nombre, Apellido, Premium FROM usuario WHERE Id_Usuario='$idusuariocouch'";
+		$consulta3= "SELECT Nombre, Apellido FROM usuario WHERE Id_Usuario='$idusuariocouch'";
 		$resulta3 = $conexion->query($consulta3);
 		$row3 = $resulta3->fetch_assoc();
 		$usuarioCouch = $row3["Nombre"] . " " . $row3["Apellido"];
-		$premium =$row3['Premium'];
 	} else {
 		echo"<script> alert('Couch inexistente.');</script>";
 		header("Location: index.php");
@@ -222,7 +228,7 @@
 				</div>
 				<div class="row">
 					<div class="col s4">
-						<p class="left"><?php echo $ciudad ?></p>
+						<p class="left"><?php echo $ubicacion ?></p>
 					</div>
 					<div class="col s4">
 						<p class="center"><?php echo $tipoDeCouch ?></p>

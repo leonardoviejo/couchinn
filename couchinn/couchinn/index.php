@@ -16,14 +16,22 @@
 		$pagina = $_GET["pagina"];
 		$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 	}
-	//Consultas SQL
 	include('funciones/config.php');
+	//Consultas SQL
+	//Busca provincias para selector
+	$consultaprov = "SELECT * from provincias";
+	$resultadoprov = $conexion->query($consultaprov);
+	
+	//Busca couchs para listar
 	$consulta = "SELECT * FROM couch WHERE Visible=1 ORDER BY Titulo ASC";
 	$consulta_execute = $conexion->query($consulta);
 	$total_resultados=$consulta_execute->num_rows;
 	$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
-	$consulta = "SELECT c.Id_Couch, c.Id_TipoDeCouch, c.Id_Usuario, c.Titulo, c.Ciudad, c.Capacidad, c.Foto1, u.Premium, t.Nombre AS NombreTipo FROM couch c inner JOIN usuario u ON c.Id_Usuario = u.Id_Usuario inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo WHERE c.Visible=1 ORDER BY Titulo ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+	$consulta = "SELECT c.Id_Couch, c.Id_TipoDeCouch, c.Id_Usuario, c.Titulo, c.Id_Localidad, c.Capacidad, c.Foto1, u.Premium, t.Nombre AS NombreTipo, l.localidad AS Ciudad FROM couch c inner JOIN usuario u ON c.Id_Usuario = u.Id_Usuario inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo inner JOIN localidades l ON c.Id_Localidad=l.Id WHERE c.Visible=1 ORDER BY Titulo ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
 	$consulta_execute = $conexion->query($consulta);
+	//Selecciono los tipos de couch para las opciones de búsqueda
+	$consulta_tipo = "SELECT * FROM tipodecouch";
+	$resultado_tipo = $conexion->query($consulta_tipo);
 ?>
 <html>
 	<head>
@@ -63,24 +71,61 @@
         <div class="parallax-container-mio-home z-depth-3">
         	<div class="parallax transparencia"><img src="imagenes/fondo.jpg" alt=""></div>
         	<div class="container"> 
-    	    	<div class="row">
-        	    	<div class="col s12">
-                    	<br>
-						<br>
-						<br>
-                        <div class="input-field white z-depth-3">
-							<input id="search" type="search" required>
-							<label for="search"><i class="material-icons">search</i></label>
-							<i class="material-icons">close</i>
-						</div>
-						<br>
-                    </div>
-	            </div>
+    	    	<br>
+				<br>
+				<br>
+                <div class="row card-panel z-depth-3">
+					<h5><p class="center">¿A dónde querés viajar?</p></h5>
+					<form class="col s12" name="busqueda" method="get" action="resultado_busqueda.php">
+                        <div class="input-field col s3">
+							<select class="browser-default" name="idprovincia" id="idprovincia">
+								<option value="" disabled selected>Elige una provincia...</option>
+								<?php
+      								while($query_result = $resultadoprov->fetch_array()) {
+      									$idprov=$query_result['Id'];
+      									$nombreprov=$query_result['Provincia'];
+      									echo '<option value="'.$idprov.'">'.$nombreprov.'</option>';
+      								}
+      							?>
+							</select>
+  						</div>
+  						<div class="input-field col s3">
+    						<select class="browser-default" name="idlocalidad" id="idlocalidad">
+							<option value="" disabled selected>Elige una ciudad...</option>
+							</select>
+  						</div>
+  						<div class="input-field col s3">
+    						<select class="browser-default" name="tcouch" id="tcouch"> 
+      							<option value="" disabled selected>Elige un tipo de couch...</option>
+      							<?php
+      								while($query_result = $resultado_tipo->fetch_array()) {
+      									$nombretipo=$query_result['Nombre'];
+      									$idTipoDeCouch=$query_result['Id_Tipo'];
+      									echo '<option value="'.$idTipoDeCouch.'">'.$nombretipo.'</option>';
+      								}
+      							?>
+    						</select>
+    						<label></label>
+  						</div>
+  						<div class="input-field col s2">
+          					<input id="cant_visitantes" name="cant_visitantes" maxlength="2" value="" pattern="^[0-9]{1,2}" type="text" class="validate">
+          					<label for="cant_visitantes">Capacidad</label>
+        				</div>
+        				<div class="input-field col s1 right">					
+  							<button class="btn-floating btn-large waves-effect waves-light light-green z-depth-2" type="submit" name="action">
+    							<i class="material-icons right">search</i>
+  							</button>
+        
+        				</div>
+					</form>
+				</div>
+				<br>
+				<br>
 				<div class="section">
 					<!-- Tabla-->
 					<?php if($consulta_execute->num_rows) { ?>
-					<div class="row card-panel">
-						<table class="col s12 highlight responsive-table card-panel">
+					<div class="row card-panel z-depth-3">
+						<table class="col s12 highlight responsive-table">
 							<thead>
 								<tr>
 									<th class="center" data-field="name"></th>
@@ -137,8 +182,6 @@
 									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
 									echo '<li class="disabled"><a href="#">1</a></li>';
 									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
-								}else{
-									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
 								}
 							}else{
 								$paginaant=$pagina-1;
@@ -154,7 +197,7 @@
 									}
 								}
 								if ($pagina==$total_paginas){
-									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+									//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 								}else{
 									$paginapos=$pagina+1;
 									echo '<li class="waves-effect"><a href="index.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
@@ -193,8 +236,18 @@
   		<!-- Inicializacion de JS -->
   		<script type="text/javascript">
   			$(document).ready(function(){
-			$(".parallax").parallax();
-			$(".button-collapse").sideNav();
+				$(".parallax").parallax();
+				$(".button-collapse").sideNav();
+				$("#idprovincia").change(function(){
+					$.ajax({
+						url:"funciones/obtenerciudades.php",
+						type: "POST",
+						data:"idprovincia="+$("#idprovincia").val(),
+						success: function(opciones){
+							$("#idlocalidad").html(opciones);
+						}
+					})
+				});
   			});
   		</script>
 	</body>
