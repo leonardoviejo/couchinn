@@ -26,7 +26,7 @@
 	$resultadoprov = $conexion->query($consultaprov);
 		
 	//Selecciono los tipos de couch para las opciones de búsqueda
-	$consulta_tipo = "SELECT * FROM tipodecouch";
+	$consulta_tipo = "SELECT * FROM tipodecouch WHERE `Visible`=1 ORDER BY Nombre ASC";
 	$resultado_tipo = $conexion->query($consulta_tipo);
 ?>
 <html>
@@ -131,12 +131,22 @@
                         <h1> Crea tu Couch </h1>
                     </div>
 					<!-- Inicio del Formulario-->
-                    <form class="col s12" name="inscripcion" method="post" onSubmit="return validarFormulario()" action="funciones/alta_couch.php">
+                    <form class="col s12" name="cargacouch" method="post" enctype="multipart/form-data" action="funciones/alta_couch.php">
       					<div class="row">
        				 		<div class="input-field col s6">
           						<input name="titulo" type="text" length="30" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" title="Solo se admiten letras" class="validate" required="required">
           						<label for="titulo" data-error="Solo se admiten letras">Título</label>
+								<?php echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';?>
         					</div>
+							<div class="file-field input-field col s6">
+								<div class="btn light-green z-depth-2">
+									<span>Subir foto</span>
+									<input type="file" accept="image/jpg" name="imagenes[]" id="imagen1">
+								</div>
+								<div class="file-path-wrapper">
+									<input class="file-path validate" type="text" placeholder="Elige una foto">
+								</div>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col s6 divider"></div>
@@ -161,11 +171,11 @@
 							</div>
 							<div class="file-field input-field col s6">
 								<div class="btn light-green z-depth-2">
-									<span>Subir foto(s)</span>
-									<input type="file" accept="image/jpeg" max-upload="3" multiple>
+									<span>Subir foto</span>
+									<input type="file" accept="image/jpg" name="imagenes[]" id="imagen2">
 								</div>
 								<div class="file-path-wrapper">
-									<input class="file-path validate" type="text" placeholder="Elige de una a tres fotos">
+									<input class="file-path validate" type="text" placeholder="Elige una foto">
 								</div>
 							</div>
 						</div>
@@ -186,8 +196,17 @@
 								</select>
 							</div>
 							<div class="input-field col s3">
-								<input id="capacidad" name="capacidad" maxlength="1" value="" pattern="^[1-9]" type="text" class="validate">
+								<input id="capacidad" name="capacidad" maxlength="2" value="" pattern="^[0-9]{1,99}" type="text" class="validate" required="required">
 								<label for="capacidad" data-error="Solo se admiten números">Capacidad</label>
+							</div>
+							<div class="file-field input-field col s6">
+								<div class="btn light-green z-depth-2">
+									<span>Subir foto</span>
+									<input type="file" accept="image/jpg" name="imagenes[]" id="imagen3">
+								</div>
+								<div class="file-path-wrapper">
+									<input class="file-path validate" type="text" placeholder="Elige una foto">
+								</div>
 							</div>
 						</div>
 						<div class="row">
