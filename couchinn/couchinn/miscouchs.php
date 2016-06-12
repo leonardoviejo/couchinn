@@ -12,13 +12,32 @@
 	else 
 	{
 	include('funciones/config.php');
-	//SQL
+	// Obtengo los datos del usuario
 	$consulta="SELECT * FROM usuario WHERE Id_Usuario='$idusuario'";
 	$consulta_execute = $conexion->query($consulta);
 	$resultado=$consulta_execute->fetch_assoc();
 	$tipo=$resultado['Id_TipoDeUsuario'];
 	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 	$premium=$resultado["Premium"];
+
+	//Conteo de paginado de resultado.
+	$TAMANO_PAGINA=5;
+	if(!isset($_GET['pagina'])) {
+		$pagina=1;
+		$inicio=0;
+	}else{
+		$pagina = $_GET["pagina"];
+		$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+	}
+	// Selecciono los couch del usuario para mostrar para el paginado
+	$consulta = "SELECT * FROM couch WHERE Visible=1 AND Id_Usuario='$idusuario' ORDER BY Titulo ASC";
+	$consulta_execute = $conexion->query($consulta);
+	$total_resultados=$consulta_execute->num_rows;
+	$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
+
+	// Selecciono los couch del usuario para mostrar por pagina
+	$consulta = "SELECT c.Id_Couch, c.Id_TipoDeCouch, c.Titulo, c.Id_Localidad, c.Capacidad, c.FechaAlta, t.Nombre AS NombreTipo FROM couch c inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo WHERE c.Visible=1 AND c.Id_Usuario='$idusuario' ORDER BY c.Titulo ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+	$consulta_execute = $conexion->query($consulta);	
 ?>
 <html>
 	<head>
@@ -115,19 +134,108 @@
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
-        	<div class="container"> 
+        		<br>
     	    	<div class="row">
-                	<br>
         	    	<div class="col s12 center grey-text text-darken-2">
                         <h1> Mis Couchs </h1>
                     </div>
-					<!-- Inicio del Formulario-->
-				
-					<!--Fin del Formulario-->
-	            </div>
-    	    </div>        
+                </div>
+				<div class="row">
+					<?php if($consulta_execute->num_rows) { ?>
+						<table class="col s12 highlight responsive-table">
+							<thead>
+								<tr>
+									<th data-field="name" class="center">Titulo</th>
+									<th data-field="name" class="center">Ubicación</th>
+									<th data-field="name" class="center">Capacidad</th>
+									<th data-field="name" class="center">Tipo</th>
+									<th data-field="name" class="center">Fecha Creación</th>
+								</tr>
+							</thead>
+							<?php 
+							while($query_result = $consulta_execute->fetch_array()) {
+								$id=$query_result['Id_Couch'];
+								$titulo = $query_result['Titulo'];
+								//Busqueda de ciudad y provincia
+								$idlocalidad = $query_result['Id_Localidad'];
+								$consultaubicacion= "SELECT l.Localidad as Localidad, p.Provincia as Provincia FROM localidades l inner JOIN provincias p ON l.Id_Provincia=p.Id WHERE l.Id='$idlocalidad'";					
+								$resultadoubicacion = $conexion->query($consultaubicacion);					
+								$resultado = $resultadoubicacion->fetch_assoc();
+								$ubicacion = $resultado["Localidad"].', '.$resultado["Provincia"];
+								$capacidad = $query_result['Capacidad'];
+								$tipocouch = $query_result['NombreTipo'];
+								$fechaalta = $query_result['FechaAlta'];
+								$fechaalta = date('d-m-Y H:i:s', strtotime($fechaalta));						
+							echo'
+							<tbody>
+								<tr>
+									<td class="center">'.$titulo.'</td>
+									<td class="center">'.$ubicacion.'</td>
+									<td class="center">'.$capacidad.'</td>
+									<td class="center">'.$tipocouch.'</td>
+									<td class="center">'.$fechaalta.'</td>
+									<td class="right">
+										<form action="vercouch.php" method="post">
+											<input type="hidden" name="id" value="'.$id.'">
+											<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
+										</form>
+									</td>
+									<td class="right">
+										<form action="modificarcouch.php" method="post">
+											<input type="hidden" name="id" value="'.$id.'">
+											<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Modificar">
+										</form>
+									</td>
+									<td class="right">
+										<form action="eliminarcouch.php" method="post">
+											<input type="hidden" name="id" value="'.$id.'">
+											<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
+										</form>
+									</td>
+								</tr>
+							</tbody>';
+							} ?>
+						</table>
+					<?php
+					} else{
+					echo '<tr>
+							<td class="center">No existen Couchs</td>
+						</tr>';
+					}
+					?>
+				<ul class="pagination center">
+				<?php
+					if ($pagina==1){
+						if ($total_paginas==1){
+							echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
+							echo '<li class="disabled"><a href="#">1</a></li>';
+							echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+						}
+					}else{
+						$paginaant=$pagina-1;
+						echo '<li class="waves-effect"><a href="index_login.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+					}
+					if ($total_paginas > 1){
+						for ($i=1;$i<=$total_paginas;$i++){ 
+							if ($pagina == $i){
+								//si muestro el índice de la página actual, no coloco enlace 
+								echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
+							}else{
+								echo '<li class="waves-effect"><a href="index_login.php?pagina='.$i.'">'.$i.'</a></li>';
+							}
+						}
+						if ($pagina==$total_paginas){
+							//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+						}else{
+							$paginapos=$pagina+1;
+							echo '<li class="waves-effect"><a href="index_login.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+						}
+					}
+				?>
+				</ul>
+            </div>       
         </div>
-        <!-- Contenido de pagina-->
+        <!-- Fin Contenido de pagina-->
         
         <!-- Pie de pagina-->
 		<footer class="page-footer light-green">
