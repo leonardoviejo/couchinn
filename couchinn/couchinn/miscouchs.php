@@ -138,11 +138,13 @@
         	    	<div class="center grey-text text-darken-2">
                         <h1> Mis Couchs </h1>
                     </div>
+					<div class="divider"></div>
 					<br>
 					<div class="center">
 						<input class="center waves-effect waves-light btn light-green z-depth-2" type="button" value="Crea tu Couch" onClick="location.href='altacouch.php'">
 					</div>
 					<br>
+					<div class="divider"></div>
 					<br>
 					<div>
 					<?php if($consulta_execute->num_rows) { ?>
@@ -202,9 +204,13 @@
 						</table>
 					<?php
 					} else{
-					echo '<tr>
-							<td class="center">No existen Couchs</td>
-						</tr>';
+					echo '<br>
+						<div class="center grey-text text-darken-2">
+							<h5>No existen couchs.</h5>
+						</div>
+						<br>
+						<br>
+						<br>';
 					}
 					?>
 					</div>

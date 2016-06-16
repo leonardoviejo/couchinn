@@ -12,13 +12,36 @@
 	else 
 	{
 	include('funciones/config.php');
-	//SQL
+
+	// Obtengo los datos del usuario
 	$consulta="SELECT * FROM usuario WHERE Id_Usuario='$idusuario'";
 	$consulta_execute = $conexion->query($consulta);
 	$resultado=$consulta_execute->fetch_assoc();
 	$tipo=$resultado['Id_TipoDeUsuario'];
 	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 	$premium=$resultado["Premium"];
+
+	//Obtengo la fecha actual
+	$hoy = date('d-m-Y');
+
+	//Conteo de paginado de resultado.
+	$TAMANO_PAGINA=5;
+	if(!isset($_GET['pagina'])) {
+		$pagina=1;
+		$inicio=0;
+	}else{
+		$pagina = $_GET["pagina"];
+		$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+	}
+	// Selecciono las reservas del usuario para mostrar en el paginado
+	$consulta = "SELECT * FROM reserva WHERE Visible=1 AND Id_Usuario=$idusuario";
+	$consulta_execute = $conexion->query($consulta);
+	$total_resultados=$consulta_execute->num_rows;
+	$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
+
+	// Selecciono las reservas del usuario para mostrar por pagina
+	$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.Id_Couch, r.FechaInicio, r.FechaFin, r.Estado, r.FechaAlta, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch WHERE r.Visible=1 AND r.Id_Usuario='$idusuario' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera' LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+	$consulta_execute = $conexion->query($consulta);	
 ?>
 <html>
 	<head>
@@ -83,7 +106,7 @@
                     <a href="#" data-activates="menulateral" class="button-collapse"><i class="material-icons light-green">menu</i></a>
 					<!-- Opciones -->
 					<ul class="right hide-on-med-and-down">
-						<<li><a href="miperfil.php"  class="grey-text text-darken-2">Bienvenido, <?php echo $nombreusuario;?>!!!</a></li>
+						<li><a href="miperfil.php"  class="grey-text text-darken-2">Bienvenido, <?php echo $nombreusuario;?>!!!</a></li>
 						<?php if ($premium==1) echo'
 						<li><a href="#" class="light-green">Cuenta Premium</a></li>
 						<li><a href="#" class="light-green"><i class="large material-icons">star</i></a></li>
@@ -115,19 +138,134 @@
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
-        	<div class="container"> 
-    	    	<div class="row">
-                	<br>
-        	    	<div class="col s12 center grey-text text-darken-2">
+        		<br>
+        	    	<div class="center grey-text text-darken-2">
                         <h1> Mis Reservas </h1>
                     </div>
-					<!-- Inicio del Formulario-->
-                    
-					<!--Fin del Formulario-->
-	            </div>
-    	    </div>        
+					<br>
+					<div class="divider"></div>
+					<br>
+					<div>
+					<?php if($consulta_execute->num_rows) { ?>
+						<table class="responsive-table">
+							<thead>
+								<tr>
+									<th data-field="name" class="center">Titulo Couch</th>
+									<th data-field="name" class="center">Fecha de inicio</th>
+									<th data-field="name" class="center">Fecha de fin</th>
+									<th data-field="name" class="center">Estado</th>
+									<th data-field="name" class="center">Fecha de Solicitud</th>
+								</tr>
+							</thead>
+							<?php 
+							while($query_result = $consulta_execute->fetch_array()) {
+								$idcouch=$query_result['Id_Couch'];
+								$estado=$query_result['Estado'];
+								$titulo = $query_result['Titulo'];
+								$fechainicio = $query_result['FechaInicio'];
+								$fechainicio = date('d-m-Y', strtotime($fechainicio));
+								$fechafin = $query_result['FechaFin'];
+								$fechafin = date('d-m-Y', strtotime($fechafin));
+								$fechaalta = $query_result['FechaAlta'];
+								$fechaalta = date('d-m-Y', strtotime($fechaalta));						
+							echo'
+							<tbody>';
+								if($estado=='espera') {
+									echo '<tr>
+										<td bgcolor="#ffff99" class="center">'.$titulo.'</td>
+										<td bgcolor="#ffff99" class="center">'.$fechainicio.'</td>
+										<td bgcolor="#ffff99" class="center">'.$fechafin.'</td>
+										<td bgcolor="#ffff99" class="center">'.ucwords(strtolower($estado)).'</td>
+										<td bgcolor="#ffff99" class="center">'.$fechaalta.'</td>
+										<td bgcolor="#ffff99" class="center">
+											<form action="vercouch.php" method="post">
+												<input type="hidden" name="id" value="'.$idcouch.'">
+												<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
+											</form>
+										</td>
+									</tr>';
+								} else {
+									if($estado=='confirmada') {
+										echo '<tr>
+											<td bgcolor="#b2d8b2" class="center">'.$titulo.'</td>
+											<td bgcolor="#b2d8b2" class="center">'.$fechainicio.'</td>
+											<td bgcolor="#b2d8b2" class="center">'.$fechafin.'</td>
+											<td bgcolor="#b2d8b2" class="center">'.ucwords(strtolower($estado)).'</td>
+											<td bgcolor="#b2d8b2" class="center">'.$fechaalta.'</td>
+											<td bgcolor="#b2d8b2" class="center">
+												<form action="vercouch.php" method="post">
+													<input type="hidden" name="id" value="'.$idcouch.'">
+													<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
+												</form>
+											</td>
+										</tr>';
+									} else {
+										if($estado=='rechazada') {
+											echo '<tr>
+												<td bgcolor="#ffb2b2" class="center">'.$titulo.'</td>
+												<td bgcolor="#ffb2b2" class="center">'.$fechainicio.'</td>
+												<td bgcolor="#ffb2b2" class="center">'.$fechafin.'</td>
+												<td bgcolor="#ffb2b2" class="center">'.ucwords(strtolower($estado)).'</td>
+												<td bgcolor="#ffb2b2" class="center">'.$fechaalta.'</td>
+												<td bgcolor="#ffb2b2" class="center">
+													<form action="vercouch.php" method="post">
+														<input type="hidden" name="id" value="'.$idcouch.'">
+														<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
+													</form>
+												</td>
+											</tr>';
+										}
+									}
+								}
+							echo'
+							</tbody>';
+							} ?>
+						</table>
+					<?php
+					} else{
+					echo '<br>
+						<div class="center grey-text text-darken-2">
+							<h5>No existen reservas.</h5>
+						</div>
+						<br>
+						<br>
+						<br>';
+					}
+					?>
+					</div>
+				<ul class="pagination center">
+				<?php
+					if ($pagina==1){
+						if ($total_paginas==1){
+							echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
+							echo '<li class="disabled"><a href="#">1</a></li>';
+							echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+						}
+					}else{
+						$paginaant=$pagina-1;
+						echo '<li class="waves-effect"><a href="misreservas.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+					}
+					if ($total_paginas > 1){
+						for ($i=1;$i<=$total_paginas;$i++){ 
+							if ($pagina == $i){
+								//si muestro el índice de la página actual, no coloco enlace 
+								echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
+							}else{
+								echo '<li class="waves-effect"><a href="misreservas.php?pagina='.$i.'">'.$i.'</a></li>';
+							}
+						}
+						if ($pagina==$total_paginas){
+							//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+						}else{
+							$paginapos=$pagina+1;
+							echo '<li class="waves-effect"><a href="misreservas.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+						}
+					}
+				?>
+				</ul>
+                  
         </div>
-        <!-- Contenido de pagina-->
+        <!-- Fin Contenido de pagina-->
         
         <!-- Pie de pagina-->
 		<footer class="page-footer light-green">
