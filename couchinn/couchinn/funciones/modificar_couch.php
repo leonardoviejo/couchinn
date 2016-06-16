@@ -1,10 +1,10 @@
 <?php include('config.php');
 	//Comprobacion de variables
 	if ((empty($_POST['idusuario']))||(empty($_POST['titulo']))||(empty($_POST['idprovincia']))||(empty($_POST['idlocalidad']))||(empty($_POST['tcouch']))||(empty($_POST['capacidad']))||(empty($_POST['descripcion']))){
-		?><script> alert("Por favor complete los campos faltantes y vuelva a intentarlo.");
-			location.href='../altacouch.php';
-		</script>
-		<?php
+		$idcouch=$_POST['idcouch'];
+		echo '	<script> alert("Por favor complete los campos faltantes y vuelva a intentarlo.");
+					location.href="../modificarcouch.php?id='.$idcouch.'";
+				</script>';
 		break;
 	}
 	else{
@@ -19,10 +19,9 @@
 		if(!empty($_FILES['imagenes']['name'][0])){
 			//Si enviaron algo pregunto por el codigo de error (0=OK y 4=No enviaron nada), si es diferente a esos avisa y redirecciona.
 			if (($_FILES["imagenes"]["error"][0] > 0)&&($_FILES["imagenes"]["error"][0] != 4)){
-				?>	<script> alert("Ha ocurrido un error en la carga de imagenes, intentelo nuevamente.");
-					location.href='../altacouch.php';
-				</script>
-				<?php
+				echo '	<script> alert("Ha ocurrido un error en la carga de imagenes, intentelo nuevamente.");
+					location.href="../modificarcouch.php?id='.$idcouch.'";
+				</script>';
 				break;
 			}else{
 				//Si los codigos estan bien comprueba formato y tamaño.
@@ -34,10 +33,9 @@
 		if(!empty($_FILES['imagenes']['name'][1])) {
 			//Si enviaron algo pregunto por el codigo de error (0=OK y 4=No enviaron nada), si es diferente a esos avisa y redirecciona.
 			if (($_FILES["imagenes"]["error"][1] > 0)&&($_FILES["imagenes"]["error"][1] != 4)){
-				?>	<script> alert("Ha ocurrido un error en la carga de imagenes, intentelo nuevamente.");
-					location.href='../altacouch.php';
-				</script>
-				<?php
+				echo '	<script> alert("Ha ocurrido un error en la carga de imagenes, intentelo nuevamente.");
+					location.href="../modificarcouch.php?id='.$idcouch.'";
+				</script>';
 				break;
 			}else{
 				//Si los codigos estan bien comprueba formato y tamaño.
@@ -49,10 +47,9 @@
 		if(!empty($_FILES['imagenes']['name'][2])) {
 			//Si enviaron algo pregunto por el codigo de error (0=OK y 4=No enviaron nada), si es diferente a esos avisa y redirecciona.
 			if (($_FILES["imagenes"]["error"][2] > 0)&&($_FILES["imagenes"]["error"][2] != 4)){
-				?>	<script> alert("Ha ocurrido un error en la carga de imagenes, intentelo nuevamente.");
-					location.href='../altacouch.php';
-				</script>
-				<?php
+				echo '	<script> alert("Ha ocurrido un error en la carga de imagenes, intentelo nuevamente.");
+					location.href="../modificarcouch.php?id='.$idcouch.'";
+				</script>';
 				break;
 			}else{
 				//Si los codigos estan bien comprueba formato y tamaño.
@@ -61,14 +58,8 @@
 				}
 			}
 		}
-		//Saco datos de couch actual
-		$couchId=$_POST['couchId'];
-		$consulta= "SELECT * FROM couch WHERE Id_Couch='$couchId'";
-		$consulta_execute = $conexion->query($consulta);
-		$resultado = $consulta_execute->fetch_array();
-		$tituloactual=$resultado['Titulo'];
-		$
-		
+		//Saco datos de POST
+		$idcouch=$_POST['idcouch'];
 		$idusuario=$_POST['idusuario'];
 		$titulo = $_POST['titulo'];
 		$titulo=ucwords(strtolower($titulo));
@@ -79,24 +70,22 @@
 		$descripcion = $_POST['descripcion'];
 		
 		//Comprobacion de couch existente para ese usuario con el mismo titulo
-		$consulta= "SELECT * FROM couch WHERE Id_Usuario='$idusuario' and Titulo='$titulo'";
+		$consulta= "SELECT * FROM couch WHERE Id_Usuario='$idusuario' and Titulo ='$titulo' and Id_Couch <> '$idcouch'";
 		$consulta_execute = $conexion->query($consulta);
 		if($consulta_execute->num_rows){
-			?>	<script> alert("Ya existe un couch de tu propiedad con ese titulo, elije un nuevo nombre.");
-					location.href='../altacouch.php';
-				</script>
-			<?php
+			echo '	<script> alert("Ya existe un couch de tu propiedad con ese titulo, elije un nuevo nombre.");
+					location.href="../modificarcouch.php?id='.$idcouch.'";
+				</script>';
 			break;
 		}else{
-			//Inserto a la base de datos un couch no visible sin fotos.
-			$insertar = "INSERT INTO couch (`Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Id_Provincia`, `Id_Localidad`, `Descripcion`, `Capacidad`,`Visible`) VALUES ('$tcouch', '$idusuario', '$titulo', '$idprovincia', '$idlocalidad', '$descripcion','$capacidad',0)";
-			if (mysqli_query($conexion, $insertar)) {
-				//Si la insersion fue satisfactoria entonces busco el couch que cree para sacar el ID
-				$consulta= "SELECT Id_Couch FROM couch WHERE Id_Usuario='$idusuario' and Titulo='$titulo'";
-				$consulta_execute = $conexion->query($consulta);
-				$resultadoconsulta=$consulta_execute->fetch_assoc();
-				$idcouch=$resultadoconsulta['Id_Couch'];
-			}else{
+			//Saco rutas de fotos actuales para saber si estan cargadas.
+			$consulta= "SELECT * FROM couch WHERE Id_Couch = '$idcouch'";
+			$consulta_execute = $conexion->query($consulta);
+			$consultafotos = $consulta_execute->fetch_assoc();
+			$rutafoto2=$consultafotos["Foto2"];
+			//Actualizo el Couch.
+			$insertar = "UPDATE `couch` SET `Titulo` = '$titulo', `Id_Provincia` = '$idprovincia', `Id_Localidad` = '$idlocalidad', `Id_TipoDeCouch` = '$tcouch', `Capacidad` = '$capacidad', `Descripcion` = '$descripcion' WHERE `couch`.`Id_Couch` = '$idcouch';";
+			if (!mysqli_query($conexion, $insertar)) {
 				echo "ERROR en la base de datos vuelva a intentarlo más tarde. " . mysqli_error($conexion);
 			}
 			//Pregunto una por una si la imagen enviada es correcta, en ese caso muevo imagen a su carpeta y agrego la entrada a la base de datos
@@ -104,156 +93,78 @@
 			//Esa imagen debe reemplazar el lugar de la anterior que no esta.
 			if($imagen1ok){
 					$ruta = 'imagenes/couchs/'.$idcouch.'/1.jpg';
-					@mkdir('../imagenes/couchs/'.$idcouch);
 					$resultado = @move_uploaded_file($_FILES["imagenes"]["tmp_name"][0], '../'.$ruta);
 					if (!$resultado){
-						?>	<script> alert("Error al cargar el archivo.");
-								location.href='../altacouch.php';
-							</script>
-						<?php
+						echo'	<script> alert("Error al cargar el archivo.");
+								location.href="../modificarcouch.php?id='.$idcouch.'";
+							</script>';
 						break;
 					}
-					$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto1`='$ruta', `Foto2`='', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
+					$actualizar = "UPDATE `couch` SET `Foto1`='$ruta' WHERE `couch`.`Id_Couch` = '$idcouch'";
 					if (!mysqli_query($conexion, $actualizar)) {
-						?>	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
-							location.href='../altacouch.php';
-						</script>
-						<?php
+						echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
+							location.href="../modificarcouch.php?id='.$idcouch.'";
+						</script>';
 						break;
 					}	
 			}
 			if($imagen2ok){
-				if ($imagen1ok){
-					$ruta = 'imagenes/couchs/'.$idcouch.'/2.jpg';
-					@mkdir('../imagenes/couchs/'.$idcouch);
-					$resultado = @move_uploaded_file($_FILES["imagenes"]["tmp_name"][1], '../'.$ruta);
-					if (!$resultado){
-						?>	<script> alert("Error al cargar el archivo.");
-								location.href='../altacouch.php';
-							</script>
-						<?php
-						break;
-					}
-					$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto2`='$ruta', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
-					if (!mysqli_query($conexion, $actualizar)) {
-						?>	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
-							location.href='../altacouch.php';
-						</script>
-						<?php
-						break;
-					}
-				}else{
-					$ruta = 'imagenes/couchs/'.$idcouch.'/1.jpg';
-					@mkdir('../imagenes/couchs/'.$idcouch);
-					$resultado = @move_uploaded_file($_FILES["imagenes"]["tmp_name"][1], '../'.$ruta);
-					if (!$resultado){
-						?>	<script> alert("Error al cargar el archivo.");
-							location.href='../altacouch.php';
-						</script>
-						<?php
-						break;
-					}
-					$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto1`='$ruta', `Foto2`='', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
-					if (!mysqli_query($conexion, $actualizar)) {
-						?>	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
-							location.href='../altacouch.php';
-						</script>
-						<?php
-						break;
-					}
+				$ruta = 'imagenes/couchs/'.$idcouch.'/2.jpg';
+				$resultado = @move_uploaded_file($_FILES["imagenes"]["tmp_name"][1], '../'.$ruta);
+				if (!$resultado){
+					echo'	<script> alert("Error al cargar el archivo.");
+								location.href="../modificarcouch.php?id='.$idcouch.'";
+							</script>';
+					break;
+				}
+				$actualizar = "UPDATE `couch` SET `Foto2`='$ruta' WHERE `couch`.`Id_Couch` = '$idcouch'";
+				if (!mysqli_query($conexion, $actualizar)) {
+					echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
+							location.href="../modificarcouch.php?id='.$idcouch.'";
+						</script>';
+					break;
 				}
 			}
 			if($imagen3ok){
-				if (($imagen1ok)&&($imagen2ok)){
+				if ($rutafoto2!=''){
 					$ruta = 'imagenes/couchs/'.$idcouch.'/3.jpg';
-					@mkdir('../imagenes/couchs/'.$idcouch);
 					$resultado = @move_uploaded_file($_FILES["imagenes"]["tmp_name"][2], '../'.$ruta);
 					if (!$resultado){
-						?>	<script> alert("Error al cargar el archivo.");
-								location.href='../altacouch.php';
-							</script>
-						<?php
+						echo'	<script> alert("Error al cargar el archivo.");
+								location.href="../modificarcouch.php?id='.$idcouch.'";
+							</script>';
 						break;
 					}
-					$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto3`='$ruta' WHERE `couch`.`Id_Couch` = '$idcouch'";
+					$actualizar = "UPDATE `couch` SET `Foto3`='$ruta' WHERE `couch`.`Id_Couch` = '$idcouch'";
 					if (!mysqli_query($conexion, $actualizar)) {
-						?>	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
-							location.href='../altacouch.php';
-						</script>
-						<?php
+						echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
+							location.href="../modificarcouch.php?id='.$idcouch.'";
+						</script>';
 						break;
 					}
 				}else{
-					if(($imagen1ok)&&(!$imagen2ok)){
-						$ruta = 'imagenes/couchs/'.$idcouch.'/2.jpg';
-						@mkdir('../imagenes/couchs/'.$idcouch);
-						$resultado = @move_uploaded_file($_FILES["imagenes"]["tmp_name"][2], '../'.$ruta);
-						if (!$resultado){
-							?>	<script> alert("Error al cargar el archivo.");
-								location.href='../altacouch.php';
-							</script>
-							<?php
-							break;
-						}
-						$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto2`='$ruta', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
-						if (!mysqli_query($conexion, $actualizar)) {
-							?>	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
-								location.href='../altacouch.php';
-							</script>
-							<?php
-							break;
-						}
-					}else{
-						if((!$imagen1ok)&&($imagen2ok)){
-							$ruta = 'imagenes/couchs/'.$idcouch.'/2.jpg';
-							@mkdir('../imagenes/couchs/'.$idcouch);
-							$resultado = @move_uploaded_file($_FILES["imagenes"]["tmp_name"][2], '../'.$ruta);
-							if (!$resultado){
-								?>	<script> alert("Error al cargar el archivo.");
-										location.href='../altacouch.php';
-									</script>
-								<?php
-								break;
-							}
-							$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto2`='$ruta', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
-							if (!mysqli_query($conexion, $actualizar)) {
-								?>	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
-									location.href='../altacouch.php';
-								</script>
-								<?php
-								break;
-							}
-						}else{
-							if((!$imagen1ok)&&(!$imagen2ok)){
-								$ruta = 'imagenes/couchs/'.$idcouch.'/1.jpg';
-								@mkdir('../imagenes/couchs/'.$idcouch);
-								$resultado = @move_uploaded_file($_FILES["imagenes"]["tmp_name"][2], '../'.$ruta);
-								if (!$resultado){
-									?>	<script> alert("Error al cargar el archivo.");
-										location.href='../altacouch.php';
-									</script>
-									<?php
-									break;
-								}
-								$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto1`='$ruta', `Foto2`='', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
-								if (!mysqli_query($conexion, $actualizar)) {
-									?>	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
-										location.href='../altacouch.php';
-									</script>
-									<?php
-									break;
-								}
-							}
-						}
+					$ruta = 'imagenes/couchs/'.$idcouch.'/2.jpg';
+					$resultado = @move_uploaded_file($_FILES["imagenes"]["tmp_name"][2], '../'.$ruta);
+					if (!$resultado){
+						echo'	<script> alert("Error al cargar el archivo.");
+								location.href="../modificarcouch.php?id='.$idcouch.'";
+							</script>';
+						break;
+					}
+					$actualizar = "UPDATE `couch` SET `Foto2`='$ruta' WHERE `couch`.`Id_Couch` = '$idcouch'";
+					if (!mysqli_query($conexion, $actualizar)) {
+						echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
+							location.href="../modificarcouch.php?id='.$idcouch.'";
+						</script>';
+						break;
 					}
 				}
 			}
-			?><script> alert("Su couch ha sido creado y publicado.");
+			?><script> alert("Su couch ha sido actualizado.");
 					location.href='../miscouchs.php';
 			</script>
 			<?php
 			break;
 		}
 	}
-	*/
 ?>

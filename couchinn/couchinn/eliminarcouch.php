@@ -5,18 +5,19 @@
 	$sesion = new sesion();
 	$idusuario = $sesion->get("id");
 	
-	if( $idusuario == false )
-	{	
+	if( $idusuario == false ){	
 		header("Location: login.php");		
-	}
-	else 
-	{
-	include('funciones/config.php');
-	if(!isset($_POST['id'])){
-		header("Location: miscouchs.php");
 	}else{
-		$idcouch=$_POST['id'];
-	}
+		include('funciones/config.php');
+		if (empty($_POST['id'])){
+			if(empty($_GET['id'])){
+				header("Location: miscouchs.php");
+			}else{
+				$idcouch=$_GET['id'];
+			}
+		}else{
+			$idcouch = $_POST["id"];
+		}
 	//SQL
 	//Consulta datos de usuario
 	$consulta="SELECT * FROM usuario WHERE Id_Usuario='$idusuario'";
@@ -154,10 +155,11 @@
 					</div>
 				</div>
 				<div class="divider"></div>
-				<form name="eliminarusuario" method="post" action="funciones/baja_usuario.php">
+				<form name="eliminarcouch" method="post" action="funciones/baja_couch.php">
 					<div class="row">
 						<div class="input-field col s6 offset-s3 center" data-tip="La contraseña debe contener 8 carácteres como mínimo">
-          					<?php echo '<input type="hidden" name="id" value="'.$idusuario.'">'?>							
+          					<?php echo '<input type="hidden" name="idcouch" value="'.$idcouch.'">
+										<input type="hidden" name="idusuario" value="'.$idusuario.'">'?>							
 							<input name="password" id="password" type="password" maxlength="32" pattern="(?=.*).{8,}" class="validate" required="required">
           					<label for="password" data-error="La contraseña ingresada es menor a 8.">Contraseña Actual</label>
         				</div>                        

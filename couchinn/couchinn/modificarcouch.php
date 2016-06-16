@@ -21,12 +21,18 @@
 	$premium=$resultado["Premium"];
 	
 	//Variables del couch a modificar
-	if(empty($_POST['id'])){	
+	if (empty($_POST['id'])){
+		if(empty($_GET['id'])){
 			header("Location: miscouchs.php");
 		}else{
-			$couchId = $_POST['id'];
+			$idcouch=$_GET['id'];
 		}
-	$consulta = "SELECT c.Id_TipoDeCouch, c.Titulo, c.Id_Localidad, c.Capacidad, c.Descripcion, c.Foto1, c.Foto2, c.Foto3, t.Nombre AS NombreTipo FROM couch c inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo WHERE c.Id_Couch='$couchId' AND c.Visible=1";
+	}
+	else
+	{
+		$idcouch = $_POST["id"];
+	}
+	$consulta = "SELECT c.Id_TipoDeCouch, c.Titulo, c.Id_Localidad, c.Capacidad, c.Descripcion, c.Foto1, c.Foto2, c.Foto3, t.Nombre AS NombreTipo FROM couch c inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo WHERE c.Id_Couch='$idcouch' AND c.Visible=1";
 	$consulta_execute = $conexion->query($consulta);
 	if ($consulta_execute->num_rows > 0) {
 		$filacouch = $consulta_execute->fetch_assoc();
@@ -166,7 +172,9 @@
        				 		<div class="input-field col s6">
           						<?php echo '<input name="titulo" type="text" value="'.$titulo.'" length="30" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" title="Solo se admiten letras" class="validate" required="required">'; ?>
           						<label for="titulo" data-error="Solo se admiten letras">Título</label>
-								<?php echo '<input type="hidden" name="couchId" value="'.$couchId.'">';?>
+								<?php echo '<input type="hidden" name="idcouch" value="'.$idcouch.'">';
+									  echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">'
+								?>
         					</div>
 							<div class="file-field input-field col s6">
 								<div class="btn light-green z-depth-2">
