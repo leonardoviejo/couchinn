@@ -166,7 +166,7 @@
        				 		<div class="input-field col s6">
           						<?php echo '<input name="titulo" type="text" value="'.$titulo.'" length="30" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" title="Solo se admiten letras" class="validate" required="required">'; ?>
           						<label for="titulo" data-error="Solo se admiten letras">Título</label>
-								<?php echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';?>
+								<?php echo '<input type="hidden" name="couchId" value="'.$couchId.'">';?>
         					</div>
 							<div class="file-field input-field col s6">
 								<div class="btn light-green z-depth-2">

@@ -61,17 +61,17 @@
 		var error=false;
 		
 		if (tarjeta == "") {
-			mensaje=mensaje +"Seleccione su tarjeta, ";
+			mensaje=mensaje +"Seleccione su tarjeta";
 			error=true;
 		}
 		
 		if (mes == "" ) {
-			mensaje=mensaje +"Seleccione mes de vencimiento, ";
+			mensaje=mensaje +" ,Seleccione mes de vencimiento";
 			error=true; 
 		}
 		
 		if (anio == "" ) {
-			mensaje=mensaje +"Seleccione año de vencimiento, ";
+			mensaje=mensaje +" ,Seleccione año de vencimiento.";
 			error=true; 
 		}
 		
@@ -83,9 +83,37 @@
 		}
 	}
 	
+	function validarFormularioAlta(){
+		var foto1 = document.getElementById("imagen1").value;
+		var foto2 = document.getElementById("imagen2").value;
+		var foto3 = document.getElementById("imagen3").value;
+		if ((foto1 == "")&&(foto2== "")&&(foto3=="")) {
+			alert("Debe seleccionar por lo menos una imagen para su Couch");
+			return false;
+		}
+		return true;
+	}
 	
-	
-	
-	
-	
+	function validarReserva(){
+		var fechainicio = document.getElementById("fechainicio").value;
+		fechainicio=Date.parse(fechainicio);
+		var fechafin = document.getElementById("fechafin").value;
+		fechafin=Date.parse(fechafin);
+		var mensaje="Se ha/n encontrado el/los siguente/s error/es: ";
+		var error=false;
+		if ((fechainicio == "")||(fechafin == "")){
+			mensaje=mensaje+ "Debe seleccionar las dos fechas";
+			error=true;
+		}
+		if (fechainicio>fechafin){
+			mensaje=mensaje+" ,Verifique que la fecha del comienzo de reserva es anterior a la fecha de fin de reserva.";
+			error=true;
+		}
+		if (error){
+			alert(mensaje);
+			return false;
+		}else{
+			return true;
+		}
+	}
 	

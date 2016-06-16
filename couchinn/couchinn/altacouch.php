@@ -131,7 +131,7 @@
                         <h1> Crea tu Couch </h1>
                     </div>
 					<!-- Inicio del Formulario-->
-                    <form class="col s12" name="cargacouch" method="post" enctype="multipart/form-data" action="funciones/alta_couch.php">
+                    <form class="col s12" name="cargacouch" method="post" enctype="multipart/form-data" onSubmit="return validarFormularioAlta()" action="funciones/alta_couch.php">
       					<div class="row">
        				 		<div class="input-field col s6">
           						<input name="titulo" type="text" length="30" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" title="Solo se admiten letras" class="validate" required="required">
@@ -153,7 +153,7 @@
 						</div>
 						<div class="row">	
 							<div class="input-field col s3">
-								<select class="browser-default" name="idprovincia" id="idprovincia">
+								<select class="browser-default" required name="idprovincia" id="idprovincia">
 									<option value="" disabled selected>Elige una provincia...</option>
 									<?php
 										while($query_result = $resultadoprov->fetch_array()) {
@@ -165,7 +165,7 @@
 								</select>
 							</div>
 							<div class="input-field col s3">
-								<select class="browser-default" name="idlocalidad" id="idlocalidad">
+								<select class="browser-default" required name="idlocalidad" id="idlocalidad">
 									<option value="" disabled selected>Elige una ciudad...</option>
 								</select>
 							</div>
@@ -184,7 +184,7 @@
 						</div>
 						<div class="row">
 							<div class="input-field col s3">
-								<select class="browser-default" name="tcouch" id="tcouch"> 
+								<select class="browser-default" required name="tcouch" id="tcouch"> 
 									<option value="" disabled selected>Elige un tipo de couch...</option>
 									<?php
 										while($query_result = $resultado_tipo->fetch_array()) {
@@ -222,7 +222,7 @@
                         <br>
                         <div class="row">
 	        				<div class="col s12registro l4 center">
-                             	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='index.php'">
+                             	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='miscouchs.php'">
                             </div>
                             <div class="col s12registro l4 center">
     	                     	<input class="waves-effect waves-light btn light-green z-depth-2" type="reset" value="Limpiar">

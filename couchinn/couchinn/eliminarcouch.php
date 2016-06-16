@@ -12,10 +12,10 @@
 	else 
 	{
 	include('funciones/config.php');
-	if(!isset($_POST['idcouch'])){
+	if(!isset($_POST['id'])){
 		header("Location: miscouchs.php");
 	}else{
-		$idcouch=$_POST['idcouch'];
+		$idcouch=$_POST['id'];
 	}
 	//SQL
 	//Consulta datos de usuario

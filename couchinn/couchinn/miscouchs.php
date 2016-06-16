@@ -135,14 +135,18 @@
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
         		<br>
-    	    	<div class="row">
-        	    	<div class="col s12 center grey-text text-darken-2">
+        	    	<div class="center grey-text text-darken-2">
                         <h1> Mis Couchs </h1>
                     </div>
-                </div>
-				<div class="row">
+					<br>
+					<div class="center">
+						<input class="center waves-effect waves-light btn light-green z-depth-2" type="button" value="Crea tu Couch" onClick="location.href='altacouch.php'">
+					</div>
+					<br>
+					<br>
+					<div>
 					<?php if($consulta_execute->num_rows) { ?>
-						<table class="col s12 highlight responsive-table">
+						<table class="highlight responsive-table">
 							<thead>
 								<tr>
 									<th data-field="name" class="center">Titulo</th>
@@ -165,7 +169,7 @@
 								$capacidad = $query_result['Capacidad'];
 								$tipocouch = $query_result['NombreTipo'];
 								$fechaalta = $query_result['FechaAlta'];
-								$fechaalta = date('d-m-Y H:i:s', strtotime($fechaalta));						
+								$fechaalta = date('d-m-Y', strtotime($fechaalta));						
 							echo'
 							<tbody>
 								<tr>
@@ -203,6 +207,7 @@
 						</tr>';
 					}
 					?>
+					</div>
 				<ul class="pagination center">
 				<?php
 					if ($pagina==1){
@@ -213,7 +218,7 @@
 						}
 					}else{
 						$paginaant=$pagina-1;
-						echo '<li class="waves-effect"><a href="index_login.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+						echo '<li class="waves-effect"><a href="miscouchs.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
 					}
 					if ($total_paginas > 1){
 						for ($i=1;$i<=$total_paginas;$i++){ 
@@ -221,19 +226,19 @@
 								//si muestro el índice de la página actual, no coloco enlace 
 								echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
 							}else{
-								echo '<li class="waves-effect"><a href="index_login.php?pagina='.$i.'">'.$i.'</a></li>';
+								echo '<li class="waves-effect"><a href="miscouchs.php?pagina='.$i.'">'.$i.'</a></li>';
 							}
 						}
 						if ($pagina==$total_paginas){
 							//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 						}else{
 							$paginapos=$pagina+1;
-							echo '<li class="waves-effect"><a href="index_login.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+							echo '<li class="waves-effect"><a href="miscouchs.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
 						}
 					}
 				?>
 				</ul>
-            </div>       
+                  
         </div>
         <!-- Fin Contenido de pagina-->
         
