@@ -11,12 +11,12 @@
 		if(empty($_GET['id'])){
 			header("Location: index.php");
 		}else{
-			$couchId=$_GET['id'];
+			$idcouch=$_GET['id'];
 		}
 	}
 	else
 	{
-		$couchId = $_POST["id"];
+		$idcouch = $_POST["id"];
 	}
 	//Consultas SQL Usuario
 	$consulta = "SELECT * FROM usuario WHERE Id_Usuario='$idusuario'";
@@ -27,7 +27,7 @@
 	$premiumusuario=$resultado["Premium"];
 
 	//Busqueda de couch
-	$consulta= "SELECT * FROM couch WHERE Id_Couch='$couchId' and Visible=1";
+	$consulta= "SELECT * FROM couch WHERE Id_Couch='$idcouch' and Visible=1";
 	$resulta = $conexion->query($consulta);
 	if ($resulta->num_rows > 0) {
 		// Data de los detalles del couch
@@ -44,7 +44,11 @@
 		$foto1=$row["Foto1"];
 		$foto2=$row["Foto2"];
 		$foto3=$row["Foto3"];
-
+		if ($row['Cant_Calif']==0){
+			$puntajeactual=0;
+		}else{
+			$puntajeactual= round($row['Total_Calif']/$row['Cant_Calif']);
+		}
 		//Busqueda de ciudad y provincia
 		$consultaubicacion= "SELECT l.Localidad as Localidad, p.Provincia as Provincia FROM localidades l inner JOIN provincias p ON l.Id_Provincia=p.Id WHERE l.Id='$idlocalidad'";
 		$resultadoubicacion = $conexion->query($consultaubicacion);
@@ -57,14 +61,18 @@
 		$row2 = $resulta2->fetch_assoc();
 		$tipoDeCouch = $row2["Nombre"];
 
-		//Busqueda de nombre de usuario
+		//Busqueda de nombre de usuario dueño de couch
 		$consulta3= "SELECT Nombre, Apellido FROM usuario WHERE Id_Usuario='$idusuariocouch'";
 		$resulta3 = $conexion->query($consulta3);
 		$row3 = $resulta3->fetch_assoc();
 		$usuarioCouch = $row3["Nombre"] . " " . $row3["Apellido"];
+		
 	} else {
-		echo"<script> alert('Couch inexistente.');</script>";
-		header("Location: index.php");
+		?>
+		<script>	alert('Couch inexistente.');
+					location.href="../index.php";
+		</script>
+		<?php
 	}
 ?>
 <html>
@@ -211,7 +219,7 @@
 					<div class="input-field">
 						<div class="grey-text"> Comienzo de reserva</div>
 						<?php echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">
-						<input type="hidden" name="idcouch" value="'.$couchId.'">';
+						<input type="hidden" name="idcouch" value="'.$idcouch.'">';
 						?>
 						<input name="fechainicio" type="date" class="datepicker" id="fechainicio" title="Fecha de Inicio">
 	                </div>
@@ -233,7 +241,7 @@
     		</div>
   		</div>
 		<!-- Fin de los modals para usuarios registrados -->
-
+		
 		<!-- Contenido de pagina-->
         <div class="parallax-container-mio z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -271,13 +279,13 @@
 					<?php 	if ($idusuario==$idusuariocouch){
 								echo'<div class="col s4">
 										<form action="modificarcouch.php" method="post">
-											<input type="hidden" name="id" value="'.$couchId.'">
+											<input type="hidden" name="id" value="'.$idcouch.'">
 											<input class="right waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Modificar">
 										</form>
 									</div>
 									<div class="col s4">
 										<form action="eliminarcouch.php" method="post">
-											<input type="hidden" name="id" value="'.$couchId.'">
+											<input type="hidden" name="id" value="'.$idcouch.'">
 											<input class="right waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
 										</form>
 									</div>';
@@ -285,17 +293,11 @@
 								if ($idusuario) {
 									echo '<div class="col s4">
 										  	<a class="right waves-effect waves-light btn light-green z-depth-2 modal-trigger" href="#modal_reg">Reservar</a>
-										  </div>
-										  <div class="col s4">
-										  	<input class="right waves-effect waves-light btn light-green z-depth-2 disabled" type="button" value="Calificar" onClick="#">
 										  </div>';
 								} else {
 										echo '<div class="col s4">
 											  	<a class="right waves-effect waves-light btn light-green z-depth-2 modal-trigger" href="#modal_noreg">Reservar</a>
-										  	  </div>
-										  	  <div class="col s4">
-										  		<a class="right waves-effect waves-light btn light-green z-depth-2 modal-trigger" href="#modal_noreg">Calificar</a>
-										      </div>';
+										  	  </div>';
 								}
 							}
 					?>
@@ -316,16 +318,39 @@
 						<p class="left">Capacidad: <?php echo $capacidad; 	if($capacidad>1){
 																				echo ' personas.';
 																			}else{
-																				echo 'persona.';
+																				echo ' persona.';
 																			}
 																			?></p>
 					</div>
 					<div class="col s4">
 						<p class="center">Agregado el: <?php echo $fechaAlta ?></p>
 					</div>
-					<div class="col s4">
-						<p class="right">Calificación: 4</p>
-					</div>
+					<?php 
+						if ($puntajeactual==0){
+							echo '
+							<div class="col s4">
+								<p class="right">Calificación: 
+									Couch aún no puntuado.
+								</p>
+							</div>';
+						}else{ 
+							echo '
+							<div class="col s2">
+								<p class="left">Calificación: 
+									'.$puntajeactual.'
+								</p>
+							</div>
+							<div class="col s2">
+								<form action="comentarios.php" method="get">
+									<input type="hidden" name="idcouch" value="'.$idcouch.'">
+									<input type="hidden" name="titulo" value="'.$titulo.'">
+									<input type="hidden" name="ubicacion" value="'.$ubicacion.'">
+									<input type="hidden" name="tipodecouch" value="'.$tipoDeCouch.'">
+									<input class="right waves-effect waves-light btn light-green z-depth-2" type="submit" value="Puntajes">
+								</form>
+							</div>';
+						}
+					?>
 				</div>
 				<div class="row">
 					<div class="col s12">
