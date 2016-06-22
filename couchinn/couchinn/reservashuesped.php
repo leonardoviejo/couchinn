@@ -42,7 +42,7 @@
 	
 
 	// Selecciono las reservas del usuario para mostrar por pagina
-	$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.Id_Couch, r.FechaInicio, r.FechaFin, r.Estado, r.Calif_Huesped, r.FechaAlta, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch WHERE r.Visible=1 AND r.Id_Usuario='$idusuario' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera' LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+	$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.Id_Couch, r.FechaInicio, r.FechaFin, r.Estado, r.Calif_Huesped, r.FechaAlta, r.Canc_Couch, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch WHERE r.Visible=1 AND r.Id_Usuario='$idusuario' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera' LIMIT ".$inicio.",".$TAMANO_PAGINA."";
 	$consulta_execute = $conexion->query($consulta);	
 ?>
 <html>
@@ -146,7 +146,7 @@
 				<br>
       			<p>Por favor puntua y escribe un breve comentario acerca de tu experiencia en este Couch, esto servirá para que todos los Couchs mejoren su servicio y atención.</p>
 				<br>
-				<form name="puntuacion" method="post" onSubmit="return validarPuntuacion()" action="funciones/puntuacouch.php">
+				<form name="puntuacion" method="post" action="funciones/puntuacouch.php">
 					<div class="input-field">
 						<select class="browser-default" required name="puntaje" id="puntaje"> 
 							<option value="" disabled selected>Elige un puntaje...</option>
@@ -174,6 +174,83 @@
     		</div>
   		</div>
 		<!-- Fin del modal de puntuacion -->
+		
+		<!-- Comienzo del modal de puntuacion usuario por cancelacion-->
+		<div id="modal_pun_usu" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>El dueño de este couch ha cancelado la reserva!!!</h4>
+				<br>
+      			<p>Por favor puntua y escribe un breve comentario.</p>
+				<br>
+				<form name="puntuacion" method="post" action="funciones/puntuacouchcancelado.php">
+					<div class="input-field">
+						<select class="browser-default" required name="puntaje" id="puntaje"> 
+							<option value="" disabled selected>Elige un puntaje...</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+					</div>
+					<br>
+					<div class="input-field">
+						<textarea id="mensaje" name="mensaje" class="materialize-textarea" length="250" maxlength="250" class="validate" required="required"></textarea>
+						<label for="descripcion">Mensaje</label>
+					</div>
+					<br>
+					<div class="divider"></div>
+					<?php echo '<input type="hidden" name="idreserva" id="idreserva" >';
+						echo '<input type="hidden" name="idcouch" id="idcouch">';
+						echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';						
+					?>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Puntuar">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal de puntuacion -->
+		
+		<!-- Comienzo del modal de modificacion de reserva-->
+		<div id="modal_mod" class="modal">
+    		<div class="modal-content">
+				<br>
+				<br>
+      			<h4>Modifica tu reserva!!!</h4>
+				<br>
+				<br>
+      			<p>Elige la nueva fecha de comienzo y fin de tu reserva y presiona Modificar Reserva.</p>
+				<br>
+				<br>
+				<form name="reserva" method="post" onSubmit="return validarReserva()" action="funciones/modificareserva.php">
+					<div class="input-field">
+						<div class="grey-text" > Comienzo de reserva </div>
+						<div class="grey-text" > Actual: </div>
+						<input disabled type="text" name="fini" id="fini" value="">
+						<input type="hidden" name="idreserva" id="idreserva">
+						<input name="fechainicio" type="date" class="datepicker" id="fechainicio" title="Fecha de Inicio">
+	                </div>
+					<br>
+					<div class="center">
+						Hasta
+					</div>
+					<br>
+					<div class="input-field">
+						<div class="grey-text"> Fin de reserva </div>
+						<div class="grey-text"> Actual: </div>
+						<input disabled type="text" name="ffin" id="ffin" value=""/>
+						<input name="fechafin" type="date" class="datepicker" id="fechafin" title="Fecha de Fin">
+	                </div>
+					<br>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Modifica Reserva">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin de los modals para usuarios registrados -->
 		
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
@@ -223,15 +300,15 @@
 										<td bgcolor="#ffff99" class="center">'.$fechafin.'</td>
 										<td bgcolor="#ffff99" class="center">'.ucwords(strtolower($estado)).'</td>
 										<td bgcolor="#ffff99" class="center">'.$fechaalta.'</td>
-										<td bgcolor="#ffff99" class="center"><a class="right waves-effect waves-light btn blue z-depth-2">Modificar</a></td>
-										<td bgcolor="#ffff99" class="center"><a class="right waves-effect waves-light btn purple z-depth-2">Cancelar</a></td>
-										<td bgcolor="#ffff99" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Calificar</a></td>
 										<td bgcolor="#ffff99" class="center">
 											<form action="vercouch.php" method="post">
 												<input type="hidden" name="id" value="'.$idcouch.'">
 												<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
 											</form>
 										</td>
+										<td bgcolor="#ffff99" class="center"><a class="right waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" data-idreserva="'.$idreserva.'" data-fechainicio="'.$fechainicio.'" data-fechafin="'.$fechafin.'" href="#modal_mod">Modificar Reserva</a></td>
+										<td bgcolor="#ffff99" class="center"><a class="center waves-effect waves-light btn red z-depth-2">Cancelar</a></td>
+										<td bgcolor="#ffff99" class="center"></td>
 									</tr>';
 								} else {
 									if($estado=='confirmada') {
@@ -241,28 +318,30 @@
 											<td bgcolor="#b2d8b2" class="center">'.$fechafin.'</td>
 											<td bgcolor="#b2d8b2" class="center">'.ucwords(strtolower($estado)).'</td>
 											<td bgcolor="#b2d8b2" class="center">'.$fechaalta.'</td>
-											<td bgcolor="#b2d8b2" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Modificar</a></td>
-											<td bgcolor="#b2d8b2" class="center">';
-											if ($query_result['FechaInicio'] > $hoy) {
-												echo '<a class="right waves-effect waves-light btn purple z-depth-2">Cancelar</a>';
-											} else {
-												echo '<a class="disabled right waves-effect waves-light btn z-depth-2">Cancelar</a>';
-											} echo'
-											</td>
-											<td bgcolor="#b2d8b2" class="center">';
-											if ($puedevotar){
-												echo '<a class="right waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" data-idcouch="'.$idcouch.'" data-idreserva="'.$idreserva.'" href="#modal_pun">Calificar</a>';
-											}else{
-												echo '<a class="disabled right waves-effect waves-light btn z-depth-2">Calificar</a>';
-											}
-										echo '</td>
 											<td bgcolor="#b2d8b2" class="center">
 												<form action="vercouch.php" method="post">
 													<input type="hidden" name="id" value="'.$idcouch.'">
 													<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
 												</form>
-											</td>
-										</tr>';
+											</td>';
+											$cancelar=false;
+											$calificar=false;
+											if ($query_result['FechaInicio'] > $hoy) {
+												echo '<td bgcolor="#b2d8b2" class="center"><a class="center waves-effect waves-light btn red z-depth-2">Cancelar</a></td>';
+												$cancelar=true;
+											}
+											if ($puedevotar){
+												echo '<td bgcolor="#b2d8b2" class="center"><a class="center waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" data-idcouch="'.$idcouch.'" data-idreserva="'.$idreserva.'" href="#modal_pun">Calificar</a></td>';
+												$calificar=true;
+											}
+											echo'<td bgcolor="#b2d8b2" class="center"></td>';
+											if (!$cancelar){
+												echo '<td bgcolor="#b2d8b2" class="center"></td>';
+											}
+											if (!$calificar){
+												echo '<td bgcolor="#b2d8b2" class="center"></td>';
+											}
+											echo '</tr>';
 									} else {
 										if($estado=='rechazada') {
 											echo '<tr>
@@ -271,15 +350,15 @@
 												<td bgcolor="#ffb2b2" class="center">'.$fechafin.'</td>
 												<td bgcolor="#ffb2b2" class="center">'.ucwords(strtolower($estado)).'</td>
 												<td bgcolor="#ffb2b2" class="center">'.$fechaalta.'</td>
-												<td bgcolor="#ffb2b2" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Modificar</a></td>
-												<td bgcolor="#ffb2b2" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Cancelar</a></td>
-												<td bgcolor="#ffb2b2" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Calificar</a></td>
 												<td bgcolor="#ffb2b2" class="center">
 													<form action="vercouch.php" method="post">
 														<input type="hidden" name="id" value="'.$idcouch.'">
 														<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
 													</form>
 												</td>
+												<td bgcolor="#ffb2b2" class="center"></td>
+												<td bgcolor="#ffb2b2" class="center"></td>
+												<td bgcolor="#ffb2b2" class="center"></td>
 											</tr>';
 										} else {
 											if($estado=='cancelada') {
@@ -289,15 +368,20 @@
 												<td bgcolor="#cccccc" class="center">'.$fechafin.'</td>
 												<td bgcolor="#cccccc" class="center">'.ucwords(strtolower($estado)).'</td>
 												<td bgcolor="#cccccc" class="center">'.$fechaalta.'</td>
-												<td bgcolor="#cccccc" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Modificar</a></td>
-												<td bgcolor="#cccccc" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Cancelar</a></td>
-												<td bgcolor="#cccccc" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Calificar</a></td>
 												<td bgcolor="#cccccc" class="center">
 													<form action="vercouch.php" method="post">
 														<input type="hidden" name="id" value="'.$idcouch.'">
 														<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
 													</form>
-												</td>
+												</td>';
+												if (($query_result['Canc_Couch']==1)&&($query_result['Calif_Huesped']==0)){
+													echo '<td bgcolor="#cccccc" class="center"><a class="center waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" data-idcouch="'.$idcouch.'" data-idreserva="'.$idreserva.'" href="#modal_pun_usu">Calificar</a></td>';
+												}else{
+													echo '<td bgcolor="#cccccc" class="center"></td>';
+												}
+												echo '
+												<td bgcolor="#cccccc" class="center"></td>
+												<td bgcolor="#cccccc" class="center"></td>
 											</tr>';
 											} else { //Reservas vencidas
 												echo '<tr>
@@ -306,15 +390,15 @@
 												<td bgcolor="#c7e9ed" class="center">'.$fechafin.'</td>
 												<td bgcolor="#c7e9ed" class="center">'.ucwords(strtolower($estado)).'</td>
 												<td bgcolor="#c7e9ed" class="center">'.$fechaalta.'</td>
-												<td bgcolor="#c7e9ed" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Modificar</a></td>
-												<td bgcolor="#c7e9ed" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Cancelar</a></td>
-												<td bgcolor="#c7e9ed" class="center"><a class="disabled right waves-effect waves-light btn z-depth-2">Calificar</a></td>
 												<td bgcolor="#c7e9ed" class="center">
 													<form action="vercouch.php" method="post">
 														<input type="hidden" name="id" value="'.$idcouch.'">
 														<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
 													</form>
 												</td>
+												<td bgcolor="#c7e9ed" class="center"></td>
+												<td bgcolor="#c7e9ed" class="center"></td>
+												<td bgcolor="#c7e9ed" class="center"></td>
 												</tr>';
 											}
 										}
@@ -346,7 +430,7 @@
 						}
 					}else{
 						$paginaant=$pagina-1;
-						echo '<li class="waves-effect"><a href="misreservas.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+						echo '<li class="waves-effect"><a href="reservashuesped.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
 					}
 					if ($total_paginas > 1){
 						for ($i=1;$i<=$total_paginas;$i++){ 
@@ -354,14 +438,14 @@
 								//si muestro el índice de la página actual, no coloco enlace 
 								echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
 							}else{
-								echo '<li class="waves-effect"><a href="misreservas.php?pagina='.$i.'">'.$i.'</a></li>';
+								echo '<li class="waves-effect"><a href="reservashuesped.php?pagina='.$i.'">'.$i.'</a></li>';
 							}
 						}
 						if ($pagina==$total_paginas){
 							//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 						}else{
 							$paginapos=$pagina+1;
-							echo '<li class="waves-effect"><a href="misreservas.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+							echo '<li class="waves-effect"><a href="reservashuesped.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
 						}
 					}
 				?>
@@ -391,6 +475,7 @@
  		<!-- Adjuntando los archivos JQuery -->
 		<script type="text/javascript" src="js/jquery.min.js"></script>
   		<script type="text/javascript" src="js/materialize.js"></script>
+  		<script type="text/javascript" src="js/funciones.js"></script>
   		<!-- Inicializacion de JS -->
   		<script type="text/javascript">
   			$(document).ready(function(){
@@ -401,8 +486,20 @@
 				$(document).on("click", ".modal-trigger", function () {
 					var idcouch = $(this).data('idcouch');
 					var idreserva = $(this).data('idreserva');
+					var fechainicio = $(this).data('fechainicio');
+					var fechafin = $(this).data('fechafin');
 					$(".modal-content #idcouch").val( idcouch );
 					$(".modal-content #idreserva").val( idreserva );
+					$(".modal-content #fini").val (fechainicio);
+					$(".modal-content #ffin").val (fechafin);
+				});
+				$('.datepicker').pickadate({
+					min:'Today',
+					max:730,
+					selectYears: 2,
+					selectMonths: true,
+					formatSubmit: 'yyyy-mm-dd',
+					hiddenName: true
 				});
   			});
   		</script>

@@ -291,11 +291,11 @@
 									</div>';
 							}else{
 								if ($idusuario) {
-									echo '<div class="col s4">
+									echo '<div class="col s8">
 										  	<a class="right waves-effect waves-light btn light-green z-depth-2 modal-trigger" href="#modal_reg">Reservar</a>
 										  </div>';
 								} else {
-										echo '<div class="col s4">
+										echo '<div class="col s8">
 											  	<a class="right waves-effect waves-light btn light-green z-depth-2 modal-trigger" href="#modal_noreg">Reservar</a>
 										  	  </div>';
 								}
@@ -341,11 +341,8 @@
 								</p>
 							</div>
 							<div class="col s2">
-								<form action="comentarios.php" method="get">
+								<form action="comentarioscouch.php" method="get">
 									<input type="hidden" name="idcouch" value="'.$idcouch.'">
-									<input type="hidden" name="titulo" value="'.$titulo.'">
-									<input type="hidden" name="ubicacion" value="'.$ubicacion.'">
-									<input type="hidden" name="tipodecouch" value="'.$tipoDeCouch.'">
 									<input class="right waves-effect waves-light btn light-green z-depth-2" type="submit" value="Puntajes">
 								</form>
 							</div>';

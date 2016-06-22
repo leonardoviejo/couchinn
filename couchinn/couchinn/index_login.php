@@ -324,4 +324,9 @@
 </html>
 <?php 
 	}	
+	
+	
+	/*Consulta busqueda +-
+	SELECT * FROM reserva WHERE Id_Couch='1' and Visible='1' and Estado='confirmada' and Id_Reserva not In ( SELECT Id_Reserva FROM reserva WHERE ('2016-01-01' between FechaInicio and FechaFin) or ('2018-01-01' between FechaInicio and FechaFin) or (('2016-01-01'<FechaInicio)and('2018-01-01'<FechaInicio)) or (('2018-01-01'>FechaFin)and ('2016-01-01'<FechaFin)))
+	*/
 ?>

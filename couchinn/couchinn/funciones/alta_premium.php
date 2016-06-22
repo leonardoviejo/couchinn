@@ -9,7 +9,7 @@
 	$invalidas = 1111111111111111;
 	
 	//Validar datos
-	$consulta = "SELECT * FROM usuario WHERE Id_Usuario= '$idusuario'";
+	$consulta = "SELECT * FROM usuario WHERE Id_Usuario= '$idusuario' and Visible=1";
 	$consulta_execute = $conexion->query($consulta);
 	
 	if($consulta_execute->num_rows){

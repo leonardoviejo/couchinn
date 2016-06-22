@@ -33,13 +33,13 @@
 		$pagina = $_GET["pagina"];
 		$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 	}
-	// Selecciono los couchs del usuario con reservas para mostrar en el paginado
+	// Selecciono los couchs del usuario para mostrar en el paginado
 	$consulta = "SELECT * FROM couch WHERE Visible=1 AND Id_Usuario=$idusuario";
 	$consulta_execute = $conexion->query($consulta);
 	$total_resultados=$consulta_execute->num_rows;
 	$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
 
-	// Selecciono los couchs del usuario con reservas para mostrar por pagina
+	// Selecciono los couchs del usuario para mostrar por pagina
 	$consulta_couchs = "SELECT * FROM couch WHERE Id_Usuario='$idusuario' AND Visible=1 LIMIT ".$inicio.",".$TAMANO_PAGINA."";
 	$couchs_usuario = $conexion->	query($consulta_couchs);
 
@@ -142,11 +142,11 @@
 		<div id="modal_pun" class="modal">
     		<div class="modal-content">
 				<br>
-      			<h4>Ya has visitado este couch!!!</h4>
+      			<h4>Este usuario ha visitado tu couch!!!</h4>
 				<br>
-      			<p>Por favor puntua y escribe un breve comentario acerca de tu experiencia en este Couch, esto servirá para que todos los Couchs mejoren su servicio y atención.</p>
+      			<p>Por favor puntua y escribe un breve comentario acerca de tu experiencia con este usuario.</p>
 				<br>
-				<form name="puntuacion" method="post" onSubmit="return validarPuntuacion()" action="funciones/puntuacouch.php">
+				<form name="puntuacion" method="post" action="funciones/puntuahuesped.php">
 					<div class="input-field">
 						<select class="browser-default" required name="puntaje" id="puntaje">
 							<option value="" disabled selected>Elige un puntaje...</option>
@@ -165,7 +165,6 @@
 					<br>
 					<div class="divider"></div>
 					<?php echo '<input type="hidden" name="idreserva" id="idreserva" >';
-						echo '<input type="hidden" name="idcouch" id="idcouch">';
 						echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';
 					?>
 					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Puntuar">
@@ -174,87 +173,192 @@
     		</div>
   		</div>
 		<!-- Fin del modal de puntuacion -->
+		
+		<!-- Comienzo del modal de Cancelar -->
+		<div id="modal_cancelar" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>Estás cancelando una reserva confirmada!!!</h4>
+				<br>
+      			<p>Este paso no se puede deshacer. Ten en cuenta que esto permite que el huesped pueda calificarte de forma negativa.</p>
+				<br>
+				<form name="cancelar" method="post"  action="funciones/canc_reserva_couch.php">
+					<?php echo '<input type="hidden" name="idreserva" id="idreserva" >'; ?>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Cancelar Reserva">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal de Cancelar -->
 
 		<!-- Contenido de pagina-->
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
         		<br>
-        	    	<div class="center grey-text text-darken-2">
-                        <h1> Reservas de Mis Couchs </h1>
-                    </div>
-					<br>
-					<div class="divider"></div>
-					<br>
-					<div>
-					<?php if($couchs_usuario->num_rows) {
-						echo '<ul class="collapsible" data-collapsible="accordion">';
-						while($couch = $couchs_usuario->fetch_array()) {
-							$idcouch = $couch['Id_Couch'];
-							$titulo = $couch ['Titulo'];
-							$idlocalidad = $couch['Id_Localidad'];
-							// Obtengo la ubicacion del couch
-							$consultaubicacion= "SELECT l.Localidad as Localidad, p.Provincia as Provincia FROM localidades l inner JOIN provincias p ON l.Id_Provincia=p.Id WHERE l.Id='$idlocalidad'";
-							$resultadoubicacion = $conexion->query($consultaubicacion);
-							$resultado = $resultadoubicacion->fetch_assoc();
-							$ubicacion = $resultado["Localidad"].', '.$resultado["Provincia"];
-							echo '<li>
-								<div class="collapsible-header"><i class="material-icons">home</i>'.$titulo.' - '.$ubicacion.'</div>';
-							//Obtengo las reservas de un couch
-							$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.Id_Couch, r.FechaInicio, r.FechaFin, r.Estado, r.Calif_Couch, r.FechaAlta, u.Nombre AS Nombre, u.Apellido AS Apellido, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch inner JOIN usuario u ON r.Id_Usuario = u.Id_Usuario WHERE r.Visible=1 AND r.Id_Couch='$idcouch' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera'";
-							$consulta_execute = $conexion->query($consulta);
-							if($consulta_execute->num_rows) {
-								while($query_result = $consulta_execute->fetch_array()) {
-									$idreserva=$query_result['Id_Reserva'];
-									$estado=$query_result['Estado'];
-									$nombre = $query_result['Nombre'].' '.$query_result['Apellido'];
-									$fechainicio = $query_result['FechaInicio'];
-									$fechainicio = date('d-m-Y', strtotime($fechainicio));
-									$fechafin = $query_result['FechaFin'];
-									$fechafin = date('d-m-Y', strtotime($fechafin));
-									$fechaalta = $query_result['FechaAlta'];
-									$fechaalta = date('d-m-Y', strtotime($fechaalta));
-									echo '<div class="collapsible-body">
-										<table class="responsive-table">
-											<thead>
-												<tr>
-													<th data-field="name" class="center">Nombre de Huesped</th>
-													<th data-field="name" class="center">Fecha de inicio</th>
-													<th data-field="name" class="center">Fecha de fin</th>
-													<th data-field="name" class="center">Estado</th>
-													<th data-field="name" class="center">Fecha de Solicitud</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td class="center">'.$nombre.'</td>
-													<td class="center">'.$fechainicio.'</td>
-													<td class="center">'.$fechafin.'</td>
-													<td class="center">'.ucwords(strtolower($estado)).'</td>
-													<td class="center">'.$fechaalta.'</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>';
+        	    <div class="center grey-text text-darken-2">
+                    <h1> Reservas de Mis Couchs </h1>
+                </div>
+				<br>
+				<div class="divider"></div>
+				<br>
+				<div>
+				<?php if($couchs_usuario->num_rows) {
+					echo '<ul class="collapsible" data-collapsible="accordion">';
+					while($couch = $couchs_usuario->fetch_array()) {
+						$idcouch = $couch['Id_Couch'];
+						$titulo = $couch ['Titulo'];
+						$idlocalidad = $couch['Id_Localidad'];
+						// Obtengo la ubicacion del couch
+						$consultaubicacion= "SELECT l.Localidad as Localidad, p.Provincia as Provincia FROM localidades l inner JOIN provincias p ON l.Id_Provincia=p.Id WHERE l.Id='$idlocalidad'";
+						$resultadoubicacion = $conexion->query($consultaubicacion);
+						$resultado = $resultadoubicacion->fetch_assoc();
+						$ubicacion = $resultado["Localidad"].', '.$resultado["Provincia"];
+						echo '<li>
+							<div class="collapsible-header"><i class="material-icons">home</i>'.$titulo.' - '.$ubicacion.'</div>';
+						//Obtengo las reservas de un couch
+						$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.Id_Couch, r.FechaInicio, r.FechaFin, r.Estado, r.Calif_Couch, r.FechaAlta, u.Nombre AS Nombre, u.Apellido AS Apellido, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch inner JOIN usuario u ON r.Id_Usuario = u.Id_Usuario WHERE r.Visible=1 AND r.Id_Couch='$idcouch' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera'";
+						$consulta_execute = $conexion->query($consulta);
+						if($consulta_execute->num_rows) {
+							echo '<div class="collapsible-body">
+									<table class="responsive-table">
+										<thead>
+											<tr>
+												<th data-field="name" class="center">Nombre de Huesped</th>
+												<th data-field="name" class="center">Fecha de inicio</th>
+												<th data-field="name" class="center">Fecha de fin</th>
+												<th data-field="name" class="center">Estado</th>
+												<th data-field="name" class="center">Fecha de Solicitud</th>
+											</tr>
+										</thead>';
+							while($query_result = $consulta_execute->fetch_array()) {
+								$idreserva=$query_result['Id_Reserva'];
+								$idusuariosolicitud=$query_result['Id_Usuario'];
+								$estado=$query_result['Estado'];
+								$nombre = $query_result['Nombre'].' '.$query_result['Apellido'];
+								$fechainicio = $query_result['FechaInicio'];
+								$fechainicio = date('d-m-Y', strtotime($fechainicio));
+								$fechafin = $query_result['FechaFin'];
+								$fechafin = date('d-m-Y', strtotime($fechafin));
+								$fechaalta = $query_result['FechaAlta'];
+								$fechaalta = date('d-m-Y', strtotime($fechaalta));
+								if (($query_result['FechaFin']<$hoy)&&($query_result['Calif_Couch']==0)&&($query_result['Estado']=='confirmada')) {
+									$puedevotar=true;
+								}else{
+									$puedevotar=false;
 								}
-							} else {
-								echo '<div class="collapsible-body">';
-									echo 'No tienes reservas para este couch';
-								echo '</div>';
+								echo '<tbody>';
+								if ($estado=='espera'){
+									echo 	'<tr>
+												<td bgcolor="#ffff99" class="center">'.$nombre.'</td>
+												<td bgcolor="#ffff99" class="center">'.$fechainicio.'</td>
+												<td bgcolor="#ffff99" class="center">'.$fechafin.'</td>
+												<td bgcolor="#ffff99" class="center">'.ucwords(strtolower($estado)).'</td>
+												<td bgcolor="#ffff99" class="center">'.$fechaalta.'</td>
+												<td bgcolor="#ffff99" class="center"><a class="center waves-effect waves-light btn blue z-depth-2" type="button" onClick="location.href=`verperfil.php?id='.$idusuariosolicitud.'`">Ver Perfil</a></td>
+												<td bgcolor="#ffff99" class="center">
+													<form action="funciones/rechazareserva.php" method="post">
+														<input type="hidden" name="idreserva" value="'.$idreserva.'">
+														<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Rechazar">
+													</form>
+												</td>
+												<td bgcolor="#ffff99" class="center">
+													<form action="funciones/aceptareserva.php" method="post">
+														<input type="hidden" name="idreserva" value="'.$idreserva.'">
+														<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Aceptar">
+													</form>
+												</td>
+											</tr>';
+								}else{
+									if ($estado=='confirmada'){
+									echo 	'<tr>
+												<td bgcolor="#b2d8b2" class="center">'.$nombre.'</td>
+												<td bgcolor="#b2d8b2" class="center">'.$fechainicio.'</td>
+												<td bgcolor="#b2d8b2" class="center">'.$fechafin.'</td>
+												<td bgcolor="#b2d8b2" class="center">'.ucwords(strtolower($estado)).'</td>
+												<td bgcolor="#b2d8b2" class="center">'.$fechaalta.'</td>
+												<td bgcolor="#b2d8b2" class="center"><a class="center waves-effect waves-light btn blue z-depth-2" type="button" onClick="location.href=`verperfil.php?id='.$idusuariosolicitud.'`">Ver Perfil</a></td>';
+												$calificar=false;
+												$cancelar=false;
+												if($query_result['FechaInicio']>$hoy) {
+													echo '<td bgcolor="#b2d8b2" class="center"><a class="waves-effect waves-light btn red z-depth-2 modal-trigger" data-idreserva="'.$idreserva.'" href="#modal_cancelar">Cancelar</a></td>';
+													$cancelar=true;
+												}
+												if ($puedevotar){
+													echo '<td bgcolor="#b2d8b2" class="center"><a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" data-idreserva="'.$idreserva.'" href="#modal_pun">Calificar</a></td>';
+													$calificar=true;
+												}
+												if (!$cancelar) {
+													echo '<td bgcolor="#b2d8b2" class="center"></td>';
+												}
+												if (!$calificar) {
+													echo '<td bgcolor="#b2d8b2" class="center"></td>';
+												}
+												echo '</tr>';
+									}else{
+										if ($estado=='rechazada'){
+										echo 	'<tr>
+													<td bgcolor="#ffb2b2" class="center">'.$nombre.'</td>
+													<td bgcolor="#ffb2b2" class="center">'.$fechainicio.'</td>
+													<td bgcolor="#ffb2b2" class="center">'.$fechafin.'</td>
+													<td bgcolor="#ffb2b2" class="center">'.ucwords(strtolower($estado)).'</td>
+													<td bgcolor="#ffb2b2" class="center">'.$fechaalta.'</td>
+													<td bgcolor="#ffb2b2" class="center"><a class="center waves-effect waves-light btn blue z-depth-2" type="button" onClick="location.href=`verperfil.php?id='.$idusuariosolicitud.'`">Ver Perfil</a></td>
+													<td bgcolor="#ffb2b2" class="center"></td>
+													<td bgcolor="#ffb2b2" class="center"></td>
+											</tr>';	
+										}else{
+											if ($estado=='cancelada'){
+											echo 	'<tr>
+														<td bgcolor="#cccccc" class="center">'.$nombre.'</td>
+														<td bgcolor="#cccccc" class="center">'.$fechainicio.'</td>
+														<td bgcolor="#cccccc" class="center">'.$fechafin.'</td>
+														<td bgcolor="#cccccc" class="center">'.ucwords(strtolower($estado)).'</td>
+														<td bgcolor="#cccccc" class="center">'.$fechaalta.'</td>
+														<td bgcolor="#cccccc" class="center"><a class="center waves-effect waves-light btn blue z-depth-2" type="button" onClick="location.href=`verperfil.php?id='.$idusuariosolicitud.'`">Ver Perfil</a></td>
+														<td bgcolor="#cccccc" class="center"></td>
+														<td bgcolor="#cccccc" class="center"></td>
+											</tr>';	
+											}else{ //Vencida
+											echo 	'<tr>
+														<td bgcolor="#c7e9ed" class="center">'.$nombre.'</td>
+														<td bgcolor="#c7e9ed" class="center">'.$fechainicio.'</td>
+														<td bgcolor="#c7e9ed" class="center">'.$fechafin.'</td>
+														<td bgcolor="#c7e9ed" class="center">'.ucwords(strtolower($estado)).'</td>
+														<td bgcolor="#c7e9ed" class="center">'.$fechaalta.'</td>
+														<td bgcolor="#c7e9ed" class="center"><a class="center waves-effect waves-light btn blue z-depth-2" type="button" onClick="location.href=`verperfil.php?id='.$idusuariosolicitud.'`">Ver Perfil</a></td>
+														<td bgcolor="#c7e9ed" class="center"></td>
+														<td bgcolor="#c7e9ed" class="center"></td>
+													</tr>';	
+											}
+										}
+									}
+								}
+								echo 		'</tr>
+										</tbody>';
 							}
-							echo '</li>';
-							}
-					echo '</ul>';
-					} else {
-						echo '<br>
-						<div class="center grey-text text-darken-2">
-								<h5>No tienes ningún couch registrado.</h5>
-						</div>
-						<br>
-						<br>
-						<br>';
+							echo '</table>
+								</div>';
+						}else{
+							echo 	'<div class="collapsible-body center grey-text text-darken-2">
+										<h5>No tienes reservas para este couch</h5>
+									</div>';
+						}
+						echo '</li>';
 					}
-					?>
+				echo '</ul>';
+				} else {
+					echo '<br>
+					<div class="center grey-text text-darken-2">
+							<h5>No tienes ningún couch registrado.</h5>
 					</div>
+					<br>
+					<br>
+					<br>';
+				}
+				?>
+				</div>
 				<ul class="pagination center">
 				<?php
 					if ($pagina==1){
@@ -285,7 +389,6 @@
 					}
 				?>
 				</ul>
-
         </div>
         <!-- Fin Contenido de pagina-->
 
@@ -318,9 +421,7 @@
 				$(".button-collapse").sideNav();
 				$('.modal-trigger').leanModal();
 				$(document).on("click", ".modal-trigger", function () {
-					var idcouch = $(this).data('idcouch');
 					var idreserva = $(this).data('idreserva');
-					$(".modal-content #idcouch").val( idcouch );
 					$(".modal-content #idreserva").val( idreserva );
 				});
   			});

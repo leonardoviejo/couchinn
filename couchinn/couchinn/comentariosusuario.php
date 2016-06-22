@@ -12,10 +12,10 @@
 	else 
 	{
 	include('funciones/config.php');
-	if (empty($_GET['idcouch'])){
+	if (empty($_GET['idperfil'])){
 		header("Location: index.php");
 	}else{
-		$idcouch = $_GET["idcouch"];
+		$idperfil = $_GET["idperfil"];
 	}
 	// Obtengo los datos del usuario
 	$consulta="SELECT * FROM usuario WHERE Id_Usuario='$idusuario'";
@@ -34,40 +34,27 @@
 		$pagina = $_GET["pagina"];
 		$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 	}
-	// Selecciono los datos del couch
-	$consulta = "SELECT * FROM couch WHERE Visible=1 AND Id_Couch='$idcouch'";
+	// Selecciono los datos del usuario
+	$consulta = "SELECT * FROM usuario WHERE Visible=1 AND Id_Usuario='$idperfil'";
 	$consulta_execute = $conexion->query($consulta);
 	$resultado = $consulta_execute->fetch_array();
-	$titulo=$resultado['Titulo'];
-	$idlocalidad=$resultado['Id_Localidad'];
-	$idtipo=$resultado['Id_TipoDeCouch'];
-	
-	//Busqueda de tipo de couch
-	$consulta2= "SELECT Nombre FROM tipodecouch WHERE Id_Tipo='$idtipo'";
-	$resulta2 = $conexion->query($consulta2);
-	$row2 = $resulta2->fetch_assoc();
-	$tipodecouch = $row2["Nombre"];
-	
-	//Busqueda de ciudad y provincia
-	$consultaubicacion= "SELECT l.Localidad as Localidad, p.Provincia as Provincia FROM localidades l inner JOIN provincias p ON l.Id_Provincia=p.Id WHERE l.Id='$idlocalidad'";
-	$resultadoubicacion = $conexion->query($consultaubicacion);
-	$resultado = $resultadoubicacion->fetch_assoc();
-	$ubicacion = $resultado["Localidad"].', '.$resultado["Provincia"];
+	$nombre=$resultado['Nombre'].' '.$resultado['Apellido'];
+	$calificacion=round($resultado['Total_Calif']/$resultado['Cant_Calif']);
 	
 	// Selecciono los mensajes para mostrar para el paginado
-	$consulta = "SELECT * FROM punt_couch WHERE Visible=1 AND Id_Couch='$idcouch'";
+	$consulta = "SELECT * FROM punt_usuario WHERE Visible=1 AND Id_Usuario='$idperfil'";
 	$consulta_execute = $conexion->query($consulta);
 	$total_resultados=$consulta_execute->num_rows;
 	$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
 
-	// Selecciono los couch del usuario para mostrar por pagina
-	$consulta = "SELECT u.Nombre as Nombre, u.Apellido as Apellido, p.puntaje as Puntaje, p.Mensaje as Mensaje FROM usuario u inner JOIN punt_couch p ON u.Id_Usuario = p.Id_Usuario WHERE p.Id_Couch='$idcouch' and p.Visible=1 LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+	// Selecciono los mensajes para mostrar por pagina
+	$consulta = "SELECT u.Nombre as Nombre, u.Apellido as Apellido, p.puntaje as Puntaje, p.Mensaje as Mensaje FROM usuario u inner JOIN punt_usuario p ON u.Id_Usuario = p.Id_Usuario_Punt WHERE p.Id_Usuario='$idperfil' and p.Visible=1 LIMIT ".$inicio.",".$TAMANO_PAGINA."";
 	$consulta_execute = $conexion->query($consulta);	
 ?>
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>CouchInn - Comentarios - <?php echo $titulo?></title>
+		<title>CouchInn - Comentarios - <?php echo $nombre?></title>
 		<!-- Importacion Iconos de Google -->
  	 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Importacion de materialize css-->
@@ -166,36 +153,35 @@
 				</div>
 				<div class="divider"></div>
 				<div class="row">
-						<div class="col s6 offset-s3 center grey-text text-darken-2">
-							<?php echo '<h5><b>Título: '.$titulo.' </b></h5>'; ?>
-						</div>
+					<div class="col s6 offset-s3 center grey-text text-darken-2">
+						<?php echo '<h5><b>Nombre: '.$nombre.' </b></h5>'; ?>
 					</div>
-					<div class="row">
-						<div class="col s6 offset-s3 center grey-text text-darken-2">
-							<?php echo '<h5><b>Ubicación: '.$ubicacion.' </b></h5>'; ?>
-						</div>
+				</div>
+				<div class="row">
+					<div class="col s6 offset-s3 center grey-text text-darken-2">
+						<?php echo '<h5><b>Calificacion Promedio: '.$calificacion.' </b></h5>'; ?>
 					</div>
-					<div class="row">
-						<div class="col s6 offset-s3 center grey-text text-darken-2">
-							<?php echo '<h5><b>Tipo: '.$tipodecouch.' </b></h5>'; ?>
-						</div>
-					</div>
-					<div class="divider"></div>
+				</div>
+				<div class="divider"></div>
 				<br>
 				<?php if($consulta_execute->num_rows) { ?>
 					<ul class="collapsible" data-collapsible="expandable">
 						<?php 
 						while($query_result = $consulta_execute->fetch_array()) {
-							$nombre = $query_result["Nombre"].' '.$query_result["Apellido"];
+							$nombreyapellido = $query_result["Nombre"].' '.$query_result["Apellido"];
 							$mensaje = $query_result['Mensaje'];
 							$puntaje = $query_result['Puntaje'];
 							echo '
 							<li>
-								<div class="collapsible-header"><i class="material-icons">person</i>'.$nombre.' - Puntaje: '.$puntaje.'</div>
+								<div class="collapsible-header"><i class="material-icons">person</i>'.$nombreyapellido.' - Puntaje: '.$puntaje.'</div>
 								<div class="collapsible-body"><p>'.$mensaje.'</p></div>
 							</li>';
 						}
 						echo '</ul>';
+					}else{
+						echo '	<div class="col s6 offset-s3 center grey-text text-darken-2">
+									<h5><b>No existen puntajes para el usuario</b></h5>
+								</div>';
 					}
 					?>
 					<ul class="pagination center">
@@ -208,7 +194,7 @@
 							}
 						}else{
 							$paginaant=$pagina-1;
-							echo '<li class="waves-effect"><a href="comentarios.php?idcouch='.$idcouch.'&pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+							echo '<li class="waves-effect"><a href="comentariosusuario.php?idcouch='.$idcouch.'&pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
 						}
 						if ($total_paginas > 1){
 							for ($i=1;$i<=$total_paginas;$i++){ 
@@ -216,14 +202,14 @@
 									//si muestro el índice de la página actual, no coloco enlace 
 									echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
 								}else{
-									echo '<li class="waves-effect"><a href="comentarios.php?idcouch='.$idcouch.'&pagina='.$i.'">'.$i.'</a></li>';
+									echo '<li class="waves-effect"><a href="comentariosusuario.php?idcouch='.$idcouch.'&pagina='.$i.'">'.$i.'</a></li>';
 								}
 							}
 							if ($pagina==$total_paginas){
 								//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 							}else{
 								$paginapos=$pagina+1;
-								echo '<li class="waves-effect"><a href="comentarios.php?idcouch='.$idcouch.'&pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+								echo '<li class="waves-effect"><a href="comentariosusuario.php?idcouch='.$idcouch.'&pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
 							}
 						}
 					?>

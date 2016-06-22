@@ -96,16 +96,16 @@
 	
 	function validarReserva(){
 		var fechainicio = document.getElementById("fechainicio").value;
-		fechainicio=Date.parse(fechainicio);
+		fechainicioparse=Date.parse(fechainicio);
 		var fechafin = document.getElementById("fechafin").value;
-		fechafin=Date.parse(fechafin);
+		fechafinparse=Date.parse(fechafin);
 		var mensaje="Se ha/n encontrado el/los siguente/s error/es: ";
 		var error=false;
 		if ((fechainicio == "")||(fechafin == "")){
 			mensaje=mensaje+ "Debe seleccionar las dos fechas";
 			error=true;
 		}
-		if (fechainicio>fechafin){
+		if (fechainicioparse>fechafinparse){
 			mensaje=mensaje+" ,Verifique que la fecha del comienzo de reserva es anterior a la fecha de fin de reserva.";
 			error=true;
 		}
