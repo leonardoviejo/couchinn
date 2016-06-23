@@ -19,7 +19,8 @@
 		$fila = $result->fetch_assoc();
 		$id=$fila['Id_Usuario'];
 		if( strcmp($password,$fila['Password']) == 0 ){
-			$sesion->set($id);	
+			$sesion->set($id);
+			require_once("actualizareserva.php");
 			header("location: ../index_login.php");					
 		}else{
 			?>	<script> 

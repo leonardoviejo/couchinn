@@ -59,6 +59,11 @@
 	</head>
 
 	<body>
+		<a href="altacouch.php" accesskey="c"></a>
+		<a href="miscouchs.php" accesskey="m"></a>
+		<a href="misreservas.php" accesskey="r"></a>
+		<a href="miperfil.php" accesskey="p"></a>
+		<a href="ayuda.php" accesskey="a"></a>
 		<!-- Estructuras del menu deslizables -->
 		<ul class="dropdown-content" id="desplegable_couchs">
 			<li><a class="light-green-text" href="miscouchs.php">Mis Couchs</a></li>
@@ -192,7 +197,43 @@
     		</div>
   		</div>
 		<!-- Fin del modal de Cancelar -->
-
+		
+		<!-- Comienzo del modal de puntuacion huesped por cancelacion-->
+		<div id="modal_pun_cou" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>El usuario que habia solicitado la reserva la ha cancelado!!!</h4>
+				<br>
+      			<p>Por favor puntua y escribe un breve comentario.</p>
+				<br>
+				<form name="puntuacion" method="post" action="funciones/puntuahuespedcancelado.php">
+					<div class="input-field">
+						<select class="browser-default" required name="puntaje" id="puntaje"> 
+							<option value="" disabled selected>Elige un puntaje...</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+					</div>
+					<br>
+					<div class="input-field">
+						<textarea id="mensaje" name="mensaje" class="materialize-textarea" length="250" maxlength="250" class="validate" required="required"></textarea>
+						<label for="descripcion">Mensaje</label>
+					</div>
+					<br>
+					<div class="divider"></div>
+					<?php echo '<input type="hidden" name="idreserva" id="idreserva" >';
+						echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';						
+					?>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Puntuar">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal de puntuacion huesped por cancelacion-->
+		
 		<!-- Contenido de pagina-->
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -218,7 +259,7 @@
 						echo '<li>
 							<div class="collapsible-header"><i class="material-icons">home</i>'.$titulo.' - '.$ubicacion.'</div>';
 						//Obtengo las reservas de un couch
-						$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.Id_Couch, r.FechaInicio, r.FechaFin, r.Estado, r.Calif_Couch, r.FechaAlta, u.Nombre AS Nombre, u.Apellido AS Apellido, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch inner JOIN usuario u ON r.Id_Usuario = u.Id_Usuario WHERE r.Visible=1 AND r.Id_Couch='$idcouch' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera'";
+						$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.Id_Couch, r.FechaInicio, r.FechaFin, r.Estado, r.Calif_Couch, r.Canc_Huesped, r.FechaAlta, u.Nombre AS Nombre, u.Apellido AS Apellido, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch inner JOIN usuario u ON r.Id_Usuario = u.Id_Usuario WHERE r.Visible=1 AND r.Id_Couch='$idcouch' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera'";
 						$consulta_execute = $conexion->query($consulta);
 						if($consulta_execute->num_rows) {
 							echo '<div class="collapsible-body">
@@ -316,9 +357,14 @@
 														<td bgcolor="#cccccc" class="center">'.$fechafin.'</td>
 														<td bgcolor="#cccccc" class="center">'.ucwords(strtolower($estado)).'</td>
 														<td bgcolor="#cccccc" class="center">'.$fechaalta.'</td>
-														<td bgcolor="#cccccc" class="center"><a class="center waves-effect waves-light btn blue z-depth-2" type="button" onClick="location.href=`verperfil.php?id='.$idusuariosolicitud.'`">Ver Perfil</a></td>
-														<td bgcolor="#cccccc" class="center"></td>
-														<td bgcolor="#cccccc" class="center"></td>
+														<td bgcolor="#cccccc" class="center"><a class="center waves-effect waves-light btn blue z-depth-2" type="button" onClick="location.href=`verperfil.php?id='.$idusuariosolicitud.'`">Ver Perfil</a></td>';
+														if (($query_result['Canc_Huesped']==1)&&($query_result['Calif_Couch']==0)){
+															echo '<td bgcolor="#cccccc" class="center"><a class="center waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" data-idcouch="'.$idcouch.'" data-idreserva="'.$idreserva.'" href="#modal_pun_cou">Calificar</a></td>';
+														}else{
+															echo '<td bgcolor="#cccccc" class="center"></td>';
+														}
+														echo '
+															<td bgcolor="#cccccc" class="center"></td>
 											</tr>';	
 											}else{ //Vencida
 											echo 	'<tr>

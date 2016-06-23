@@ -65,6 +65,11 @@
 	</head>
 	
 	<body>
+		<a href="altacouch.php" accesskey="c"></a>
+		<a href="miscouchs.php" accesskey="m"></a>
+		<a href="misreservas.php" accesskey="r"></a>
+		<a href="miperfil.php" accesskey="p"></a>
+		<a href="ayuda.php" accesskey="a"></a>
 		<!-- Estructuras del menu deslizables -->
 		<ul class="dropdown-content" id="desplegable_couchs">
 			<li><a class="light-green-text" href="miscouchs.php">Mis Couchs</a></li>
@@ -194,7 +199,7 @@
 							}
 						}else{
 							$paginaant=$pagina-1;
-							echo '<li class="waves-effect"><a href="comentariosusuario.php?idcouch='.$idcouch.'&pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+							echo '<li class="waves-effect"><a href="comentariosusuario.php?id='.$idperfil.'&pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
 						}
 						if ($total_paginas > 1){
 							for ($i=1;$i<=$total_paginas;$i++){ 
@@ -202,21 +207,21 @@
 									//si muestro el índice de la página actual, no coloco enlace 
 									echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
 								}else{
-									echo '<li class="waves-effect"><a href="comentariosusuario.php?idcouch='.$idcouch.'&pagina='.$i.'">'.$i.'</a></li>';
+									echo '<li class="waves-effect"><a href="comentariosusuario.php?id='.$idperfil.'&pagina='.$i.'">'.$i.'</a></li>';
 								}
 							}
 							if ($pagina==$total_paginas){
 								//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 							}else{
 								$paginapos=$pagina+1;
-								echo '<li class="waves-effect"><a href="comentariosusuario.php?idcouch='.$idcouch.'&pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+								echo '<li class="waves-effect"><a href="comentariosusuario.php?id='.$idperfil.'&pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
 							}
 						}
 					?>
 					</ul>
 					<div class="row">
 						<div class="col s12registro l12 center">
-							<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Volver" onClick="location.href='vercouch.php?id=<?php echo $idcouch ?>'">
+							<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Volver" onClick="location.href='verperfil.php?id=<?php echo $idperfil ?>'">
 						</div>
 					</div>
 			</div>	

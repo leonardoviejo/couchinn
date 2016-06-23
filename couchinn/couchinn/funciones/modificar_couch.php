@@ -82,11 +82,74 @@
 			$consulta= "SELECT * FROM couch WHERE Id_Couch = '$idcouch'";
 			$consulta_execute = $conexion->query($consulta);
 			$consultafotos = $consulta_execute->fetch_assoc();
+			$rutafoto1=$consultafotos["Foto1"];
 			$rutafoto2=$consultafotos["Foto2"];
+			$rutafoto3=$consultafotos["Foto3"];
 			//Actualizo el Couch.
 			$insertar = "UPDATE `couch` SET `Titulo` = '$titulo', `Id_Provincia` = '$idprovincia', `Id_Localidad` = '$idlocalidad', `Id_TipoDeCouch` = '$tcouch', `Capacidad` = '$capacidad', `Descripcion` = '$descripcion' WHERE `couch`.`Id_Couch` = '$idcouch';";
 			if (!mysqli_query($conexion, $insertar)) {
 				echo "ERROR en la base de datos vuelva a intentarlo más tarde. " . mysqli_error($conexion);
+			}
+			//Eliminacion de imagenes
+			if (isset($_POST['ei3'])){
+				if($rutafoto3<>''){
+					$actualizar = "UPDATE `couch` SET `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
+					if (!mysqli_query($conexion, $actualizar)) {
+						echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
+							location.href="../modificarcouch.php?id='.$idcouch.'";
+						</script>';
+						break;
+					}
+				}
+			}
+			if (isset($_POST['ei2'])){
+				if($rutafoto2<>''){
+					if ($rutafoto3<>''){
+						rename('../'.$rutafoto3,'../'.$rutafoto2);
+						$actualizar = "UPDATE `couch` SET `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
+						if (!mysqli_query($conexion, $actualizar)) {
+							echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
+								location.href="../modificarcouch.php?id='.$idcouch.'";
+							</script>';
+						break;
+						}
+					}else{
+						$actualizar = "UPDATE `couch` SET `Foto2`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
+						if (!mysqli_query($conexion, $actualizar)) {
+							echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
+								location.href="../modificarcouch.php?id='.$idcouch.'";
+							</script>';
+						break;
+						}
+					}
+				}
+			}
+			if (isset($_POST['ei1'])){
+				if ($rutafoto2<>''){
+					if ($rutafoto3<>''){
+						rename('../'.$rutafoto3,'../'.$rutafoto2);
+						$actualizar = "UPDATE `couch` SET `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
+						if (!mysqli_query($conexion, $actualizar)) {
+							echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
+								location.href="../modificarcouch.php?id='.$idcouch.'";
+							</script>';
+						break;
+						}
+					}
+					rename('../'.$rutafoto2,'../'.$rutafoto1);	
+					$actualizar = "UPDATE `couch` SET `Foto2`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
+					if (!mysqli_query($conexion, $actualizar)) {
+						echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
+							location.href="../modificarcouch.php?id='.$idcouch.'";
+						</script>';
+						break;
+					}
+				}else{
+					echo '	<script> alert("No se pueden eliminar todas las fotos.");
+							location.href="../modificarcouch.php?id='.$idcouch.'";
+						</script>';
+						break;
+				}
 			}
 			//Pregunto una por una si la imagen enviada es correcta, en ese caso muevo imagen a su carpeta y agrego la entrada a la base de datos
 			//Para el caso de la imagen 2 y 3 tambien se pregunta si las anteriores existian por que de ser no ser asi

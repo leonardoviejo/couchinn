@@ -58,6 +58,10 @@
 	</head>
 	
 	<body>
+		<a href="altacouch.php" accesskey="c"></a>
+		<a href="miscouchs.php" accesskey="m"></a>
+		<a href="misreservas.php" accesskey="r"></a>
+		<a href="miperfil.php" accesskey="p"></a>
 		<!-- Estructuras del menu deslizables -->
 		<ul class="dropdown-content" id="desplegable_couchs">
 			<li><a class="light-green-text" href="miscouchs.php">Mis Couchs</a></li>

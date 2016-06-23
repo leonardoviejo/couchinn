@@ -66,6 +66,11 @@
 	</head>
 	
 	<body>
+		<a href="altacouch.php" accesskey="c"></a>
+		<a href="miscouchs.php" accesskey="m"></a>
+		<a href="misreservas.php" accesskey="r"></a>
+		<a href="miperfil.php" accesskey="p"></a>
+		<a href="ayuda.php" accesskey="a"></a>
 		<!-- Estructuras del menu deslizables -->
 		<?php
 			if($tipo==1||$tipo==2){		

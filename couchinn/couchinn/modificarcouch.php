@@ -32,10 +32,13 @@
 	{
 		$idcouch = $_POST["id"];
 	}
-	$consulta = "SELECT c.Id_TipoDeCouch, c.Titulo, c.Id_Localidad, c.Capacidad, c.Descripcion, c.Foto1, c.Foto2, c.Foto3, t.Nombre AS NombreTipo FROM couch c inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo WHERE c.Id_Couch='$idcouch' AND c.Visible=1";
+	$consulta = "SELECT c.Id_TipoDeCouch, c.Id_Usuario, c.Titulo, c.Id_Localidad, c.Capacidad, c.Descripcion, c.Foto1, c.Foto2, c.Foto3, t.Nombre AS NombreTipo FROM couch c inner JOIN tipodecouch t ON c.Id_TipoDeCouch = t.Id_Tipo WHERE c.Id_Couch='$idcouch' AND c.Visible=1";
 	$consulta_execute = $conexion->query($consulta);
+	$filacouch = $consulta_execute->fetch_assoc();
+	if ($idusuario <> $filacouch['Id_Usuario']){
+		header("Location: index.php");
+	}
 	if ($consulta_execute->num_rows > 0) {
-		$filacouch = $consulta_execute->fetch_assoc();
 		$titulo = $filacouch['Titulo'];
 		$idtipocouch = $filacouch['Id_TipoDeCouch'];
 		$nombretipocouch = $filacouch['NombreTipo'];
@@ -68,7 +71,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>CouchInn - Crear nuevo couch</title>
+		<title>CouchInn - Modificar Couch</title>
 		<!-- Importacion Iconos de Google -->
  	 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Importacion de materialize css-->
@@ -79,6 +82,11 @@
 	</head>
 	
 	<body>
+		<a href="altacouch.php" accesskey="c"></a>
+		<a href="miscouchs.php" accesskey="m"></a>
+		<a href="misreservas.php" accesskey="r"></a>
+		<a href="miperfil.php" accesskey="p"></a>
+		<a href="ayuda.php" accesskey="a"></a>
 		<!-- Estructuras del menu deslizables -->
 		<ul class="dropdown-content" id="desplegable_couchs">
 			<li><a class="light-green-text" href="miscouchs.php">Mis Couchs</a></li>
@@ -160,23 +168,23 @@
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
-        	<div class="container"> 
+        	<!--div class="container"--> 
     	    	<div class="row">
                 	<br>
         	    	<div class="col s12 center grey-text text-darken-2">
-                        <h1> Crea tu Couch </h1>
+                        <h1> Modificar Couch </h1>
                     </div>
 					<!-- Inicio del Formulario-->
                     <form class="col s12" name="cargacouch" method="post" enctype="multipart/form-data" action="funciones/modificar_couch.php">
       					<div class="row">
-       				 		<div class="input-field col s6">
+       				 		<div class="input-field col s4 offset-s1">
           						<?php echo '<input name="titulo" type="text" value="'.$titulo.'" length="30" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" title="Solo se admiten letras" class="validate" required="required">'; ?>
           						<label for="titulo" data-error="Solo se admiten letras">Título</label>
 								<?php echo '<input type="hidden" name="idcouch" value="'.$idcouch.'">';
 									  echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">'
 								?>
         					</div>
-							<div class="file-field input-field col s6">
+							<div class="file-field input-field col s4">
 								<div class="btn light-green z-depth-2">
 									<span>Subir foto</span>
 									<input type="file" accept="image/jpg" name="imagenes[]" id="imagen1">
@@ -185,12 +193,21 @@
 									<?php echo '<input class="file-path validate" value="'.$foto1.'" type="text" placeholder="Elige una foto">'; ?>
 								</div>
 							</div>
+							<div class="col s2">
+								<img class="materialboxed" width="200" src="<?php echo $foto1; ?>" onerror="src=`imagenes/Logo_mini.jpg`">
+							</div>
+							<div class="col s1">
+								<p>
+									<input type="checkbox" name="ei1" id="ei1"/>
+									<label for="ei1"><i class="material-icons">delete</i></label>
+								</p>
+							</div>
 						</div>
 						<div class="row">
-							<div class="col s6 divider"></div>
+							<div class="divider"></div>
 						</div>
 						<div class="row">	
-							<div class="input-field col s3">
+							<div class="input-field col s2 offset-s1">
 								<select class="browser-default" name="idprovincia" id="idprovincia">
 									<?php echo '<option value="'.$idprovinciacouch.'" selected>'.$provinciacouch.'</option>'; ?>
 									<?php
@@ -202,12 +219,12 @@
 									?>
 								</select>
 							</div>
-							<div class="input-field col s3">
+							<div class="input-field col s2">
 								<select class="browser-default" name="idlocalidad" id="idlocalidad">
 									<?php echo '<option value="'.$idlocalidadcouch.'" selected>'.$localidadcouch.'</option>'; ?>
 								</select>
 							</div>
-							<div class="file-field input-field col s6">
+							<div class="file-field input-field col s4">
 								<div class="btn light-green z-depth-2">
 									<span>Subir foto</span>
 									<input type="file" accept="image/jpg" name="imagenes[]" id="imagen2">
@@ -216,12 +233,21 @@
 									<?php echo '<input class="file-path validate" value="'.$foto2.'" type="text" placeholder="Elige una foto">'; ?>
 								</div>
 							</div>
+							<div class="col s2">
+								<img class="materialboxed" width="200" src="<?php echo $foto2; ?>" onerror="src=`imagenes/Logo_mini.jpg`">
+							</div>
+							<div class="col s1">
+								<p>
+									<input type="checkbox" name="ei2" id="ei2" />
+									<label for="ei2"><i class="material-icons">delete</i></label>
+								</p>
+							</div>
 						</div>
 						<div class="row">
-							<div class="col s6 divider"></div>
+							<div class="divider"></div>
 						</div>
 						<div class="row">
-							<div class="input-field col s3">
+							<div class="input-field col s2 offset-s1">
 								<select class="browser-default" name="tcouch" id="tcouch"> 
 									<?php echo '<option value="'.$idtipocouch.'" selected>'.$nombretipocouch.'</option>'; ?>
 									<?php
@@ -233,11 +259,11 @@
 									?>
 								</select>
 							</div>
-							<div class="input-field col s3">
+							<div class="input-field col s2">
 								<?php echo '<input id="capacidad" name="capacidad" maxlength="2" value="'.$capacidad.'" pattern="^[0-9]{1,99}" type="text" class="validate" required="required">'; ?>
 								<label for="capacidad" data-error="Solo se admiten números">Capacidad</label>
 							</div>
-							<div class="file-field input-field col s6">
+							<div class="file-field input-field col s4">
 								<div class="btn light-green z-depth-2">
 									<span>Subir foto</span>
 									<input type="file" accept="image/jpg" name="imagenes[]" id="imagen3">
@@ -246,9 +272,18 @@
 									<?php echo '<input class="file-path validate" value="'.$foto3.'" type="text" placeholder="Elige una foto">'; ?>
 								</div>
 							</div>
+							<div class="col s2">
+								<img class="materialboxed" width="200" src="<?php echo $foto3; ?>" onerror="src=`imagenes/Logo_mini.jpg`">
+							</div>
+							<div class="col s1">
+								<p>
+									<input type="checkbox" name="ei3" id="ei3" />
+									<label for="ei3"><i class="material-icons">delete</i></label>
+								</p>
+							</div>
 						</div>
 						<div class="row">
-							<div class="col s6 divider"></div>
+							<div class="divider"></div>
 						</div>
                         <div class="row">
 	      					<div class="input-field col s12">
@@ -272,7 +307,7 @@
     				</form>
 					<!--Fin del Formulario-->
 	            </div>
-    	    </div>        
+    	    <!--/div-->        
         </div>
         <!-- Contenido de pagina--> 
         

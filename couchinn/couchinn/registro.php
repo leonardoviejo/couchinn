@@ -13,6 +13,7 @@
 	</head>
 	
 	<body>
+		<a href="ayuda.php" accesskey="a"></a>
 		<!-- Encabezado fijo -->
 		<div class="navbar-fixed">
 			<!-- Barra de navagacion -->

@@ -36,6 +36,11 @@
 	</head>
 	
 	<body>
+		<a href="altacouch.php" accesskey="c"></a>
+		<a href="miscouchs.php" accesskey="m"></a>
+		<a href="misreservas.php" accesskey="r"></a>
+		<a href="miperfil.php" accesskey="p"></a>
+		<a href="ayuda.php" accesskey="a"></a>
 		<!-- Estructuras del menu deslizables -->
 		<ul class="dropdown-content" id="desplegable_couchs">
 			<li><a class="light-green-text" href="miscouchs.php">Mis Couchs</a></li>
@@ -129,9 +134,7 @@
 				<table class="col s6 offset-s3 responsive-table">
 					<tbody>
 						<tr>
-							<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Ver Reservas Solicitadas" onClick="location.href='reservashuesped.php'"></td>
-						</tr>
-						<tr>
+							<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Ver Reservas Solicitadas" onClick="location.href='reservashuesped.php'"></td>							<td class="center"></td>
 							<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Ver Reservas de mis Couchs" onClick="location.href='reservascouch.php'"></td>
 						</tr>
 					</tbody>

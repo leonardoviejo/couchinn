@@ -59,6 +59,11 @@
 	</head>
 	
 	<body>
+		<a href="altacouch.php" accesskey="c"></a>
+		<a href="miscouchs.php" accesskey="m"></a>
+		<a href="misreservas.php" accesskey="r"></a>
+		<a href="miperfil.php" accesskey="p"></a>
+		<a href="ayuda.php" accesskey="a"></a>
 		<!-- Estructuras del menu deslizables -->
 		<ul class="dropdown-content" id="desplegable_couchs">
 			<li><a class="light-green-text" href="miscouchs.php">Mis Couchs</a></li>
@@ -210,7 +215,7 @@
 				</form>
     		</div>
   		</div>
-		<!-- Fin del modal de puntuacion -->
+		<!-- Fin del modal de puntuacion usuario por cancelacion-->
 		
 		<!-- Comienzo del modal de modificacion de reserva-->
 		<div id="modal_mod" class="modal">
@@ -250,7 +255,44 @@
 				</form>
     		</div>
   		</div>
-		<!-- Fin de los modals para usuarios registrados -->
+		<!-- Fin del modal de modificacion de reserva-->
+		
+		<!-- Comienzo del modal de Cancelar -->
+		<div id="modal_cancelar" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>Estás cancelando una reserva confirmada!!!</h4>
+				<br>
+      			<p>Este paso no se puede deshacer. Ten en cuenta que esto permite que el dueño del couch pueda calificarte de forma negativa.</p>
+				<br>
+				<form name="cancelar" method="post"  action="funciones/canc_reserva_huesped.php">
+					<?php echo '<input type="hidden" name="idreserva" id="idreserva" >'; ?>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Cancelar Reserva">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal de Cancelar -->
+		
+		<!-- Comienzo del modal de Cancelar en espera -->
+		<div id="modal_cancelar_espera" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>Estás por cancelar una reserva!!!</h4>
+				<br>
+				<br>
+				<form name="cancelar" method="post"  action="funciones/canc_reserva_espera.php">
+					<?php echo '<input type="hidden" name="idreserva" id="idreserva" >'; ?>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Cancelar Reserva">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal de Cancelar en espera -->
 		
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
@@ -306,9 +348,9 @@
 												<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
 											</form>
 										</td>
-										<td bgcolor="#ffff99" class="center"><a class="right waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" data-idreserva="'.$idreserva.'" data-fechainicio="'.$fechainicio.'" data-fechafin="'.$fechafin.'" href="#modal_mod">Modificar Reserva</a></td>
-										<td bgcolor="#ffff99" class="center"><a class="center waves-effect waves-light btn red z-depth-2">Cancelar</a></td>
-										<td bgcolor="#ffff99" class="center"></td>
+										<td bgcolor="#ffff99" class="center"><a class="right waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" data-idreserva="'.$idreserva.'" data-fechainicio="'.$fechainicio.'" data-fechafin="'.$fechafin.'" href="#modal_mod">Modificar Reserva</a></td>';
+										echo '<td bgcolor="#ffff99" class="center"><a class="waves-effect waves-light btn red z-depth-2 modal-trigger" data-idreserva="'.$idreserva.'" href="#modal_cancelar_espera">Cancelar</a></td>';
+										echo '<td bgcolor="#ffff99" class="center"></td>
 									</tr>';
 								} else {
 									if($estado=='confirmada') {
@@ -327,7 +369,7 @@
 											$cancelar=false;
 											$calificar=false;
 											if ($query_result['FechaInicio'] > $hoy) {
-												echo '<td bgcolor="#b2d8b2" class="center"><a class="center waves-effect waves-light btn red z-depth-2">Cancelar</a></td>';
+												echo '<td bgcolor="#b2d8b2" class="center"><a class="waves-effect waves-light btn red z-depth-2 modal-trigger" data-idreserva="'.$idreserva.'" href="#modal_cancelar">Cancelar</a></td>';
 												$cancelar=true;
 											}
 											if ($puedevotar){

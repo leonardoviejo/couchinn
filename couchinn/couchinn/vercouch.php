@@ -18,6 +18,15 @@
 	{
 		$idcouch = $_POST["id"];
 	}
+	//Conteo de paginado de resultado.
+	$TAMANO_PAGINA=10;
+	if(!isset($_GET['pagina'])) {
+		$pagina=1;
+		$inicio=0;
+	}else{
+		$pagina = $_GET["pagina"];
+		$inicio = ($pagina - 1) * $TAMANO_PAGINA;
+	}
 	//Consultas SQL Usuario
 	$consulta = "SELECT * FROM usuario WHERE Id_Usuario='$idusuario'";
 	$consulta_execute = $conexion->query($consulta);
@@ -67,6 +76,14 @@
 		$row3 = $resulta3->fetch_assoc();
 		$usuarioCouch = $row3["Nombre"] . " " . $row3["Apellido"];
 		
+		//Busca comentarios para listar
+		$consulta4 = "SELECT * FROM comentario WHERE Visible=1 and Id_Couch='$idcouch' ORDER BY FechaAlta ASC";
+		$ejecucion = $conexion->query($consulta4);
+		$total_resultados=$ejecucion->num_rows;
+		$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
+		$consulta4 = "SELECT c.Id_Comentario, c.Id_Usuario, c.Mensaje, c.Respondido, c.Respuesta, c.FechaAlta, u.Nombre, u.Apellido FROM comentario c inner JOIN usuario u ON c.Id_Usuario = u.Id_Usuario WHERE c.Visible=1 and Id_Couch='$idcouch' ORDER BY FechaAlta ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+		$ejecucion = $conexion->query($consulta4);
+		
 	} else {
 		?>
 		<script>	alert('Couch inexistente.');
@@ -89,6 +106,11 @@
 	</head>
 
 	<body>
+		<a href="altacouch.php" accesskey="c"></a>
+		<a href="miscouchs.php" accesskey="m"></a>
+		<a href="misreservas.php" accesskey="r"></a>
+		<a href="miperfil.php" accesskey="p"></a>
+		<a href="ayuda.php" accesskey="a"></a>
 		<!-- Estructuras del menu deslizables -->
 		<?php
 			if($tipo==1||$tipo==2){
@@ -242,6 +264,54 @@
   		</div>
 		<!-- Fin de los modals para usuarios registrados -->
 		
+		<!-- Comienzo del modal para preguntar-->
+		<div id="modal_pre" class="modal">
+    		<div class="modal-content">
+      			<h4>Haz una pregunta al dueño del Couch!!!</h4>
+				<br>
+				<form name="pregunta" method="post" action="funciones/preguntar.php">
+					<div class="input-field">
+						<textarea id="pregunta" name="pregunta" class="materialize-textarea" length="250" maxlength="250" class="validate" required="required"></textarea>
+						<label for="pregunta">Pregunta</label>
+					</div>
+					<?php echo '<input type="hidden" name="idcouch" value="'.$idcouch.'">';
+						echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';						
+					?>
+					<br>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Preguntar">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal para preguntar-->
+		
+		<!-- Comienzo del modal para responder-->
+		<div id="modal_res" class="modal">
+    		<div class="modal-content">
+      			<h4>Responde la pregunta!!!</h4>
+				<br>
+				<form name="respuesta" method="post" action="funciones/responder.php">
+					<div class="grey-text" > Pregunta: </div>
+					<input disabled type="text" name="mensaje" id="mensaje" value="">
+					<br>
+					<div class="input-field">
+						<textarea id="respuesta" name="respuesta" class="materialize-textarea" length="250" maxlength="250" class="validate" required="required"></textarea>
+						<label for="respuesta">Respuesta</label>
+					</div>
+					<input type="hidden" name="idmensaje" id="idmensaje">
+					<?php echo '<input type="hidden" name="idcouch" value="'.$idcouch.'">';?>
+					<br>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Responder">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal para responder-->
+		
 		<!-- Contenido de pagina-->
         <div class="parallax-container-mio z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -355,33 +425,114 @@
 					</div>
 				</div>
 				<div class="divider"></div>
+				<br>
 				<div class="row">
-					<div class="col s12">
+					<div class="col s4">
 						<h4 class="grey-text text-darken-2">Comentarios</h4>
-						<div class="divider"></div>
-							<div class="section">
-								<h6><b>Carlos</b></h6>
-								<p>Comentario Comentario Comentario Comentario Comentario Comentario Comentario Comentario
-								Comentario Comentario Comentario Comentario Comentario Comentario Comentario Comentario
-								</p>
-							</div>
-
-						<div class="divider"></div>
-							<div class="section">
-								<h6><b>Sandra</b></h6>
-								<p>Comentario Comentario Comentario Comentario Comentario Comentario Comentario Comentario
-								Comentario Comentario Comentario </p>
-							</div>
-						<div class="divider"></div>
-							<div class="section">
-								<h6><b>Clara</b></h6>
-								<p>Comentario Comentario Comentario Comentario Comentario Comentario Comentario Comentario
-								Comentario Comentario Comentario Comentario Comentario Comentario Comentario Comentario
-								Comentario Comentario Comentario ComentarioComentario</p>
-							</div>
 					</div>
+					<?php if ($idusuario<>$idusuariocouch){
+							if ($idusuario) {
+								echo 	'<div class="col s8">
+											<a class="right waves-effect waves-light btn light-green z-depth-2 modal-trigger" href="#modal_pre">Preguntar</a>
+										</div>';
+							}else{
+								echo '<div class="col s8">
+											  	<a class="right waves-effect waves-light btn light-green z-depth-2 modal-trigger" href="#modal_noreg">Preguntar</a>
+										  	  </div>';
+							}
+						}
+					?>
 				</div>
-			</div>
+				<div class="divider"></div>
+				<br>
+				<?php
+				if($ejecucion->num_rows) {
+					echo '<div class="row">
+					<ul class="collapsible" data-collapsible="accordion">';
+					while($query_result = $ejecucion->fetch_array()) {
+						$idmensaje=$query_result['Id_Comentario'];
+						$idusuariopreg = $query_result['Id_Usuario'];
+						$nombre = $query_result["Nombre"].' '.$query_result["Apellido"];
+						$mensaje = $query_result['Mensaje'];
+						$fecha = date("d-m-Y H:i:s",strtotime($query_result['FechaAlta']));
+						$respondido=$query_result['Respondido'];
+						$consultausuarioexistente="SELECT Visible FROM usuario WHERE Id_Usuario='$idusuariopreg'";
+						$ejecucionpreg = $conexion->query($consultausuarioexistente);
+						$respuesta = $ejecucionpreg->fetch_assoc();
+						$existeusuario=true;
+						if ($respuesta['Visible']==0){
+							$nombre='Usuario Eliminado';
+							$existeusuario=false;
+						}
+						if ($respondido==0){
+							if (($idusuario==$idusuariocouch)&&($existeusuario)){
+								echo '
+									<li>
+										<div class="collapsible-header"><i class="material-icons">person</i>'.$nombre.' --	Enviado el '.$fecha.'</div>
+										<div class="collapsible-body">
+											<p>'.$mensaje.'</p>
+											<a class="waves-effect waves-light btn light-green z-depth-2 modal-trigger" data-mensaje="'.$mensaje.'" data-idmensaje="'.$idmensaje.'" href="#modal_res">Responder</a>
+										</div>
+									</li>';
+							}else{	
+								echo '
+									<li>
+										<div class="collapsible-header"><i class="material-icons">person</i>'.$nombre.' --	Enviado el '.$fecha.'</div>
+										<div class="collapsible-body"><p>'.$mensaje.'</p></div>
+									</li>';
+							}
+						}else{
+							$respuestapregunta=$query_result['Respuesta'];
+							echo '
+								<li>
+									<div class="collapsible-header"><i class="material-icons">person</i>'.$nombre.' --	Enviado el '.$fecha.'</div>
+									<div class="collapsible-body">
+										<p>'.$mensaje.'</p>
+										<p><b><u>Respuesta</u>:</b> '.$respuestapregunta.'</p>
+									</div>
+								</li>';
+						}
+					}
+					echo '
+					</ul>
+					</div>';
+				}else{
+					echo 	'<div class="center grey-text text-darken-2">
+								<h5>No existen comentarios para este Couch.</h5>
+								<br>
+							</div>';
+					}
+				?>
+				<ul class="pagination center">
+					<?php
+						if ($pagina==1){
+							if ($total_paginas==1){
+								echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
+								echo '<li class="disabled"><a href="#">1</a></li>';
+								echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+							}
+						}else{
+							$paginaant=$pagina-1;
+							echo '<li class="waves-effect"><a href="vercouch.php?idcouch='.$idcouch.'&pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+						}
+						if ($total_paginas > 1){
+							for ($i=1;$i<=$total_paginas;$i++){ 
+								if ($pagina == $i){
+									//si muestro el índice de la página actual, no coloco enlace 
+									echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
+								}else{
+									echo '<li class="waves-effect"><a href="vercouch.php?idcouch='.$idcouch.'&pagina='.$i.'">'.$i.'</a></li>';
+								}
+							}
+							if ($pagina==$total_paginas){
+								//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+							}else{
+								$paginapos=$pagina+1;
+								echo '<li class="waves-effect"><a href="vercouch.php?idcouch='.$idcouch.'&pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+							}
+						}
+					?>
+				</ul>
 	    </div>
         <!-- Contenido de pagina-->
 
@@ -422,6 +573,12 @@
 					selectMonths: true,
 					formatSubmit: 'yyyy-mm-dd',
 					hiddenName: true
+				});
+				$(document).on("click", ".modal-trigger", function () {
+					var idmensaje = $(this).data('idmensaje');
+					var mensaje = $(this).data('mensaje');
+					$(".modal-content #idmensaje").val (idmensaje);
+					$(".modal-content #mensaje").val (mensaje);
 				});
   			});
   		</script>
