@@ -117,3 +117,26 @@
 		}
 	}
 	
+	function validarBusqueda(){
+		var fechainicio = document.getElementById("fechainicio").value;
+		fechainicioparse=Date.parse(fechainicio);
+		var fechafin = document.getElementById("fechafin").value;
+		fechafinparse=Date.parse(fechafin);
+		var mensaje="Se ha/n encontrado el/los siguente/s error/es: ";
+		var error=false;
+		if (((fechainicio != "")&&(fechafin == ""))||((fechainicio == "")&&(fechafin != ""))){
+			mensaje=mensaje+ "Debe seleccionar las dos fechas";
+			error=true;
+		}
+		if (fechainicioparse>fechafinparse){
+			mensaje=mensaje+" ,Verifique que la fecha del comienzo de reserva es anterior a la fecha de fin de reserva.";
+			error=true;
+		}
+		if (error){
+			alert(mensaje);
+			return false;
+		}else{
+			return true;
+		}
+	}
+	

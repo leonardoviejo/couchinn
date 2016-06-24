@@ -72,7 +72,7 @@
 	$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
 	
 	//Obtengo las reservas de un couch
-	$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.FechaInicio, r.FechaFin, r.Estado, r.Canc_Huesped, r.FechaAlta, u.Nombre AS Nombre, u.Apellido AS Apellido, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch inner JOIN usuario u ON r.Id_Usuario = u.Id_Usuario WHERE r.Visible=1 AND r.Id_Couch='$idcouch' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera' LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+	$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.FechaInicio, r.FechaFin, r.Estado, r.Canc_Huesped, r.Calif_Couch, r.FechaAlta, u.Nombre AS Nombre, u.Apellido AS Apellido, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch inner JOIN usuario u ON r.Id_Usuario = u.Id_Usuario WHERE r.Visible=1 AND r.Id_Couch='$idcouch' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera' LIMIT ".$inicio.",".$TAMANO_PAGINA."";
 	$consulta_execute = $conexion->query($consulta);
 ?>
 

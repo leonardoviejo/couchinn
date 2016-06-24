@@ -16,7 +16,7 @@
 		$consulta_execute = $conexion->query($consultausuario);
 		$resultado = $consulta_execute->fetch_assoc();
 		if($password==$resultado['Password']){
-			$actualizacion = "UPDATE couch c left JOIN reserva r ON c.Id_Couch=r.Id_Couch left JOIN comentario o ON c.Id_Couch=o.Id_Couch SET c.Visible = 0, r.Visible=0, o.Visible=0  WHERE c.Id_Couch = '$idcouch';";
+			$actualizacion = "UPDATE couch c left JOIN reserva r ON c.Id_Couch=r.Id_Couch left JOIN comentario o ON c.Id_Couch=o.Id_Couch left JOIN punt_couch p ON c.Id_Couch=p.Id_Couch SET c.Visible = 0, r.Visible=0, o.Visible=0, p.Visible=0  WHERE c.Id_Couch = '$idcouch';";
 			if (mysqli_query($conexion, $actualizacion)) {
 				echo '<script> alert("Se ha eliminado su couch!!!");
 						location.href="../miscouchs.php";
