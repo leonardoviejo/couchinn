@@ -185,19 +185,25 @@
 									<td class="center">'.$capacidad.'</td>
 									<td class="center">'.$tipocouch.'</td>
 									<td class="center">'.$fechaalta.'</td>
-									<td class="right">
+									<td class="">
 										<form action="vercouch.php" method="post">
 											<input type="hidden" name="id" value="'.$id.'">
 											<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
 										</form>
 									</td>
-									<td class="right">
+									<td class="">
 										<form action="modificarcouch.php" method="post">
 											<input type="hidden" name="id" value="'.$id.'">
 											<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Modificar">
 										</form>
 									</td>
-									<td class="right">
+									<td class="">
+										<form action="reservasdecouch.php" method="get">
+											<input type="hidden" name="idcouch" value="'.$id.'">
+											<input class="right waves-effect waves-light btn light-green z-depth-2" type="submit" value="Ver Reservas">
+										</form>
+									</td>
+									<td class="">
 										<form action="eliminarcouch.php" method="post">
 											<input type="hidden" name="id" value="'.$id.'">
 											<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">

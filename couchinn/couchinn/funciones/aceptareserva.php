@@ -21,7 +21,6 @@
 				'<script> alert("El couch se encuentra ocupado en esas fechas.");
 					location.href="../reservascouch.php";
 				</script>';
-			break;
 		}else{ //Sino actualizo la reserva
 			$sql = "UPDATE `reserva` SET `Estado` = 'confirmada' WHERE `reserva`.`Id_Reserva` = '$idreserva'";
 			if (!mysqli_query($conexion, $sql)) {

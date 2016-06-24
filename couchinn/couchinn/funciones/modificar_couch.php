@@ -5,7 +5,6 @@
 		echo '	<script> alert("Por favor complete los campos faltantes y vuelva a intentarlo.");
 					location.href="../modificarcouch.php?id='.$idcouch.'";
 				</script>';
-		break;
 	}
 	else{
 		//Comprobacion de imagenes enviadas
@@ -22,7 +21,6 @@
 				echo '	<script> alert("Ha ocurrido un error en la carga de imagenes, intentelo nuevamente.");
 					location.href="../modificarcouch.php?id='.$idcouch.'";
 				</script>';
-				break;
 			}else{
 				//Si los codigos estan bien comprueba formato y tamaño.
 				if (in_array($_FILES['imagenes']['type'][0], $permitidos) && $_FILES['imagenes']['size'][0] <= $limite_kb * 1024){
@@ -36,7 +34,6 @@
 				echo '	<script> alert("Ha ocurrido un error en la carga de imagenes, intentelo nuevamente.");
 					location.href="../modificarcouch.php?id='.$idcouch.'";
 				</script>';
-				break;
 			}else{
 				//Si los codigos estan bien comprueba formato y tamaño.
 				if (in_array($_FILES['imagenes']['type'][1], $permitidos) && $_FILES['imagenes']['size'][1] <= $limite_kb * 1024){
@@ -50,7 +47,6 @@
 				echo '	<script> alert("Ha ocurrido un error en la carga de imagenes, intentelo nuevamente.");
 					location.href="../modificarcouch.php?id='.$idcouch.'";
 				</script>';
-				break;
 			}else{
 				//Si los codigos estan bien comprueba formato y tamaño.
 				if (in_array($_FILES['imagenes']['type'][2], $permitidos) && $_FILES['imagenes']['size'][2] <= $limite_kb * 1024){
@@ -76,7 +72,6 @@
 			echo '	<script> alert("Ya existe un couch de tu propiedad con ese titulo, elije un nuevo nombre.");
 					location.href="../modificarcouch.php?id='.$idcouch.'";
 				</script>';
-			break;
 		}else{
 			//Saco rutas de fotos actuales para saber si estan cargadas.
 			$consulta= "SELECT * FROM couch WHERE Id_Couch = '$idcouch'";
@@ -98,7 +93,6 @@
 						echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
 							location.href="../modificarcouch.php?id='.$idcouch.'";
 						</script>';
-						break;
 					}
 				}
 			}
@@ -111,7 +105,6 @@
 							echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
 								location.href="../modificarcouch.php?id='.$idcouch.'";
 							</script>';
-						break;
 						}
 					}else{
 						$actualizar = "UPDATE `couch` SET `Foto2`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
@@ -119,7 +112,6 @@
 							echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
 								location.href="../modificarcouch.php?id='.$idcouch.'";
 							</script>';
-						break;
 						}
 					}
 				}
@@ -133,7 +125,6 @@
 							echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
 								location.href="../modificarcouch.php?id='.$idcouch.'";
 							</script>';
-						break;
 						}
 					}
 					rename('../'.$rutafoto2,'../'.$rutafoto1);	
@@ -142,13 +133,11 @@
 						echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
 							location.href="../modificarcouch.php?id='.$idcouch.'";
 						</script>';
-						break;
 					}
 				}else{
 					echo '	<script> alert("No se pueden eliminar todas las fotos.");
 							location.href="../modificarcouch.php?id='.$idcouch.'";
 						</script>';
-						break;
 				}
 			}
 			//Pregunto una por una si la imagen enviada es correcta, en ese caso muevo imagen a su carpeta y agrego la entrada a la base de datos
@@ -161,14 +150,12 @@
 						echo'	<script> alert("Error al cargar el archivo.");
 								location.href="../modificarcouch.php?id='.$idcouch.'";
 							</script>';
-						break;
 					}
 					$actualizar = "UPDATE `couch` SET `Foto1`='$ruta' WHERE `couch`.`Id_Couch` = '$idcouch'";
 					if (!mysqli_query($conexion, $actualizar)) {
 						echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
 							location.href="../modificarcouch.php?id='.$idcouch.'";
 						</script>';
-						break;
 					}	
 			}
 			if($imagen2ok){
@@ -178,14 +165,12 @@
 					echo'	<script> alert("Error al cargar el archivo.");
 								location.href="../modificarcouch.php?id='.$idcouch.'";
 							</script>';
-					break;
 				}
 				$actualizar = "UPDATE `couch` SET `Foto2`='$ruta' WHERE `couch`.`Id_Couch` = '$idcouch'";
 				if (!mysqli_query($conexion, $actualizar)) {
 					echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
 							location.href="../modificarcouch.php?id='.$idcouch.'";
 						</script>';
-					break;
 				}
 			}
 			if($imagen3ok){
@@ -196,14 +181,12 @@
 						echo'	<script> alert("Error al cargar el archivo.");
 								location.href="../modificarcouch.php?id='.$idcouch.'";
 							</script>';
-						break;
 					}
 					$actualizar = "UPDATE `couch` SET `Foto3`='$ruta' WHERE `couch`.`Id_Couch` = '$idcouch'";
 					if (!mysqli_query($conexion, $actualizar)) {
 						echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
 							location.href="../modificarcouch.php?id='.$idcouch.'";
 						</script>';
-						break;
 					}
 				}else{
 					$ruta = 'imagenes/couchs/'.$idcouch.'/2.jpg';
@@ -212,14 +195,12 @@
 						echo'	<script> alert("Error al cargar el archivo.");
 								location.href="../modificarcouch.php?id='.$idcouch.'";
 							</script>';
-						break;
 					}
 					$actualizar = "UPDATE `couch` SET `Foto2`='$ruta' WHERE `couch`.`Id_Couch` = '$idcouch'";
 					if (!mysqli_query($conexion, $actualizar)) {
 						echo '	<script> alert("Error en la base de datos vuelva a intentarlo más tarde.");
 							location.href="../modificarcouch.php?id='.$idcouch.'";
 						</script>';
-						break;
 					}
 				}
 			}
@@ -227,7 +208,6 @@
 					location.href='../miscouchs.php';
 			</script>
 			<?php
-			break;
 		}
 	}
 ?>

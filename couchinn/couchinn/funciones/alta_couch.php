@@ -5,7 +5,6 @@
 			location.href='../altacouch.php';
 		</script>
 		<?php
-		break;
 	}
 	else{
 		//Comprobacion de imagenes enviadas
@@ -23,7 +22,6 @@
 					location.href='../altacouch.php';
 				</script>
 				<?php
-				break;
 			}else{
 				//Si los codigos estan bien comprueba formato y tamaño.
 				if (in_array($_FILES['imagenes']['type'][0], $permitidos) && $_FILES['imagenes']['size'][0] <= $limite_kb * 1024){
@@ -38,7 +36,6 @@
 					location.href='../altacouch.php';
 				</script>
 				<?php
-				break;
 			}else{
 				//Si los codigos estan bien comprueba formato y tamaño.
 				if (in_array($_FILES['imagenes']['type'][1], $permitidos) && $_FILES['imagenes']['size'][1] <= $limite_kb * 1024){
@@ -53,7 +50,6 @@
 					location.href='../altacouch.php';
 				</script>
 				<?php
-				break;
 			}else{
 				//Si los codigos estan bien comprueba formato y tamaño.
 				if (in_array($_FILES['imagenes']['type'][2], $permitidos) && $_FILES['imagenes']['size'][2] <= $limite_kb * 1024){
@@ -84,7 +80,6 @@
 							location.href='../altacouch.php';
 						</script>
 					<?php
-					break;
 				}else{
 					//Inserto a la base de datos un couch no visible sin fotos.
 					$insertar = "INSERT INTO couch (`Id_TipoDeCouch`, `Id_Usuario`, `Titulo`, `Id_Provincia`, `Id_Localidad`, `Descripcion`, `Capacidad`,`Visible`) VALUES ('$tcouch', '$idusuario', '$titulo', '$idprovincia', '$idlocalidad', '$descripcion','$capacidad',0)";
@@ -109,7 +104,6 @@
 										location.href='../altacouch.php';
 									</script>
 								<?php
-								break;
 							}
 							$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto1`='$ruta', `Foto2`='', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
 							if (!mysqli_query($conexion, $actualizar)) {
@@ -117,7 +111,6 @@
 									location.href='../altacouch.php';
 								</script>
 								<?php
-								break;
 							}	
 					}
 					if($imagen2ok){
@@ -130,7 +123,6 @@
 										location.href='../altacouch.php';
 									</script>
 								<?php
-								break;
 							}
 							$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto2`='$ruta', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
 							if (!mysqli_query($conexion, $actualizar)) {
@@ -138,7 +130,6 @@
 									location.href='../altacouch.php';
 								</script>
 								<?php
-								break;
 							}
 						}else{
 							$ruta = 'imagenes/couchs/'.$idcouch.'/1.jpg';
@@ -149,7 +140,6 @@
 									location.href='../altacouch.php';
 								</script>
 								<?php
-								break;
 							}
 							$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto1`='$ruta', `Foto2`='', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
 							if (!mysqli_query($conexion, $actualizar)) {
@@ -157,7 +147,6 @@
 									location.href='../altacouch.php';
 								</script>
 								<?php
-								break;
 							}
 						}
 					}
@@ -171,7 +160,6 @@
 										location.href='../altacouch.php';
 									</script>
 								<?php
-								break;
 							}
 							$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto3`='$ruta' WHERE `couch`.`Id_Couch` = '$idcouch'";
 							if (!mysqli_query($conexion, $actualizar)) {
@@ -179,7 +167,6 @@
 									location.href='../altacouch.php';
 								</script>
 								<?php
-								break;
 							}
 						}else{
 							if(($imagen1ok)&&(!$imagen2ok)){
@@ -191,7 +178,6 @@
 										location.href='../altacouch.php';
 									</script>
 									<?php
-									break;
 								}
 								$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto2`='$ruta', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
 								if (!mysqli_query($conexion, $actualizar)) {
@@ -199,7 +185,6 @@
 										location.href='../altacouch.php';
 									</script>
 									<?php
-									break;
 								}
 							}else{
 								if((!$imagen1ok)&&($imagen2ok)){
@@ -211,7 +196,6 @@
 												location.href='../altacouch.php';
 											</script>
 										<?php
-										break;
 									}
 									$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto2`='$ruta', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
 									if (!mysqli_query($conexion, $actualizar)) {
@@ -219,7 +203,6 @@
 											location.href='../altacouch.php';
 										</script>
 										<?php
-										break;
 									}
 								}else{
 									if((!$imagen1ok)&&(!$imagen2ok)){
@@ -231,7 +214,6 @@
 												location.href='../altacouch.php';
 											</script>
 											<?php
-											break;
 										}
 										$actualizar = "UPDATE `couch` SET `Visible` = '1', `Foto1`='$ruta', `Foto2`='', `Foto3`='' WHERE `couch`.`Id_Couch` = '$idcouch'";
 										if (!mysqli_query($conexion, $actualizar)) {
@@ -239,7 +221,6 @@
 												location.href='../altacouch.php';
 											</script>
 											<?php
-											break;
 										}
 									}
 								}
@@ -250,7 +231,6 @@
 							location.href='../miscouchs.php';
 					</script>
 					<?php
-					break;
 				}
 			}else{
 				//El usuario no existe
@@ -258,14 +238,12 @@
 						location.href='cerrar_sesion.php';
 						</script>
 				<?php
-				break;
 			}
 		}else{
 			?>	<script> alert("Debe seleccionar al menos una imagen para subir a su Couch.");
 					location.href='../altacouch.php';
 				</script>
 			<?php
-			break;
 		}
 	}
 ?>

@@ -347,16 +347,22 @@
 						</div>
                     </div>
 					<?php 	if ($idusuario==$idusuariocouch){
-								echo'<div class="col s4">
-										<form action="modificarcouch.php" method="post">
-											<input type="hidden" name="id" value="'.$idcouch.'">
-											<input class="right waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Modificar">
+								echo'<div class="col s3 left">
+										<form action="reservasdecouch.php" method="get">
+											<input type="hidden" name="idcouch" value="'.$idcouch.'">
+											<input class="waves-effect waves-light btn light-green z-depth-2" type="submit" value="Ver Reservas">
 										</form>
 									</div>
-									<div class="col s4">
+									<div class="col s3 center">
+										<form action="modificarcouch.php" method="post">
+											<input type="hidden" name="id" value="'.$idcouch.'">
+											<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Modificar">
+										</form>
+									</div>
+									<div class="col s2 right">
 										<form action="eliminarcouch.php" method="post">
 											<input type="hidden" name="id" value="'.$idcouch.'">
-											<input class="right waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
+											<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
 										</form>
 									</div>';
 							}else{

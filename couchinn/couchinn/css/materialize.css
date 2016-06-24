@@ -6826,6 +6826,7 @@ input[type=range]:focus::-ms-fill-upper {
   will-change: opacity;
 }
 
+
 /*
     @license
     Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
@@ -8224,3 +8225,4 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 	/*opacity:0.1;
 	filter: alpha(opacity=10);*/
 }
+

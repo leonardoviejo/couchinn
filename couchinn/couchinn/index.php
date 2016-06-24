@@ -76,48 +76,72 @@
 				<br>
 				<br>
                 <div class="row card-panel z-depth-3">
-					<h5><p class="center">¿A dónde querés viajar?</p></h5>
-					<form class="col s12" name="busqueda" method="get" action="resultado_busqueda.php">
-                        <div class="input-field col s3">
+					<h5><p class="center">¿Donde puedo Alojarme?</p></h5>
+					<form class="col s12" name="busqueda" method="get" onSubmit="return validarBusqueda()" action="resultado_busqueda.php">
+						<div class="input-field col s3">
 							<select class="browser-default" name="idprovincia" id="idprovincia">
 								<option value="" disabled selected>Elige una provincia...</option>
 								<?php
-      								while($query_result = $resultadoprov->fetch_array()) {
-      									$idprov=$query_result['Id'];
-      									$nombreprov=$query_result['Provincia'];
-      									echo '<option value="'.$idprov.'">'.$nombreprov.'</option>';
-      								}
-      							?>
+									while($query_result = $resultadoprov->fetch_array()) {
+										$idprov=$query_result['Id'];
+										$nombreprov=$query_result['Provincia'];
+										echo '<option value="'.$idprov.'">'.$nombreprov.'</option>';
+									}
+								?>
 							</select>
-  						</div>
-  						<div class="input-field col s3">
-    						<select class="browser-default" name="idlocalidad" id="idlocalidad">
+						</div>
+						<div class="input-field col s3">
+							<select class="browser-default" name="idlocalidad" id="idlocalidad">
 							<option value="" disabled selected>Elige una ciudad...</option>
 							</select>
-  						</div>
-  						<div class="input-field col s3">
-    						<select class="browser-default" name="tcouch" id="tcouch"> 
-      							<option value="" disabled selected>Elige un tipo de couch...</option>
-      							<?php
-      								while($query_result = $resultado_tipo->fetch_array()) {
-      									$nombretipo=$query_result['Nombre'];
-      									$idTipoDeCouch=$query_result['Id_Tipo'];
-      									echo '<option value="'.$idTipoDeCouch.'">'.$nombretipo.'</option>';
-      								}
-      							?>
-    						</select>
-    						<label></label>
-  						</div>
-  						<div class="input-field col s2">
-          					<input id="cant_visitantes" name="cant_visitantes" maxlength="2" value="" pattern="^[0-9]{1,2}" type="text" class="validate">
-          					<label for="cant_visitantes">Capacidad</label>
-        				</div>
-        				<div class="input-field col s1 right">					
-  							<button class="btn-floating btn-large waves-effect waves-light light-green z-depth-2" type="submit" name="action">
-    							<i class="material-icons right">search</i>
-  							</button>
-        
-        				</div>
+						</div>
+						<div class="input-field col s3">
+							<select class="browser-default" name="tcouch" id="tcouch"> 
+								<option value="" disabled selected>Elige un tipo de couch...</option>
+								<?php
+									while($query_result = $resultado_tipo->fetch_array()) {
+										$nombretipo=$query_result['Nombre'];
+										$idTipoDeCouch=$query_result['Id_Tipo'];
+										echo '<option value="'.$idTipoDeCouch.'">'.$nombretipo.'</option>';
+									}
+								?>
+							</select>
+						</div>
+						<div class="input-field col s2">
+							<input id="cant_visitantes" name="cant_visitantes" maxlength="2" value="" pattern="^[0-9]{1,2}" type="text" class="validate">
+							<label for="cant_visitantes">Capacidad</label>
+						</div>
+						<div class="input-field col s1 right">					
+							<button class="btn-floating btn-large waves-effect waves-light light-green z-depth-2" type="submit" name="action">
+								<i class="material-icons right">search</i>
+							</button>
+			            
+						</div>
+						<ul class="collapsible col s12" data-collapsible="accordion">
+							<li>
+								<div class="collapsible-header"><i class="material-icons">settings</i>Más opciones</div>
+								<div class="collapsible-body">
+									<div class="input-field col s6">
+										<input name="titulo" type="text" length="30" maxlength="30" pattern="[A-Za-zñÑáéíóúÁÉÍÓÚüÜ\s]+" title="Solo se admiten letras" class="validate">
+										<label for="titulo" data-error="Solo se admiten letras">Título</label>
+									</div>
+									<div class="input-field col s3">
+										<div class="grey-text"> Fecha Inicio</div>
+											<input name="fechainicio" type="date" class="datepicker" id="fechainicio" title="Fecha de Inicio">
+									</div>
+									<div class="input-field col s3">
+										<div class="grey-text"> Fecha Fin</div>
+										<input name="fechafin" type="date" class="datepicker" id="fechafin" title="Fecha de Fin">
+									</div>
+									<div class="input-field col s12">
+										<textarea id="descripcion" name="descripcion" class="materialize-textarea" length="250" maxlength="250" class="validate" ></textarea>
+										<label for="descripcion">Descripción</label>
+									<br>
+									<br>
+									</div>
+								</div>
+							</li>
+						</ul>
 					</form>
 				</div>
 				<br>
@@ -248,6 +272,14 @@
 							$("#idlocalidad").html(opciones);
 						}
 					})
+				});
+				$('.datepicker').pickadate({
+					min:'Today',
+					max:730,
+					selectYears: 2,
+					selectMonths: true,
+					formatSubmit: 'yyyy-mm-dd',
+					hiddenName: true
 				});
   			});
   		</script>

@@ -32,7 +32,6 @@
 							'<script> alert("El couch se encuentra ocupado en esas fechas.");
 								location.href="../vercouch.php?id='.$idcouch.'";
 							</script>';
-						break;
 					}else{
 						//Insertar en la base de datos
 						$insertar = "INSERT INTO reserva (`Id_Usuario`, `Id_Couch`, `FechaInicio`, `FechaFin`) VALUES ('$idusuario', '$idcouch', '$fechainicio', '$fechafin')";

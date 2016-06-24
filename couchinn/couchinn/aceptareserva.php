@@ -9,10 +9,10 @@
 		header("Location: login.php");		
 	}else{
 		include('funciones/config.php');
-		if (empty($_POST['id'])){
-			header("Location: miscouchs.php");
+		if (empty($_POST['idreserva'])){
+			header("Location: reservascouch.php");
 		}else{
-			$idcouch = $_POST["id"];
+			$idreserva = $_POST["idreserva"];
 		}
 	//SQL
 	//Consulta datos de usuario
@@ -22,18 +22,32 @@
 	$tipo=$resultado['Id_TipoDeUsuario'];
 	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 	$premium=$resultado["Premium"];
-	//Consulta datos de couchs
-	$consulta="SELECT c.Titulo as Titulo, p.Provincia as Provincia, l.Localidad as Localidad, t.Nombre as NombreTipo FROM couch c inner JOIN provincias p ON c.Id_Provincia=p.Id inner JOIN localidades l ON c.Id_Localidad = l.Id inner JOIN tipodecouch t on c.Id_TipoDeCouch = t.Id_Tipo WHERE c.Id_Couch='$idcouch'";
+	//Consulta datos de reserva
+	$consulta="SELECT r.Id_Couch, r.FechaInicio, r.FechaFin, u.Nombre as Nombre, u.Apellido as Apellido, u.Total_Calif, u.Cant_Calif FROM reserva r inner JOIN usuario u ON r.Id_Usuario=u.Id_Usuario WHERE r.Id_Reserva='$idreserva'";
 	$consulta_execute = $conexion->query($consulta);
 	$resultado=$consulta_execute->fetch_assoc();
-	$titulo=$resultado['Titulo'];
-	$ubicacion=$resultado["Localidad"].', '.$resultado["Provincia"];
-	$nombredetipo=$resultado["NombreTipo"];
+	$idcouch=$resultado['Id_Couch'];
+	$nombre=$resultado['Nombre'].' '.$resultado['Apellido'];
+	if ($resultado['Cant_Calif']>0){
+		$puntaje=round($resultado['Total_Calif']/$resultado['Cant_Calif']);
+	}else{
+		$puntaje=0;
+	}
+	$fechainicio=$resultado["FechaInicio"];
+	$fechafin=$resultado["FechaFin"];
+	//Consulta reservas solapadas
+	$consulta2= "SELECT * FROM reserva WHERE Id_Couch='$idcouch' and Visible='1' and Estado='espera' and (('$fechainicio' between FechaInicio and FechaFin) or ('$fechafin' between FechaInicio and FechaFin) or (('$fechainicio'<FechaInicio)and('$fechafin'>FechaInicio)) or (('$fechafin'>FechaFin)and('$fechainicio'<FechaFin)))";
+	$consulta_execute2 = $conexion->query($consulta2);
+	if($consulta_execute2->num_rows>1){
+		$colision=true;
+	}else{
+		$colision=false;
+	}
 ?>
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>CouchInn - Eliminar Couch</title>
+		<title>CouchInn - Aceptar Reserva</title>
 		<!-- Importacion Iconos de Google -->
  	 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Importacion de materialize css-->
@@ -131,48 +145,69 @@
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
         	<div class="container"> 
-    	    	<div class="row">
-                	<br>
-        	    	<div class="col s12 center grey-text text-darken-2">
-                        <h1><b> Eliminar Couch </b></h1>
-						<h5><b>ATENCION: Está a punto de eliminar su couch, este paso no puede deshacerse y también borrará las reservas y todos los datos asociados.</b></h5>
-                    </div>
-				</div>
-				<div class="divider"></div>
-				<!-- Inicio del Formulario-->
-				<div class="row">
-					<div class="col s6 offset-s3 center grey-text text-darken-2">
-						<?php echo '<h5><b>Título: '.$titulo.' </b></h5>'; ?>
+    	    	<?php
+				if ($colision){
+					echo '<div class="row">
+						<br>
+						<div class="col s12 center grey-text text-darken-2">
+							<h1><b> Aceptar Reserva </b></h1>
+							<h5><b>ATENCION: Está a punto de aceptar una reserva que tiene otras solapadas, si usted la acepta el resto de reservas
+							serán canceladas.</b></h5>
+						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col s6 offset-s3 center grey-text text-darken-2">
-						<?php echo '<h5><b>Ubicación: '.$ubicacion.' </b></h5>'; ?>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col s6 offset-s3 center grey-text text-darken-2">
-						<?php echo '<h5><b>Tipo: '.$nombredetipo.' </b></h5>'; ?>
-					</div>
-				</div>
-				<div class="divider"></div>
-				<form name="eliminarcouch" method="post" action="funciones/baja_couch.php">
+					<div class="divider"></div>
 					<div class="row">
-						<div class="input-field col s6 offset-s3 center" data-tip="La contraseña debe contener 8 carácteres como mínimo">
-          					<?php echo '<input type="hidden" name="idcouch" value="'.$idcouch.'">
-										<input type="hidden" name="idusuario" value="'.$idusuario.'">'?>							
-							<input name="password" id="password" type="password" maxlength="32" pattern="(?=.*).{8,}" class="validate" required="required">
-          					<label for="password" data-error="La contraseña ingresada es menor a 8.">Contraseña Actual</label>
-        				</div>                        
+						<div class="col s6 offset-s3 center grey-text text-darken-2">
+							<h5><b>Usuario: '.$nombre.' </b></h5>
+						</div>
 					</div>
+					<div class="row">
+						<div class="col s6 offset-s3 center grey-text text-darken-2">';
+							if ($puntaje>0){
+								echo '<h5><b>Puntaje: '.$puntaje.'</b></h5>';
+							}else{
+								echo '<h5><b>Usuario aún no puntuado</b></h5>';
+							}
+						echo'</div>
+					</div>
+					<div class="divider"></div>';
+				}else{
+					echo '<div class="row">
+						<br>
+						<div class="col s12 center grey-text text-darken-2">
+							<h1><b> Aceptar Reserva </b></h1>
+							<h5><b>Esta reserva no tiene reservas solapadas, por lo tanto su aceptacion no influirá en las demas reservas.</b></h5>
+						</div>
+					</div>
+					<div class="divider"></div>
+					<div class="row">
+						<div class="col s6 offset-s3 center grey-text text-darken-2">
+							<h5><b>Usuario: '.$nombre.' </b></h5>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s6 offset-s3 center grey-text text-darken-2">';
+							if ($puntaje>0){
+								echo '<h5><b>Puntaje: '.$puntaje.'</b></h5>';
+							}else{
+								echo '<h5><b>Usuario aún no puntuado</b></h5>';
+							}
+						echo'</div>
+					</div>
+					<div class="divider"></div>';
+				}
+				?>	
+				<!-- Inicio del Formulario-->
+				<form name="aceptareserva" method="post" action="funciones/aceptareserva.php">
+					<input type="hidden" name="idreserva" value="<?php echo $idreserva ?>">
 					<div class="divider"></div>
 					<br>
 					<div class="row">
 	        			<div class="col s12registro l6 center">
-                          	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='vercouch.php?id=<?php echo $idcouch?>'">
+                          	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='reservascouch.php'">
                         </div>
                         <div class="col s12registro l6 center">
-        	              	<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Eliminar Couch">
+        	              	<input class="waves-effect waves-light btn light-green z-depth-2" type="submit" value="Aceptar">
                         </div>
                     </div>
 				</form>

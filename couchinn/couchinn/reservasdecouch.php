@@ -33,22 +33,53 @@
 		$pagina = $_GET["pagina"];
 		$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 	}
-	// Selecciono los couchs del usuario para mostrar en el paginado
-	$consulta = "SELECT * FROM couch WHERE Visible=1 AND Id_Usuario=$idusuario";
+	
+	//Entreda de id de couchs
+	if (isset($_GET['idcouch'])){
+		$idcouch=$_GET['idcouch'];
+	}else{
+		header("Location: miscouchs.php");
+	}
+	
+	// Selecciono el couch del usuario para sacar datos
+	$consulta_couch = "SELECT * FROM couch WHERE Id_Usuario='$idusuario' AND Id_Couch='$idcouch' AND Visible=1";
+	$couch_usuario = $conexion->query($consulta_couch);
+	if(!$couch_usuario->num_rows) {
+		header("Location: miscouchs.php");
+	}
+	$couch = $couch_usuario->fetch_array();
+	$titulo = $couch['Titulo'];
+	$idlocalidad= $couch['Id_Localidad'];
+	$idprovinvia= $couch['Id_Provincia'];
+	$idtipo= $couch['Id_TipoDeCouch'];
+	
+	//Consulta nombre de tipo de couch_usuario
+	$consulta_tipocouch = "SELECT * FROM tipodecouch WHERE Id_Tipo='$idtipo'";
+	$couch_tipo = $conexion->query($consulta_tipocouch);
+	$couchtipo = $couch_tipo->fetch_array();
+	$nombredetipo=$couchtipo['Nombre'];
+		
+	// Obtengo la ubicacion del couch
+	$consultaubicacion= "SELECT l.Localidad as Localidad, p.Provincia as Provincia FROM localidades l inner JOIN provincias p ON l.Id_Provincia=p.Id WHERE l.Id='$idlocalidad'";
+	$resultadoubicacion = $conexion->query($consultaubicacion);
+	$resultado = $resultadoubicacion->fetch_assoc();
+	$ubicacion = $resultado["Localidad"].', '.$resultado["Provincia"];
+	
+	// Selecciono las reservas del couch del usuario para mostrar en el paginado
+	$consulta = "SELECT * FROM reserva WHERE Visible=1 AND Id_Couch='$idcouch'";
 	$consulta_execute = $conexion->query($consulta);
 	$total_resultados=$consulta_execute->num_rows;
 	$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
-
-	// Selecciono los couchs del usuario para mostrar por pagina
-	$consulta_couchs = "SELECT * FROM couch WHERE Id_Usuario='$idusuario' AND Visible=1 LIMIT ".$inicio.",".$TAMANO_PAGINA."";
-	$couchs_usuario = $conexion->	query($consulta_couchs);
-
+	
+	//Obtengo las reservas de un couch
+	$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.FechaInicio, r.FechaFin, r.Estado, r.Canc_Huesped, r.FechaAlta, u.Nombre AS Nombre, u.Apellido AS Apellido, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch inner JOIN usuario u ON r.Id_Usuario = u.Id_Usuario WHERE r.Visible=1 AND r.Id_Couch='$idcouch' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera' LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+	$consulta_execute = $conexion->query($consulta);
 ?>
 
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>CouchInn - Reservas de mis Couchs</title>
+		<title>CouchInn - Reservas de <?php echo $titulo?></title>
 		<!-- Importacion Iconos de Google -->
  	 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Importacion de materialize css-->
@@ -239,31 +270,24 @@
         	<div class="parallax fondo-registro"></div>
         		<br>
         	    <div class="center grey-text text-darken-2">
-                    <h1> Reservas de Mis Couchs </h1>
+                    <h1> Reservas de <?php echo $titulo?> </h1>
                 </div>
 				<br>
 				<div class="divider"></div>
-				<br>
+				<div class="row">
+					<div class="col s6 offset-s3 center grey-text text-darken-2">
+						<?php echo '<h5><b>Ubicación: '.$ubicacion.' </b></h5>'; ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col s6 offset-s3 center grey-text text-darken-2">
+						<?php echo '<h5><b>Tipo: '.$nombredetipo.' </b></h5>'; ?>
+					</div>
+				</div>
+				<div class="divider"></div>
 				<div>
-				<?php if($couchs_usuario->num_rows) {
-					echo '<ul class="collapsible" data-collapsible="accordion">';
-					while($couch = $couchs_usuario->fetch_array()) {
-						$idcouch = $couch['Id_Couch'];
-						$titulo = $couch ['Titulo'];
-						$idlocalidad = $couch['Id_Localidad'];
-						// Obtengo la ubicacion del couch
-						$consultaubicacion= "SELECT l.Localidad as Localidad, p.Provincia as Provincia FROM localidades l inner JOIN provincias p ON l.Id_Provincia=p.Id WHERE l.Id='$idlocalidad'";
-						$resultadoubicacion = $conexion->query($consultaubicacion);
-						$resultado = $resultadoubicacion->fetch_assoc();
-						$ubicacion = $resultado["Localidad"].', '.$resultado["Provincia"];
-						echo '<li>
-							<div class="collapsible-header"><i class="material-icons">home</i>'.$titulo.' - '.$ubicacion.'</div>';
-						//Obtengo las reservas de un couch
-						$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.Id_Couch, r.FechaInicio, r.FechaFin, r.Estado, r.Calif_Couch, r.Canc_Huesped, r.FechaAlta, u.Nombre AS Nombre, u.Apellido AS Apellido, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch inner JOIN usuario u ON r.Id_Usuario = u.Id_Usuario WHERE r.Visible=1 AND r.Id_Couch='$idcouch' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera'";
-						$consulta_execute = $conexion->query($consulta);
-						if($consulta_execute->num_rows) {
-							echo '<div class="collapsible-body">
-									<table class="responsive-table">
+					<?php if($consulta_execute->num_rows) {
+							echo '<table class="responsive-table">
 										<thead>
 											<tr>
 												<th data-field="name" class="center">Nombre de Huesped</th>
@@ -385,26 +409,13 @@
 										</tbody>';
 							}
 							echo '</table>
-								</div>';
+				</div>';
 						}else{
-							echo 	'<div class="collapsible-body center grey-text text-darken-2">
+							echo 	'<div class="center grey-text text-darken-2">
 										<h5>No tienes reservas para este couch</h5>
 									</div>';
 						}
-						echo '</li>';
-					}
-				echo '</ul>';
-				} else {
-					echo '<br>
-					<div class="center grey-text text-darken-2">
-							<h5>No tienes ningún couch registrado.</h5>
-					</div>
-					<br>
-					<br>
-					<br>';
-				}
-				?>
-				</div>
+					?>
 				<ul class="pagination center">
 				<?php
 					if ($pagina==1){
@@ -415,7 +426,7 @@
 						}
 					}else{
 						$paginaant=$pagina-1;
-						echo '<li class="waves-effect"><a href="reservascouch.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+						echo '<li class="waves-effect"><a href="reservasdecouch.php?idcouch='.$idcouch.'&pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
 					}
 					if ($total_paginas > 1){
 						for ($i=1;$i<=$total_paginas;$i++){
@@ -423,18 +434,23 @@
 								//si muestro el índice de la página actual, no coloco enlace
 								echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
 							}else{
-								echo '<li class="waves-effect"><a href="reservascouch.php?pagina='.$i.'">'.$i.'</a></li>';
+								echo '<li class="waves-effect"><a href="reservasdecouch.php?idcouch='.$idcouch.'&pagina='.$i.'">'.$i.'</a></li>';
 							}
 						}
 						if ($pagina==$total_paginas){
 							//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 						}else{
 							$paginapos=$pagina+1;
-							echo '<li class="waves-effect"><a href="reservascouch.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+							echo '<li class="waves-effect"><a href="reservasdecouch.php?idcouch='.$idcouch.'&pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
 						}
 					}
 				?>
 				</ul>
+				<div class="row">
+						<div class="col s12registro l12 center">
+							<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Volver" onClick="location.href='vercouch.php?id=<?php echo $idcouch ?>'">
+						</div>
+				</div>
         </div>
         <!-- Fin Contenido de pagina-->
 
@@ -469,16 +485,6 @@
 				$(document).on("click", ".modal-trigger", function () {
 					var idreserva = $(this).data('idreserva');
 					$(".modal-content #idreserva").val( idreserva );
-				});
-				$("#aceptar").change(function(){
-					$.ajax({
-						url:"funciones/versolapa.php",
-						type: "POST",
-						data:"idreserva="+$("#idreserva").val(),
-						success: function(opciones){
-							$("#idlocalidad").html(opciones);
-						}
-					})
 				});
   			});
   		</script>

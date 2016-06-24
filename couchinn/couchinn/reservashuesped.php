@@ -25,7 +25,7 @@
 	$hoy = date('Y-m-d');
 
 	//Conteo de paginado de resultado.
-	$TAMANO_PAGINA=5;
+	$TAMANO_PAGINA=10;
 	if(!isset($_GET['pagina'])) {
 		$pagina=1;
 		$inicio=0;
@@ -38,8 +38,6 @@
 	$consulta_execute = $conexion->query($consulta);
 	$total_resultados=$consulta_execute->num_rows;
 	$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
-	
-	
 
 	// Selecciono las reservas del usuario para mostrar por pagina
 	$consulta = "SELECT r.Id_Reserva, r.Id_Usuario, r.Id_Couch, r.FechaInicio, r.FechaFin, r.Estado, r.Calif_Huesped, r.FechaAlta, r.Canc_Couch, c.Titulo AS Titulo FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch WHERE r.Visible=1 AND r.Id_Usuario='$idusuario' ORDER BY Estado='vencida', Estado='cancelada', Estado='rechazada', Estado='confirmada', Estado='espera' LIMIT ".$inicio.",".$TAMANO_PAGINA."";
@@ -221,12 +219,9 @@
 		<div id="modal_mod" class="modal">
     		<div class="modal-content">
 				<br>
-				<br>
       			<h4>Modifica tu reserva!!!</h4>
 				<br>
-				<br>
       			<p>Elige la nueva fecha de comienzo y fin de tu reserva y presiona Modificar Reserva.</p>
-				<br>
 				<br>
 				<form name="reserva" method="post" onSubmit="return validarReserva()" action="funciones/modificareserva.php">
 					<div class="input-field">
@@ -237,17 +232,12 @@
 						<input name="fechainicio" type="date" class="datepicker" id="fechainicio" title="Fecha de Inicio">
 	                </div>
 					<br>
-					<div class="center">
-						Hasta
-					</div>
-					<br>
 					<div class="input-field">
 						<div class="grey-text"> Fin de reserva </div>
 						<div class="grey-text"> Actual: </div>
 						<input disabled type="text" name="ffin" id="ffin" value=""/>
 						<input name="fechafin" type="date" class="datepicker" id="fechafin" title="Fecha de Fin">
 	                </div>
-					<br>
 					<br>
 					<div class="divider"></div>
 					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Modifica Reserva">
