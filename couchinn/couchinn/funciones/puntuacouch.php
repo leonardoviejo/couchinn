@@ -9,14 +9,12 @@
 	$mensaje = $_POST['mensaje'];
 	$idcouch = $_POST['idcouch'];
 	$idusuario = $_POST['idusuario'];
-	//Obtengo la fecha actual
-	$hoy = date('Y-m-d');
 	//Validar datos de reserva
 	$consulta = "SELECT * FROM reserva WHERE Id_Reserva= '$idreserva' and Visible=1";
 	$consulta_execute = $conexion->query($consulta);
 	if($consulta_execute->num_rows){
 		$query_result = $consulta_execute->fetch_array();
-		if (($query_result['Calif_Huesped']==0)&&($query_result['Estado']=='confirmada')&&($query_result['FechaFin']<$hoy)){
+		if (($query_result['Calif_Huesped']==0)&&($query_result['Estado']=='finalizada')){
 			//Actualizacion de Reserva
 			$sql = "UPDATE `reserva` SET `Calif_Huesped` = '1' WHERE `reserva`.`Id_Reserva` = '$idreserva'";
 			if (!mysqli_query($conexion, $sql)) {

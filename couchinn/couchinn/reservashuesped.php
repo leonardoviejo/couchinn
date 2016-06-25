@@ -318,7 +318,7 @@
 								$fechafin = date('d-m-Y', strtotime($fechafin));
 								$fechaalta = $query_result['FechaAlta'];
 								$fechaalta = date('d-m-Y', strtotime($fechaalta));
-								if (($query_result["FechaFin"]<$hoy)&&($query_result["Calif_Huesped"]==0)&&($query_result["Estado"]=='confirmada')){
+								if (($query_result["Calif_Huesped"]==0)&&($query_result["Estado"]=='finalizada')){
 									$puedevotar=true;
 								}else{
 									$puedevotar=false;
@@ -356,23 +356,13 @@
 													<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
 												</form>
 											</td>';
-											$cancelar=false;
-											$calificar=false;
 											if ($query_result['FechaInicio'] > $hoy) {
 												echo '<td bgcolor="#b2d8b2" class="center"><a class="waves-effect waves-light btn red z-depth-2 modal-trigger" data-idreserva="'.$idreserva.'" href="#modal_cancelar">Cancelar</a></td>';
-												$cancelar=true;
-											}
-											if ($puedevotar){
-												echo '<td bgcolor="#b2d8b2" class="center"><a class="center waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" data-idcouch="'.$idcouch.'" data-idreserva="'.$idreserva.'" href="#modal_pun">Calificar</a></td>';
-												$calificar=true;
+											}else{
+												echo '<td bgcolor="#b2d8b2" class="center"></td>';
 											}
 											echo'<td bgcolor="#b2d8b2" class="center"></td>';
-											if (!$cancelar){
-												echo '<td bgcolor="#b2d8b2" class="center"></td>';
-											}
-											if (!$calificar){
-												echo '<td bgcolor="#b2d8b2" class="center"></td>';
-											}
+											echo'<td bgcolor="#b2d8b2" class="center"></td>';
 											echo '</tr>';
 									} else {
 										if($estado=='rechazada') {
@@ -415,23 +405,46 @@
 												<td bgcolor="#cccccc" class="center"></td>
 												<td bgcolor="#cccccc" class="center"></td>
 											</tr>';
-											} else { //Reservas vencidas
-												echo '<tr>
-												<td bgcolor="#c7e9ed" class="center">'.$titulo.'</td>
-												<td bgcolor="#c7e9ed" class="center">'.$fechainicio.'</td>
-												<td bgcolor="#c7e9ed" class="center">'.$fechafin.'</td>
-												<td bgcolor="#c7e9ed" class="center">'.ucwords(strtolower($estado)).'</td>
-												<td bgcolor="#c7e9ed" class="center">'.$fechaalta.'</td>
-												<td bgcolor="#c7e9ed" class="center">
-													<form action="vercouch.php" method="post">
-														<input type="hidden" name="id" value="'.$idcouch.'">
-														<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
-													</form>
-												</td>
-												<td bgcolor="#c7e9ed" class="center"></td>
-												<td bgcolor="#c7e9ed" class="center"></td>
-												<td bgcolor="#c7e9ed" class="center"></td>
-												</tr>';
+											} else {
+												if ($estado='finalizada'){
+													echo '<tr>
+													<td bgcolor="#b9f6ca" class="center">'.$titulo.'</td>
+													<td bgcolor="#b9f6ca" class="center">'.$fechainicio.'</td>
+													<td bgcolor="#b9f6ca" class="center">'.$fechafin.'</td>
+													<td bgcolor="#b9f6ca" class="center">'.ucwords(strtolower($estado)).'</td>
+													<td bgcolor="#b9f6ca" class="center">'.$fechaalta.'</td>
+													<td bgcolor="#b9f6ca" class="center">
+														<form action="vercouch.php" method="post">
+															<input type="hidden" name="id" value="'.$idcouch.'">
+															<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
+														</form>
+													</td>';
+													if ($puedevotar){
+														echo '<td bgcolor="#b9f6ca" class="center"><a class="center waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" data-idcouch="'.$idcouch.'" data-idreserva="'.$idreserva.'" href="#modal_pun">Calificar</a></td>';
+													}else{
+														echo '<td bgcolor="#b9f6ca" class="center"></td>';
+													}
+													echo '<td bgcolor="#b9f6ca" class="center"></td>
+														  <td bgcolor="#b9f6ca" class="center"></td>
+													</tr>'; 
+												}else{	//Reservas vencidas
+													echo '<tr>
+													<td bgcolor="#c7e9ed" class="center">'.$titulo.'</td>
+													<td bgcolor="#c7e9ed" class="center">'.$fechainicio.'</td>
+													<td bgcolor="#c7e9ed" class="center">'.$fechafin.'</td>
+													<td bgcolor="#c7e9ed" class="center">'.ucwords(strtolower($estado)).'</td>
+													<td bgcolor="#c7e9ed" class="center">'.$fechaalta.'</td>
+													<td bgcolor="#c7e9ed" class="center">
+														<form action="vercouch.php" method="post">
+															<input type="hidden" name="id" value="'.$idcouch.'">
+															<input class="waves-effect waves-light btn light-green  z-depth-2" type="submit" value="Ver Couch">
+														</form>
+													</td>
+													<td bgcolor="#c7e9ed" class="center"></td>
+													<td bgcolor="#c7e9ed" class="center"></td>
+													<td bgcolor="#c7e9ed" class="center"></td>
+													</tr>';
+												}
 											}
 										}
 									}

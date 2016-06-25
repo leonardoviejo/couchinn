@@ -12,4 +12,15 @@
 			}
 		}
 	}
+	$consulta = "SELECT * FROM reserva WHERE Estado='confirmada' AND Canc_Huesped=0 AND Canc_Couch=0 AND Visible=1 AND FechaFin < '$hoy'";
+	$result = $conexion->query($consulta);
+	if($result->num_rows > 0){
+		while($resultado = $result->fetch_array()) {
+			$idreserva=$resultado['Id_Reserva'];
+			$sql="UPDATE reserva SET `Estado`='finalizada' WHERE `reserva`.`Id_Reserva` = '$idreserva'";
+			if (!mysqli_query($conexion, $sql)) {
+					echo "ERROR. " . mysqli_error($conexion);
+			}
+		}
+	}
 ?>
