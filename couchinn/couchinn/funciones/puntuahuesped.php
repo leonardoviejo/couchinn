@@ -8,15 +8,13 @@
 	$puntaje = $_POST['puntaje'];
 	$mensaje = $_POST['mensaje'];
 	$idusuario = $_POST['idusuario']; // Este id de usuario es del dueño del couch que emite el puntaje
-	//Obtengo la fecha actual
-	$hoy = date('Y-m-d');
 	//Validar datos de reserva
 	$consulta = "SELECT * FROM reserva WHERE Id_Reserva= '$idreserva' and Visible=1";
 	$consulta_execute = $conexion->query($consulta);
 	if($consulta_execute->num_rows){
 		$query_result = $consulta_execute->fetch_array();
 		$idhuesped=$query_result['Id_Usuario']; // Este id de huesped es el que recibe la calificacion del dueño del couch
-		if (($query_result['Calif_Couch']==0)&&($query_result['Estado']=='confirmada')&&($query_result['FechaFin']<$hoy)){
+		if (($query_result['Calif_Couch']==0)&&($query_result['Estado']=='finalizada')){
 			//Actualizacion de Reserva
 			$sql = "UPDATE `reserva` SET `Calif_Couch` = '1' WHERE `reserva`.`Id_Reserva` = '$idreserva'";
 			if (!mysqli_query($conexion, $sql)) {
