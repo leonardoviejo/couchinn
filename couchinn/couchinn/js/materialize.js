@@ -696,9 +696,11 @@ if ($) {
 
       var $body = $('body');
       var oldWidth = $body.innerWidth();
-      $body.css('overflow', 'hidden');
+      //$body.css('overflow', 'hidden');  Original
+      $body.css('overflow', 'auto'); //Modificado el 24/06/2016 19:38
       $body.width(oldWidth);
-
+	  
+	 
       var defaults = {
         opacity: 0.5,
         in_duration: 350,
@@ -5198,6 +5200,7 @@ function DatePicker( picker, settings ) {
             })
         }, 1 ).
         on( 'open', function() {
+			$('html').css('overflow','auto'); //agregado el 24/06/2016 20:00
             var includeToday = ''
             if ( calendar.disabled( calendar.get('now') ) ) {
                 includeToday = ':not(.' + settings.klass.buttonToday + ')'
