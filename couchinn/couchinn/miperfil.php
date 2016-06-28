@@ -25,6 +25,11 @@
 	$fechaalta=$resultado["FechaAlta"];
 	$email=$resultado["Email"];
 	$nombreusuario=$nombre.' '.$apellido;
+	if ($resultado["Cant_Calif"]>0){
+		$puntaje=round($resultado["Total_Calif"]/$resultado["Cant_Calif"]);
+	}else{
+		$puntaje=0;
+	}
 		
 	$consulta = "SELECT * FROM tipodeusuario WHERE Id_Tipo='$tipo'";
 	$consulta_execute = $conexion->query($consulta);
@@ -203,6 +208,29 @@
 								</div>
 						</div>'
 				?>
+				<div class="divider"></div>
+				<div class="row">
+						<div class="col s4">
+							<p class="left">Puntaje de Usuario</p>
+						</div>
+						<?php
+							if ($puntaje>0){
+								echo 	'<div class="col s2">	
+											<p class="left">'.$puntaje.' </p>
+										</div>
+										<div class="col s2">	
+											<form action="comentariosusuario.php" method="get">
+												<input type="hidden" name="idperfil" value="'.$idusuario.'">
+												<input class="right waves-effect waves-light btn light-green z-depth-2" type="submit" value="Puntajes">
+											</form>
+										</div>';	
+							}else{
+								echo 	'<div class="col s8">	
+											<p class="left"> Usuario aún no puntuado. </p>
+										</div>';
+							}
+						?>
+				</div>
 				<div class="divider"></div>
 				<div class="row">
 						<div class="col s4">

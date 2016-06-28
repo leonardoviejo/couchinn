@@ -23,7 +23,7 @@
 			}
 			//Actualizar puntaje en couch
 			$idusuariopuntuado=$query_result['Id_Usuario'];
-			$sql = "UPDATE `usuario` SET `Cant_Calif` =+1, `Total_Calif` =+'$puntaje' WHERE `usuario`.`Id_Usuario` = '$idusuariopuntuado'";
+			$sql = "UPDATE `usuario` SET `Cant_Calif` =`Cant_Calif`+1, `Total_Calif` =`Total_Calif`+'$puntaje' WHERE `usuario`.`Id_Usuario` = '$idusuariopuntuado'";
 			if (!mysqli_query($conexion, $sql)) {
 				echo "ERROR. " . mysqli_error($conexion);
 			}

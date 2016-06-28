@@ -21,7 +21,7 @@
 				echo "ERROR. " . mysqli_error($conexion);
 			}
 			//Actualizar puntaje de huesped
-			$sql = "UPDATE `usuario` SET `Cant_Calif` =+1, `Total_Calif` =+'$puntaje' WHERE `usuario`.`Id_Usuario` = '$idhuesped'";
+			$sql = "UPDATE `usuario` SET `Cant_Calif` =`Cant_Calif`+1, `Total_Calif` =`Total_Calif`+'$puntaje' WHERE `usuario`.`Id_Usuario` = '$idhuesped'";
 			if (!mysqli_query($conexion, $sql)) {
 				echo "ERROR. " . mysqli_error($conexion);
 			}

@@ -23,7 +23,7 @@
 				echo "ERROR. " . mysqli_error($conexion);
 			}
 			//Actualizar puntaje en couch
-			$sql = "UPDATE `couch` SET `Cant_Calif` =+1, `Total_Calif` =+'$puntaje' WHERE `couch`.`Id_Couch` = '$idcouch'";
+			$sql = "UPDATE `couch` SET `Cant_Calif` =`Cant_Calif`+1, `Total_Calif` =`Total_Calif`+'$puntaje' WHERE `couch`.`Id_Couch` = '$idcouch'";
 			if (!mysqli_query($conexion, $sql)) {
 				echo "ERROR. " . mysqli_error($conexion);
 			}
