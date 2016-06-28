@@ -312,6 +312,28 @@
   		</div>
 		<!-- Fin del modal para responder-->
 		
+				<!-- Comienzo del modal para eliminar mensaje-->
+		<div id="modal_borrar" class="modal">
+    		<div class="modal-content">
+      			<br>
+      			<h4>Estás borrando un mensaje!!!</h4>
+				<br>
+      			<p>Este paso no se puede deshacer.</p>
+				<br>
+				<form name="eliminar" method="post" action="funciones/baja_comentario.php">
+					<input type="hidden" name="idcomentario" id="idmensaje">
+					<?php echo '<input type="hidden" name="idcouch" value="'.$idcouch.'">';?>
+					<?php echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';?>
+					<br>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Borrar">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal para eliminar mensaje-->
+		
 		<!-- Contenido de pagina-->
         <div class="parallax-container-mio z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -477,14 +499,24 @@
 										<div class="collapsible-header"><i class="material-icons">person</i>'.$nombre.' --	Enviado el '.$fecha.'</div>
 										<div class="collapsible-body">
 											<p>'.$mensaje.'</p>
-											<a class="waves-effect waves-light btn light-green z-depth-2 modal-trigger" data-mensaje="'.$mensaje.'" data-idmensaje="'.$idmensaje.'" href="#modal_res">Responder</a>
+											<a class="waves-effect waves-light btn light-green z-depth-2 modal-trigger" data-mensaje="'.$mensaje.'" data-idmensaje="'.$idmensaje.'" href="#modal_res">Responder</a>';
+											if ($tipo==2) { //Si es admin muestra el boton borrar
+												echo '<a class="right waves-effect waves-light btn red z-depth-2 modal-trigger" data-idmensaje="'.$idmensaje.'" href="#modal_borrar">Borrar</a>';
+											}
+										echo '
 										</div>
 									</li>';
 							}else{	
 								echo '
 									<li>
 										<div class="collapsible-header"><i class="material-icons">person</i>'.$nombre.' --	Enviado el '.$fecha.'</div>
-										<div class="collapsible-body"><p>'.$mensaje.'</p></div>
+										<div class="collapsible-body">
+											<p>'.$mensaje.'</p>';
+											if ($tipo==2) { //Si es admin muestra el boton borrar
+												echo '<a class="waves-effect waves-light btn red z-depth-2 modal-trigger" data-idmensaje="'.$idmensaje.'" href="#modal_borrar">Borrar</a>';
+											}
+										echo'
+										</div>
 									</li>';
 							}
 						}else{
@@ -494,7 +526,11 @@
 									<div class="collapsible-header"><i class="material-icons">person</i>'.$nombre.' --	Enviado el '.$fecha.'</div>
 									<div class="collapsible-body">
 										<p>'.$mensaje.'</p>
-										<p><b><u>Respuesta</u>:</b> '.$respuestapregunta.'</p>
+										<p><b><u>Respuesta</u>:</b> '.$respuestapregunta.'</p>';
+										if ($tipo==2) { //Si es admin muestra el boton borrar
+											echo '<a class="waves-effect waves-light btn red z-depth-2 modal-trigger" data-idmensaje="'.$idmensaje.'" href="#modal_borrar">Borrar</a>';
+										}
+									echo'
 									</div>
 								</li>';
 						}
