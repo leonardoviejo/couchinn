@@ -187,9 +187,10 @@
 									</form>
 								</td>
 								<td class="right">
-									<form action="eliminarusuario.php" method="post">
-										<input type="hidden" name="id" value="'.$id.'">
-										<input class="disabled waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
+									<form action="funciones/baja_usuario.php" method="post">
+										<input type="hidden" name="idusuario" value="'.$id.'">
+										<input type="hidden" name="idadmin" value="'.$idusuario.'">
+										<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
 									</form>
 								</td>
 									
