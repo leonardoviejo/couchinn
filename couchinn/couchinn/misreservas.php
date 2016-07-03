@@ -136,6 +136,7 @@
 						<tr>
 							<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Ver Reservas Solicitadas" onClick="location.href='reservashuesped.php'"></td>							<td class="center"></td>
 							<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Ver Reservas de mis Couchs" onClick="location.href='reservascouch.php'"></td>
+							<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Mis estadias" onClick="location.href='misestadias.php'"></td>
 						</tr>
 					</tbody>
 				</table>
