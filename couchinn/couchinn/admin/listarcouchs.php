@@ -140,71 +140,75 @@
 					<!-- Tabla-->
 					<?php if($consulta_execute->num_rows) { ?>
 					<div class="row">
-					<table class="col s12 highlight responsive-table">
-        				<thead>
-							<tr>
-								<th class="center" data-field="name"></th>
-								<th class="center" data-field="name">Título</th>
-								<th class="center" data-field="name">Ciudad</th>
-								<th class="center" data-field="name">Propietario</th>
-								<th class="center" data-field="name">Capacidad</th>
-								<th class="center" data-field="name">Tipo</th>
-								<th class="center" data-field="name">Fecha de Alta</th>
-          					</tr>
-        				</thead>
-						<?php 
-						while($query_result = $consulta_execute->fetch_array()) {
-							$id=$query_result['Id_Couch'];
-							$titulo = $query_result['Titulo'];
-							$ciudad = $query_result['Ciudad'];
-							$propietario = $query_result["Nombre"] . " " . $query_result["Apellido"];
-							$capacidad = $query_result['Capacidad'];
-							$tipocouch = $query_result['NombreTipo'];
-							$fechaalta = $query_result['FechaAlta'];
-							$premium= $query_result['Premium'];
-							$foto1= $query_result['Foto1'];
-							$fechaalta=strtotime($fechaalta);
-							
-				
-        				echo'
-						<tbody>
-          					<tr>';
-								if($premium==1){
-									echo '<td class="center" ><img width="70" height="70" src="../'.$foto1.'"></td>';
-								}else{
-									echo '<td class="center" ><img width="70" height="70" src="../imagenes/mini.png"></td>';
-								}
-								echo 
-								'<td class="center" >'.$titulo.'</td>
-								<td class="center" >'.$ciudad.'</td>
-								<td class="center" >'.$propietario.'</td>
-								<td class="center" >'.$capacidad.'</td>
-								<td class="center" >'.$tipocouch.'</td>
-								<td class="center" >'; echo date('d-m-Y',$fechaalta);echo '</td>
-            					<td class="right">
-									<form action="../vercouch.php" method="post">
-										<input type="hidden" name="id" value="'.$id.'">
-										<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Ver Couch">
-									</form>
-								</td>
-								<td class="right">
-									<form action="../vercouch.php" method="post">
-										<input type="hidden" name="id" value="'.$id.'">
-										<input class="disabled waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
-									</form>
-								</td>
-									
-							</tr>
-        				</tbody>';
-						} ?>
-      				</table>
-                          <?php
-						} else{
-						echo '<tr>
-            					<td class="center">No existen Couchs</td>
-          					</tr>';
-						}
-					?>
+						<table class="col s12 highlight responsive-table">
+							<thead>
+								<tr>
+									<th class="center" data-field="name"></th>
+									<th class="center" data-field="name">Título</th>
+									<th class="center" data-field="name">Ciudad</th>
+									<th class="center" data-field="name">Propietario</th>
+									<th class="center" data-field="name">Capacidad</th>
+									<th class="center" data-field="name">Tipo</th>
+									<th class="center" data-field="name">Fecha de Alta</th>
+								</tr>
+							</thead>
+							<?php 
+							while($query_result = $consulta_execute->fetch_array()) {
+								$id=$query_result['Id_Couch'];
+								$titulo = $query_result['Titulo'];
+								$ciudad = $query_result['Ciudad'];
+								$propietario = $query_result["Nombre"] . " " . $query_result["Apellido"];
+								$capacidad = $query_result['Capacidad'];
+								$tipocouch = $query_result['NombreTipo'];
+								$fechaalta = $query_result['FechaAlta'];
+								$premium= $query_result['Premium'];
+								$foto1= $query_result['Foto1'];
+								$fechaalta=strtotime($fechaalta);
+								
+					
+							echo'
+							<tbody>
+								<tr>';
+									if($premium==1){
+										echo '<td class="center" ><img width="70" height="70" src="../'.$foto1.'"></td>';
+									}else{
+										echo '<td class="center" ><img width="70" height="70" src="../imagenes/mini.png"></td>';
+									}
+									echo 
+									'<td class="center" >'.$titulo.'</td>
+									<td class="center" >'.$ciudad.'</td>
+									<td class="center" >'.$propietario.'</td>
+									<td class="center" >'.$capacidad.'</td>
+									<td class="center" >'.$tipocouch.'</td>
+									<td class="center" >'; echo date('d-m-Y',$fechaalta);echo '</td>
+									<td class="right">
+										<form action="../vercouch.php" method="post">
+											<input type="hidden" name="id" value="'.$id.'">
+											<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Ver Couch">
+										</form>
+									</td>
+									<td class="right">
+										<form action="../vercouch.php" method="post">
+											<input type="hidden" name="id" value="'.$id.'">
+											<input class="disabled waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
+										</form>
+									</td>
+										
+								</tr>
+							</tbody>';
+							}
+							} else{
+							echo '<tr>
+									<td class="center">No existen Couchs</td>
+								</tr>';
+							}
+						?>
+						</table>
+						<div class="center">
+						<br>
+						<br>
+						<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Volver" onClick="location.href='administracion.php'">
+					</div>
 					</div>
 				</div>
 				<div class="section">

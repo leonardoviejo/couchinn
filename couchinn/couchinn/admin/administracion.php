@@ -19,6 +19,11 @@
 		if ($tipo == 2){
 			$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 			$premium=$resultado["Premium"];
+			//Busqueda de Costo de Membresía
+			$consulta= "SELECT Costo FROM costospremium ORDER BY Id_Costo DESC LIMIT 1";
+			$resultado = $conexion->query($consulta);
+			$fila = $resultado->fetch_assoc();
+			$costoactual = $fila["Costo"];
 ?>		
 <html>
 	<head>
@@ -110,6 +115,34 @@
 			  </div>		
 			</nav>
 		</div>
+		
+		<!-- Comienzo del modal para modificar costo de membresia premium-->
+		<div id="modal_costos" class="modal">
+    		<div class="modal-content">
+      			<br>
+      			<h4>Modificar Costo de Membresía Premium</h4>
+				<br>
+      			<p>Ingresa el nuevo monto y presiona Guardar.</p>
+				<br>
+				<form name="costos" method="post" action="funciones/actualiza_costos.php">
+					<div class="row">
+						<div class="grey-text col s4 offset-s4 center"> Costo Actual: $<?php echo $costoactual ?></div>
+						<br>
+						<div class="input-field col s2 offset-s5" data-tip="Ingrese el monto deseado.">
+							<input name="monto" id="monto" type="text" maxlength="4" pattern="^[0-9]{1,4}" class="validate" required="required">
+							<label for="monto" data-error="Solo se permiten digitos.">Nuevo Costo</label>
+						</div>
+					</div>
+					<?php echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';?>
+					<br>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Guardar">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal para modificar costo de membresia premium-->
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -125,7 +158,7 @@
 					<table class="col s6 offset-s3 highlight responsive-table">
         				<thead>
 							<tr>
-								<th class="center" data-field="name">Operaciones</th>
+								<th class="center" data-field="name"><h5>Operaciones</h5></th>
           					</tr>
         				</thead>
 						<tbody>
@@ -139,10 +172,13 @@
 								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Usuarios" onClick="location.href='listarusuarios.php'"></td>
 							</tr>
 							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Listar Usuarios Premium" onClick="location.href='listarusuariospremium.php'"></td>
+								<td class="center"><a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_costos">Modificar Costo de Membresía</a></td>
 							</tr>
 							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Listar Administradores" onClick="location.href='listarusuariospremium.php'"></td>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Usuarios Premium" onClick="location.href='listarusuariospremium.php'"></td>
+							</tr>
+							<tr>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Administradores" onClick="location.href='listaradmin.php'"></td>
 							</tr>
 							<tr>
 								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Listar Reservas" onClick="location.href='listarusuariospremium.php'"></td>
@@ -185,6 +221,7 @@
 				$(".parallax").parallax();
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
+				$('.modal-trigger').leanModal();
   			});
   		</script>
 	</body>

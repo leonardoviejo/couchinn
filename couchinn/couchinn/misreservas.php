@@ -130,16 +130,16 @@
 			<br>
 			<div class="divider"></div>
 			<br>
-			<div class="row">
-				<table class="col s6 offset-s3 responsive-table">
-					<tbody>
-						<tr>
-							<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Ver Reservas Solicitadas" onClick="location.href='reservashuesped.php'"></td>							<td class="center"></td>
-							<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Ver Reservas de mis Couchs" onClick="location.href='reservascouch.php'"></td>
-							<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Mis estadias" onClick="location.href='misestadias.php'"></td>
-						</tr>
-					</tbody>
-				</table>
+			<div class="row center">
+				<div class="col s4 left">
+					<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Ver Reservas Solicitadas" onClick="location.href='reservashuesped.php'">
+				</div>
+				<div class="col s4 center">
+					<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Ver Reservas de mis Couchs" onClick="location.href='reservascouch.php'">
+				</div>
+				<div class="col s4 right">
+					<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Mis estadias" onClick="location.href='misestadias.php'">
+				</div>
 			</div>
 			<br>
 			<div class="divider"></div>

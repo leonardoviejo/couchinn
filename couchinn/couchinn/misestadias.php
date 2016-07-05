@@ -21,9 +21,6 @@
 	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 	$premium=$resultado["Premium"];
 
-	//Obtengo la fecha actual
-	$hoy = date('Y-m-d');
-
 	//Conteo de paginado de resultado.
 	$TAMANO_PAGINA=10;
 	if(!isset($_GET['pagina'])) {
@@ -255,6 +252,11 @@
 						<br>';
 					}
 					?>
+						<div class="center">
+							<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Volver" onClick="location.href='misreservas.php'">
+						</div>
+						<br>
+						<br>
 					</div>
 				<ul class="pagination center">
 				<?php
@@ -266,7 +268,7 @@
 						}
 					}else{
 						$paginaant=$pagina-1;
-						echo '<li class="waves-effect"><a href="reservashuesped.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+						echo '<li class="waves-effect"><a href="misestadias.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
 					}
 					if ($total_paginas > 1){
 						for ($i=1;$i<=$total_paginas;$i++){ 
@@ -274,14 +276,14 @@
 								//si muestro el índice de la página actual, no coloco enlace 
 								echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
 							}else{
-								echo '<li class="waves-effect"><a href="reservashuesped.php?pagina='.$i.'">'.$i.'</a></li>';
+								echo '<li class="waves-effect"><a href="misestadias.php?pagina='.$i.'">'.$i.'</a></li>';
 							}
 						}
 						if ($pagina==$total_paginas){
 							//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 						}else{
 							$paginapos=$pagina+1;
-							echo '<li class="waves-effect"><a href="reservashuesped.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+							echo '<li class="waves-effect"><a href="misestadias.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
 						}
 					}
 				?>

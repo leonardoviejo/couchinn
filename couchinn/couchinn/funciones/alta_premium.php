@@ -1,11 +1,12 @@
 <?php include('config.php');
 	//Variables
-	if ((empty($_POST['idusuario']))||(empty($_POST['tarjeta']))){
+	if ((empty($_POST['idusuario']))||(empty($_POST['tarjeta']))||(empty($_POST['idcosto']))){
 		header("Location: ../index.php");
 	}
 	else{	
 	$idusuario = $_POST['idusuario'];
 	$tarjeta = $_POST['tarjeta'];
+	$idcosto = $_POST['idcosto'];
 	$invalidas = 1111111111111111;
 	
 	//Validar datos
@@ -22,7 +23,7 @@
 					location.href="../altapremium.php";
 					</script>';
 			} else {
-				$sql = "UPDATE `usuario` SET `Premium` = '1' WHERE `usuario`.`Id_Usuario` = '$idusuario'";
+				$sql = "UPDATE `usuario` SET `Premium` = '1', `Id_CostoPremium`='$idcosto' WHERE `usuario`.`Id_Usuario` = '$idusuario'";
 				if (mysqli_query($conexion, $sql)) {
 					echo 
 						'<script> alert("Felicitaciones, ahora eres PREMIUM!!!");

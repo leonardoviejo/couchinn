@@ -312,7 +312,7 @@
   		</div>
 		<!-- Fin del modal para responder-->
 		
-				<!-- Comienzo del modal para eliminar mensaje-->
+		<!-- Comienzo del modal para eliminar mensaje-->
 		<div id="modal_borrar" class="modal">
     		<div class="modal-content">
       			<br>

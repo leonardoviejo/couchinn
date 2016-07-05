@@ -20,7 +20,7 @@
 		$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 		$premium=$resultado["Premium"];
 		//Conteo de paginado de resultado.
-		$TAMANO_PAGINA=5;
+		$TAMANO_PAGINA=10;
 		if(!isset($_GET['pagina'])) {
 			$pagina=1;
 			$inicio=0;
@@ -191,15 +191,18 @@
 									
 							</tr>
         				</tbody>';
-						} ?>
-      				</table>
-                        <?php
-					}else{
+						} 
+						}else{
 						echo '<tr>
            						<td class="center">No existen tipos de Couchs</td>
          						</tr>';
-					}
-					?>
+						}
+						?>
+					</table>
+				</div>
+				<div class="center">
+					<br>
+					<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Volver" onClick="location.href='administracion.php'">
 				</div>
 			</div>
 			<div class="section">
@@ -210,8 +213,6 @@
 								echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
 								echo '<li class="disabled"><a href="#">1</a></li>';
 								echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
-							}else{
-								echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
 							}
 						}else{
 							$paginaant=$pagina-1;
@@ -227,7 +228,7 @@
 								}
 							}
 							if ($pagina==$total_paginas){
-								echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+								//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 							}else{
 								$paginapos=$pagina+1;
 								echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';

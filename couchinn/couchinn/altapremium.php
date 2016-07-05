@@ -20,6 +20,11 @@
 	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 	$premium=$resultado['Premium'];
 	if ($premium==0){
+		$consulta= "SELECT * FROM costospremium ORDER BY Id_Costo DESC LIMIT 1";
+		$resultado = $conexion->query($consulta);
+		$fila = $resultado->fetch_assoc();
+		$costo = $fila["Costo"];
+		$idcosto = $fila["Id_Costo"];
 		
 ?>
 <html>
@@ -125,6 +130,10 @@
                         <h1> Volverme Premium </h1>
                     </div>
 					<br>
+					<div class="col s12 center grey-text text-darken-2">
+                        <h5> El costo de la membresía premium es de: $<?php echo $costo?></h5>
+                    </div>
+					<br>
 					<br>
 					<br>
 					<br>
@@ -213,9 +222,8 @@
 					        </div>
                          </div>
 						 <!-- Envio de usuario -->
-						 <?php 
-							echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';
-						 ?>
+						 <?php echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';?>
+						 <?php echo '<input type="hidden" name="idcosto" value="'.$idcosto.'">';?>
                          <br>
                          <br>
                          <div class="row">

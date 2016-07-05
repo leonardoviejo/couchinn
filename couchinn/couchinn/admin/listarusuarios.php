@@ -126,85 +126,112 @@
 			  </div>		
 			</nav>
 		</div>
+		
+		<!-- Comienzo del modal eliminacion de usuario-->
+		<div id="modal_eli" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>Eliminar Usuario</h4>
+				<br>
+      			<p>Atención!, estas a punto de eliminar un usuario. Este procedimiento no puede deshacerse y eliminará también todos sus datos asociados.</p>
+				<div class="grey-text" > Nombre: </div>
+					<input disabled type="text" name="nombre" id="nombre" value="">
+					<br>
+				<form name="eliminar" method="post" action="funciones/baja_usuario.php">
+					<input type="hidden" name="idusuario" id="idusuario">
+					<?php echo '<input type="hidden" name="idadmin" value="'.$idusuario.'">'?>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Eliminar Usuario">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal eliminacion de usuario-->
+		
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
         	<!--<div class="container">-->
-				<div class="row">
-                	<br>
-					<div class="center grey-text text-darken-2">
-                        <h1> Lista de Usuarios </h1>
-                    </div>
-				</div>
+				<br>
+				<div class="center grey-text text-darken-2">
+					<h1> Lista de Usuarios </h1>
+                </div>
 				<div class="section">
 					<!-- Tabla-->
 					<?php if($consulta_execute->num_rows) { ?>
 					<div class="row">
-					<table class="col s12 highlight responsive-table">
-        				<thead>
-							<tr>
-								<th class="center" data-field="name">Nombre</th>
-								<th class="center" data-field="name">Correo</th>
-								<th class="center" data-field="name">Permiso de Usuario</th>
-								<th class="center" data-field="name">Fecha de Nacimiento</th>
-								<th class="center" data-field="name">Teléfono</th>
-								<th class="center" data-field="name">Premium</th>
-								<th class="center" data-field="name">Fecha de Alta</th>
-          					</tr>
-        				</thead>
-						<?php 
-						while($query_result = $consulta_execute->fetch_array()) {
-							$id=$query_result['Id_Usuario'];
-							$nombre = $query_result["Nombre"] . " " . $query_result["Apellido"];
-							$email = $query_result['Email'];
-							$permisos=$query_result['NombreTipo'];
-							$fechanac = $query_result['FechaNac'];
-							$telefono = $query_result['Telefono'];
-							$premium= $query_result['Premium'];
-							$fechaalta = $query_result['FechaAlta'];
-							$fechanac=strtotime($fechanac);
-							$fechaalta=strtotime($fechaalta);
-				
-        				echo'
-						<tbody>
-          					<tr>
-								<td class="center" >'.$nombre.'</td>
-								<td class="center" >'.$email.'</td>
-								<td class="center" >'.ucwords($permisos).'</td>								
-								<td class="center" >'; echo date('d-m-Y',$fechanac);echo '</td>
-								<td class="center" >'.$telefono.'</td>';
-								if($premium==1){
-									echo '<td class="center" >Premium</td>';
-								}else{
-									echo '<td class="center" >Normal</td>';
-								}
-								echo '
-								<td class="center" >'; echo date('d-m-Y H:i:s',$fechaalta);echo '</td>
-            					<td class="right">
-									<form action="modificarperfilusuario.php" method="post">
-										<input type="hidden" name="id" value="'.$id.'">
-										<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Modificar Perfil">
-									</form>
-								</td>
-								<td class="right">
-									<form action="funciones/baja_usuario.php" method="post">
-										<input type="hidden" name="idusuario" value="'.$id.'">
-										<input type="hidden" name="idadmin" value="'.$idusuario.'">
-										<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
-									</form>
-								</td>
-									
-							</tr>
-        				</tbody>';
-						} ?>
-      				</table>
-                          <?php
-						} else{
-						echo '<tr>
-            					<td class="center">No existen tipos de Couchs</td>
-          					</tr>';
-						}
-					?>
+						<table class="col s12 highlight responsive-table">
+							<thead>
+								<tr>
+									<th class="center" data-field="name">Nombre</th>
+									<th class="center" data-field="name">Correo</th>
+									<th class="center" data-field="name">Permiso de Usuario</th>
+									<th class="center" data-field="name">Fecha de Nacimiento</th>
+									<th class="center" data-field="name">Teléfono</th>
+									<th class="center" data-field="name">Premium</th>
+									<th class="center" data-field="name">Fecha de Alta</th>
+								</tr>
+							</thead>
+							<?php 
+							while($query_result = $consulta_execute->fetch_array()) {
+								$id=$query_result['Id_Usuario'];
+								$nombre = $query_result["Nombre"] . " " . $query_result["Apellido"];
+								$email = $query_result['Email'];
+								$permisos=$query_result['NombreTipo'];
+								$fechanac = $query_result['FechaNac'];
+								$telefono = $query_result['Telefono'];
+								$premium= $query_result['Premium'];
+								$fechaalta = $query_result['FechaAlta'];
+								$fechanac=strtotime($fechanac);
+								$fechaalta=strtotime($fechaalta);
+					
+							echo'
+							<tbody>
+								<tr>
+									<td class="center" >'.$nombre.'</td>
+									<td class="center" >'.$email.'</td>
+									<td class="center" >'.ucwords($permisos).'</td>								
+									<td class="center" >'; echo date('d-m-Y',$fechanac);echo '</td>
+									<td class="center" >'.$telefono.'</td>';
+									if($premium==1){
+										echo '<td class="center" >Premium</td>';
+									}else{
+										echo '<td class="center" >Normal</td>';
+									}
+									echo '
+									<td class="center" >'; echo date('d-m-Y H:i:s',$fechaalta);echo '</td>
+									<td class="center">
+										<form action="modificarperfilusuario.php" method="post">
+											<input type="hidden" name="id" value="'.$id.'">
+											<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Perfil">
+										</form>
+									</td>
+									<td class="center">
+										<a class="waves-effect waves-light btn red z-depth-2 modal-trigger" data-idusuario="'.$id.'" data-nombre="'.$nombre.'" href="#modal_eli">Eliminar</a>
+									</td>
+								</tr>
+							</tbody>';
+							}
+							} else{
+							echo '<tr>
+									<td class="center">No existen usuarios.</td>
+								</tr>';
+							}?>
+						</table>
+						<div class="center">
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Volver" onClick="location.href='administracion.php'">
+						</div>
 					</div>
 				</div>
 				<div class="section">
@@ -220,7 +247,7 @@
 								}
 							}else{
 								$paginaant=$pagina-1;
-								echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
+								echo '<li class="waves-effect"><a href="listarusuarios.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
 							}
 							if ($total_paginas > 1){
 								for ($i=1;$i<=$total_paginas;$i++){ 
@@ -228,14 +255,14 @@
 										//si muestro el índice de la página actual, no coloco enlace 
 										echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
 									}else{
-										echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$i.'">'.$i.'</a></li>';
+										echo '<li class="waves-effect"><a href="listarusuarios.php?pagina='.$i.'">'.$i.'</a></li>';
 									}
 								}
 								if ($pagina==$total_paginas){
 									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 								}else{
 									$paginapos=$pagina+1;
-									echo '<li class="waves-effect"><a href="tiposdecouch.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
+									echo '<li class="waves-effect"><a href="listarusuarios.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
 								}
 								
 							}
@@ -273,6 +300,13 @@
 				$(".parallax").parallax();
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
+				$('.modal-trigger').leanModal();
+				$(document).on("click", ".modal-trigger", function () {
+					var idusuario = $(this).data('idusuario');
+					var nombre = $(this).data('nombre');
+					$(".modal-content #idusuario").val( idusuario );
+					$(".modal-content #nombre").val( nombre );
+				});
   			});
   		</script>
 	</body>

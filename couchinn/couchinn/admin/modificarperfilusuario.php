@@ -34,7 +34,6 @@
 			$fechanac=$resultado["FechaNac"];
 			$telefono=$resultado["Telefono"];
 			$email=$resultado["Email"];
-			
 			$fechanac=strtotime($fechanac);
 	
 			
@@ -130,6 +129,64 @@
 			</div>    
 		</nav>
 		</div>
+		
+		<!-- Comienzo del modal eliminacion de usuario-->
+		<div id="modal_eli" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>Eliminar Usuario</h4>
+				<br>
+      			<p>Atención!, estas a punto de eliminar un usuario. Este procedimiento no puede deshacerse y eliminara tambien todos sus datos asociados.</p>
+				<br>
+				<form name="eliminar" method="post" action="funciones/baja_usuario.php">
+					<?php echo '<input type="hidden" name="idusuario" value="'.$id.'">
+								<input type="hidden" name="idadmin" value="'.$idusuario.'">'?>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Eliminar Usuario">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal eliminacion de usuario-->
+		
+		<!-- Comienzo del modal de adminsitracion-->
+		<div id="modal_admact" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>Convertir en Administrador</h4>
+				<br>
+      			<p>Atención!, estas a punto de convertir este usuario en Administrador. Este usuario podra acceder al panel de administración y modificar datos del sistema.</p>
+				<br>
+				<form name="eliminar" method="post" action="funciones/configurar_administrador.php">
+					<?php echo '<input type="hidden" name="idusuario" value="'.$id.'">
+								<input type="hidden" name="idadmin" value="'.$idusuario.'">'?>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Convertir">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<div id="modal_admdes" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>Revocar Administrador</h4>
+				<br>
+      			<p>Atención!, estás a punto de revocar los permisos de este usuario y no podrá acceder más al panel de administración.</p>
+				<br>
+				<form name="eliminar" method="post" action="funciones/configurar_administrador.php">
+					<?php echo '<input type="hidden" name="idusuario" value="'.$id.'">
+								<input type="hidden" name="idadmin" value="'.$idusuario.'">'?>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Revocar">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal de administracion-->
+		
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -201,12 +258,44 @@
 					    </div>
 					</div>
 					<div class="divider"></div>
+					<div class="row">
+						<div class="col s4">
+							<p class="left">Tipo de Cuenta </p>
+						</div>
+						<?php
+							if ($tipousuario==1){
+								echo '
+									<div class="col s4">
+										<br>
+										Cuenta Normal
+									</div>
+									<div class="col s4">
+										<br>
+										<a class="waves-effect waves-light btn red z-depth-2 modal-trigger" href="#modal_admact">Hacer Administrador</a>
+									</div>';
+							}else{
+								echo '
+									<div class="col s4">
+										<br>
+										Cuenta Administrador
+									</div>
+									<div class="col s4">
+										<br>
+										<a class="waves-effect waves-light btn red z-depth-2 modal-trigger" href="#modal_admdes">Sacar Administrador</a>
+									</div>';
+							}
+						?>
+					</div>
+					<div class="divider"></div>
 					<br>
 					<div class="row">
-	        			<div class="col s12registro l6 center">
+	        			<div class="col s12registro l4 center">
                           	<input class="waves-effect waves-light btn light-green z-depth-2" type="button" value="Cancelar" onClick="location.href='listarusuarios.php'">
                         </div>
-                        <div class="col s12registro l6 center">
+						<div class="col s12registro l4 center">
+							<a class="waves-effect waves-light btn red z-depth-2 modal-trigger" href="#modal_eli">Eliminar</a>
+						</div>
+                        <div class="col s12registro l4 center">
         	              	<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Guardar">
                         </div>
                     </div>
@@ -244,6 +333,7 @@
 				$(".parallax").parallax();
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
+				$('.modal-trigger').leanModal();
 				$('.datepicker').pickadate({
 				min: [1900,1,1],
 				max: -6575, //hace que se muestre siempre como última fecha el día de hoy pero de 18 años atras. Solo se pueden registrar personas mayores de 18 años.
