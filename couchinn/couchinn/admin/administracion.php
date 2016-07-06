@@ -143,6 +143,44 @@
     		</div>
   		</div>
 		<!-- Fin del modal para modificar costo de membresia premium-->
+		
+		<!-- Comienzo del modal para calcular ingresos-->
+		<div id="modal_cal" class="modal">
+    		<div class="modal-content">
+				<br>
+				<br>
+      			<h4>Calcular Ganancias de Período</h4>
+				<br>
+				<br>
+      			<p>Seleccione fecha de inicio y fin y presione Calcular.</p>
+				<br>
+				<br>
+				<br>
+				<form name="calculo" method="post" onSubmit="return validarReserva()" action="ganancias.php">
+					<div class="input-field">
+						<div class="grey-text">Fecha Inicio</div>
+						<input name="fechainicio" type="date" class="datepicker" id="fechainicio" title="Fecha de Inicio">
+	                </div>
+					<br>
+					<div class="center">
+						Hasta
+					</div>
+					<br>
+					<div class="input-field">
+						<div class="grey-text">Fecha Fin</div>
+						<input name="fechafin" type="date" class="datepicker" id="fechafin" title="Fecha de Fin">
+	                </div>
+					<br>
+					<br>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Calcular">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal para calcular ingresos-->
+		
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -184,7 +222,7 @@
 								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Listar Reservas" onClick="location.href='listarusuariospremium.php'"></td>
 							</tr>
 							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Calcular Ganancias" onClick="location.href='listarusuariospremium.php'"></td>
+								<td class="center"><a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_cal">Calcular Ganancias</a></td>
 							</tr>
         				</tbody>
       				</table>
@@ -215,6 +253,7 @@
  		<!-- Adjuntando los archivos JQuery -->
 		<script type="text/javascript" src="../js/jquery.min.js"></script>
   		<script type="text/javascript" src="../js/materialize.js"></script>
+		<script type="text/javascript" src="../js/funciones.js"></script>
   		<!-- Inicializacion de JS -->
   		<script type="text/javascript">
   			$(document).ready(function(){
@@ -222,6 +261,14 @@
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
 				$('.modal-trigger').leanModal();
+				$('.datepicker').pickadate({
+					min:[2013,1,1],
+					max:'Today',
+					selectYears: true,
+					selectMonths: true,
+					formatSubmit: 'yyyy-mm-dd',
+					hiddenName: true
+				});
   			});
   		</script>
 	</body>
