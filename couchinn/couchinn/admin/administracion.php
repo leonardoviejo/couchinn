@@ -19,11 +19,16 @@
 		if ($tipo == 2){
 			$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 			$premium=$resultado["Premium"];
+			//Busqueda de ultimos 5 costos de Membresía
+			$consultacostos= "SELECT * FROM costospremium ORDER BY Id_Costo DESC LIMIT 5";
+			$resultadocostos = $conexion->query($consultacostos);
 			//Busqueda de Costo de Membresía
-			$consulta= "SELECT Costo FROM costospremium ORDER BY Id_Costo DESC LIMIT 1";
+			$consulta= "SELECT * FROM costospremium ORDER BY Id_Costo DESC LIMIT 1";
 			$resultado = $conexion->query($consulta);
 			$fila = $resultado->fetch_assoc();
 			$costoactual = $fila["Costo"];
+			$fechacosto= date('d-m-Y',strtotime($fila["Fecha"]));
+			$hoy=date('d-m-Y',time());
 ?>		
 <html>
 	<head>
@@ -126,13 +131,45 @@
 				<br>
 				<form name="costos" method="post" action="funciones/actualiza_costos.php">
 					<div class="row">
-						<div class="grey-text col s4 offset-s4 center"> Costo Actual: $<?php echo $costoactual ?></div>
+						<div class="grey-text col s12 center">Costo Actual: $<?php echo $costoactual ?></div>
+						<div class="grey-text col s12 center">Vigente desde: <?php echo $fechacosto ?> al <?php echo $hoy ?></div>
 						<br>
 						<div class="input-field col s2 offset-s5" data-tip="Ingrese el monto deseado.">
 							<input name="monto" id="monto" type="text" maxlength="4" pattern="^[0-9]{1,4}" class="validate" required="required">
 							<label for="monto" data-error="Solo se permiten digitos.">Nuevo Costo</label>
 						</div>
 					</div>
+					<ul class="collapsible" data-collapsible="accordion">
+						<li>
+							<div class="collapsible-header"><i class="material-icons">assessment</i>Historial de Costos</div>
+							<div class="collapsible-body">
+								<?php if($resultadocostos->num_rows) {
+									echo '
+									<table>
+										<thead>
+											<tr>
+												<th data-field="id" class="center">Costo</th>
+												<th data-field="name" class="center">Fecha</th>
+											</tr>
+										</thead>
+										<tbody>';
+									while($filacostos = $resultadocostos->fetch_array()) {
+										echo '
+										<tr>
+											<td class="center">$'.$filacostos['Costo'].'</td>
+											<td class="center">'.date('d-m-Y',strtotime($filacostos['Fecha'])).'</td>
+										</tr>';
+									}
+									echo'
+										</tbody>
+									</table>';
+								}else{
+									echo '<div class="center"><h5>No existen costos anteriores</h5></div>';
+								}
+								?>
+							</div>
+						</li>
+					</ul>
 					<?php echo '<input type="hidden" name="idusuario" value="'.$idusuario.'">';?>
 					<br>
 					<br>
@@ -261,6 +298,9 @@
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
 				$('.modal-trigger').leanModal();
+				$('.collapsible').collapsible({
+					accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+				});
 				$('.datepicker').pickadate({
 					min:[2013,1,1],
 					max:'Today',
