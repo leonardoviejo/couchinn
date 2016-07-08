@@ -23,7 +23,7 @@
 					location.href="../altapremium.php";
 					</script>';
 			} else {
-				$sql = "UPDATE `usuario` SET `Premium` = '1', `Id_CostoPremium`='$idcosto' WHERE `usuario`.`Id_Usuario` = '$idusuario'";
+				$sql = "UPDATE `usuario` SET `Premium` = '1', `Id_CostoPremium`='$idcosto', `FechaAltaPremium`=curdate() WHERE `usuario`.`Id_Usuario` = '$idusuario'";
 				if (mysqli_query($conexion, $sql)) {
 					echo 
 						'<script> alert("Felicitaciones, ahora eres PREMIUM!!!");

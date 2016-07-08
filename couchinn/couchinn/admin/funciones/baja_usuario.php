@@ -1,4 +1,5 @@
 <?php include('../../funciones/config.php');
+	
 	//Variables
 	if ((empty($_POST['idadmin']))||(empty($_POST['idusuario']))){
 		header("Location: ../index.php");
