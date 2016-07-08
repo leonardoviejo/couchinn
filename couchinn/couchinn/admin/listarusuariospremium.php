@@ -126,6 +126,29 @@
 			  </div>		
 			</nav>
 		</div>
+		
+		<!-- Comienzo del modal eliminacion de usuario-->
+		<div id="modal_eli" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>Eliminar Usuario</h4>
+				<br>
+      			<p>Atención!, estas a punto de eliminar un usuario. Este procedimiento no puede deshacerse y eliminará también todos sus datos asociados.</p>
+				<div class="grey-text" > Nombre: </div>
+					<input disabled type="text" name="nombre" id="nombre" value="">
+					<br>
+				<form name="eliminar" method="post" action="funciones/baja_usuario.php">
+					<input type="hidden" name="idusuario" id="idusuario">
+					<?php echo '<input type="hidden" name="idadmin" value="'.$idusuario.'">'?>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Eliminar Usuario">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal eliminacion de usuario-->
+		
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -185,13 +208,8 @@
 									</form>
 								</td>
 								<td class="center">
-									<form action="funciones/baja_usuario.php" method="post">
-										<input type="hidden" name="idusuario" value="'.$id.'">
-										<input type="hidden" name="idadmin" value="'.$idusuario.'">
-										<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
-									</form>
-								</td>
-									
+										<a class="waves-effect waves-light btn red z-depth-2 modal-trigger" data-idusuario="'.$id.'" data-nombre="'.$nombre.'" href="#modal_eli">Eliminar</a>
+									</td>
 							</tr>
 						</tbody>';
 						}
@@ -281,6 +299,13 @@
 				$(".parallax").parallax();
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
+				$('.modal-trigger').leanModal();
+				$(document).on("click", ".modal-trigger", function () {
+					var idusuario = $(this).data('idusuario');
+					var nombre = $(this).data('nombre');
+					$(".modal-content #idusuario").val( idusuario );
+					$(".modal-content #nombre").val( nombre );
+				});
   			});
   		</script>
 	</body>

@@ -190,6 +190,7 @@
 										<p class="left"> Cuenta Normal </p> 
 									</div>
 									<div class="col s4">
+										<br>
 										<input class="waves-effect waves-light btn light-green darken-3 z-depth-2" type="button" value="Quiero ser Premium" onClick="location.href=`altapremium.php`">
 									</div>';
 						}					

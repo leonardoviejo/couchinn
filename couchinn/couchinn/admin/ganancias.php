@@ -45,7 +45,7 @@
 			$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 		}
 		//Consultas SQL
-		$consulta = "SELECT * FROM usuario WHERE Visible=1 and Premium=1 and FechaAltaPremium BETWEEN '$fechaini' AND '$fechafin' ORDER BY Id_Usuario ASC";
+		$consulta = "SELECT * FROM usuario WHERE Premium=1 and (FechaAltaPremium >= '$fechaini' and FechaAltaPremium <= '$fechafin') ORDER BY Id_Usuario ASC";
 		$consulta_execute = $conexion->query($consulta);
 		$total_resultados=$consulta_execute->num_rows;
 		$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
@@ -57,7 +57,7 @@
 			$resultado2 = $consulta_execute2->fetch_array();
 			$ganancia+=$resultado2['Costo'];
 		}
-		$consulta = "SELECT u.Id_Usuario, u.Nombre, u.Apellido, u.Email, u.FechaNac, u.Telefono, u.Premium, u.FechaAltaPremium, u.FechaAlta, t.Nombre AS NombreTipo FROM usuario u inner JOIN tipodeusuario t ON u.Id_TipoDeUsuario = t.Id_Tipo WHERE u.Visible=1 and u.Premium=1 and FechaAltaPremium BETWEEN '$fechaini' AND '$fechafin' ORDER BY FechaAlta ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+		$consulta = "SELECT u.Id_Usuario, u.Nombre, u.Apellido, u.Email, u.FechaNac, u.Telefono, u.Premium, u.FechaAltaPremium, u.Visible, u.FechaAlta, t.Nombre AS NombreTipo, u.Id_CostoPremium FROM usuario u inner JOIN tipodeusuario t ON u.Id_TipoDeUsuario = t.Id_Tipo WHERE u.Premium=1 and (FechaAltaPremium >= '$fechaini' and FechaAltaPremium <= '$fechafin') ORDER BY FechaAlta ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
 		$consulta_execute = $conexion->query($consulta);
 ?>
 <html>
@@ -188,6 +188,28 @@
   		</div>
 		<!-- Fin del modal para calcular ingresos-->
 		
+		<!-- Comienzo del modal eliminacion de usuario-->
+		<div id="modal_eli" class="modal">
+    		<div class="modal-content">
+				<br>
+      			<h4>Eliminar Usuario</h4>
+				<br>
+      			<p>Atención!, estas a punto de eliminar un usuario. Este procedimiento no puede deshacerse y eliminará también todos sus datos asociados.</p>
+				<div class="grey-text" > Nombre: </div>
+					<input disabled type="text" name="nombre" id="nombre" value="">
+					<br>
+				<form name="eliminar" method="post" action="funciones/baja_usuario.php">
+					<input type="hidden" name="idusuario" id="idusuario">
+					<?php echo '<input type="hidden" name="idadmin" value="'.$idusuario.'">'?>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Eliminar Usuario">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal eliminacion de usuario-->
+		
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -212,8 +234,8 @@
 			<div class="divider"></div>
 			<div class="section">
 				<!-- Tabla-->
-				<?php if($consulta_execute->num_rows) { ?>
 				<div class="row">
+				<?php if($consulta_execute->num_rows) { ?>
 					<table class="col s12 highlight responsive-table">
 						<thead>
 							<tr>
@@ -222,14 +244,16 @@
 								<th class="center" data-field="name">Permiso de Usuario</th>
 								<th class="center" data-field="name">Fecha de Nacimiento</th>
 								<th class="center" data-field="name">Teléfono</th>
-								<th class="center" data-field="name">Premium</th>
-								<th class="center" data-field="name">Fecha Alta Premium</th>
 								<th class="center" data-field="name">Fecha de Alta</th>
+								<th class="center" data-field="name">Fecha Alta Premium</th>
+								<th class="center" data-field="name">Importe</th>
 							</tr>
 						</thead>
 						<?php 
 						while($query_result = $consulta_execute->fetch_array()) {
 							$id=$query_result['Id_Usuario'];
+							$idcosto=$query_result['Id_CostoPremium'];
+							$visible=$query_result['Visible'];
 							$nombre = $query_result["Nombre"] . " " . $query_result["Apellido"];
 							$email = $query_result['Email'];
 							$permisos=$query_result['NombreTipo'];
@@ -241,47 +265,58 @@
 							$fechanac=strtotime($fechanac);
 							$fechaaltapremium=strtotime($fechaaltapremium);
 							$fechaalta=strtotime($fechaalta);
-				
+							$consultaimporte = "SELECT Costo FROM costospremium WHERE Id_Costo='$idcosto'";
+							$consulta_execute_costo = $conexion->query($consultaimporte);
+							$resultadocosto = $consulta_execute_costo->fetch_array();
+							$monto=$resultadocosto['Costo'];
 						echo'
-						<tbody>
+						<tbody>';
+							if ($visible==1){
+							echo '
 							<tr>
 								<td class="center" >'.$nombre.'</td>
 								<td class="center" >'.$email.'</td>
 								<td class="center" >'.ucwords($permisos).'</td>								
-								<td class="center" >'; echo date('d-m-Y',$fechanac);echo '</td>
-								<td class="center" >'.$telefono.'</td>';
-								if($premium==1){
-									echo '<td class="center" >Premium</td>';
-								}else{
-									echo '<td class="center" >Normal</td>';
-								}
-								echo '
-								<td class="center" >'; echo date('d-m-Y H:i:s',$fechaaltapremium);echo '</td>
-								<td class="center" >'; echo date('d-m-Y H:i:s',$fechaalta);echo '</td>
+								<td class="center" >'.date('d-m-Y',$fechanac).'</td>
+								<td class="center" >'.$telefono.'</td>
+								<td class="center" >'.date('d-m-Y H:i:s',$fechaalta).'</td>
+								<td class="center" >'.date('d-m-Y',$fechaaltapremium).'</td>
+								<td class="center" >$'.$monto.'</td>
 								<td class="center">
 									<form action="modificarperfilusuario.php" method="post">
 										<input type="hidden" name="id" value="'.$id.'">
 										<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Perfil">
 									</form>
 								</td>
-								<td class="center">
-									<form action="funciones/baja_usuario.php" method="post">
-										<input type="hidden" name="idusuario" value="'.$id.'">
-										<input type="hidden" name="idadmin" value="'.$idusuario.'">
-										<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
-									</form>
+								<td class="right">
+									<a class="waves-effect waves-light btn red z-depth-2 modal-trigger" data-idusuario="'.$id.'" data-nombre="'.$nombre.'" href="#modal_eli">Eliminar</a>
 								</td>
-									
-							</tr>
+							</tr>';
+							}else{
+								echo '
+							<tr>
+								<td bgcolor="#ffb2b2" class="center" >'.$nombre.'</td>
+								<td bgcolor="#ffb2b2" class="center" >'.$email.'</td>
+								<td bgcolor="#ffb2b2" class="center" >'.ucwords($permisos).'</td>								
+								<td bgcolor="#ffb2b2" class="center" >'.date('d-m-Y',$fechanac).'</td>
+								<td bgcolor="#ffb2b2" class="center" >'.$telefono.'</td>
+								<td bgcolor="#ffb2b2" class="center" >'.date('d-m-Y H:i:s',$fechaalta).'</td>
+								<td bgcolor="#ffb2b2" class="center" >'.date('d-m-Y',$fechaaltapremium).'</td>
+								<td bgcolor="#ffb2b2" class="center" >$'.$monto.'</td>
+								<td bgcolor="#ffb2b2" class="center"></td>
+								<td bgcolor="#ffb2b2" class="center"><input class="disabled waves-effect waves-light btn red z-depth-2" type="button" value="Usuario Eliminado"></td>
+							</tr>';
+							}
+						echo '
 						</tbody>';
 						}
-						} else{
-						echo '<tr>
-								<td class="center">No existen usuarios Premium</td>
-							</tr>';
+						echo '</table>';
+						}else{
+						echo '<div class="center">
+								<h5>No se computan ganancias en ese período.</h5>
+							</div>';
 						}
 					?>
-					</table>
 					<div class="center">
 						<br>
 						<br>
@@ -363,6 +398,12 @@
 				$(".dropdown-button").dropdown();
 				$(".button-collapse").sideNav();
 				$('.modal-trigger').leanModal();
+				$(document).on("click", ".modal-trigger", function () {
+					var idusuario = $(this).data('idusuario');
+					var nombre = $(this).data('nombre');
+					$(".modal-content #idusuario").val( idusuario );
+					$(".modal-content #nombre").val( nombre );
+				});
 				$('.datepicker').pickadate({
 					min:[2013,1,1],
 					max:'Today',
