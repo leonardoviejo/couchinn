@@ -5429,6 +5429,34 @@ a.waves-effect .waves-ripple {
   background-color: #e4e4e4;
 }
 
+/* Agregado por Leonardo 10/07/2016*/
+.chip_ocupado {
+  display: inline-block;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1);
+  line-height: 32px;
+  padding: 0 12px;
+  border-radius: 16px;
+  background-color: #f44336;
+}
+/**/
+
+/* Agregado por Leonardo 10/07/2016*/
+.chip_disponible {
+  display: inline-block;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1);
+  line-height: 32px;
+  padding: 0 12px;
+  border-radius: 16px;
+  background-color: #8bc34a;
+}
+/**/
+
 .chip img {
   float: left;
   margin: 0 8px 0 -12px;

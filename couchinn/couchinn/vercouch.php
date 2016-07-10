@@ -84,6 +84,18 @@
 		$consulta4 = "SELECT c.Id_Comentario, c.Id_Usuario, c.Mensaje, c.Respondido, c.Respuesta, c.FechaAlta, u.Nombre, u.Apellido FROM comentario c inner JOIN usuario u ON c.Id_Usuario = u.Id_Usuario WHERE c.Visible=1 and Id_Couch='$idcouch' ORDER BY FechaAlta ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
 		$ejecucion = $conexion->query($consulta4);
 		
+		//Si es mi couch verifico el estado
+		if ($idusuario == $idusuariocouch) {
+			$hoy = date('Y-m-d');
+			$consulta5 = "SELECT * FROM reserva WHERE Id_Couch='$idcouch' AND Estado='confirmada' AND FechaInicio <= '$hoy' AND FechaFin >= '$hoy'";
+			$resulta5 = $conexion->query($consulta5);
+			if($resulta5->num_rows) {
+				$ocupado=true;
+			}else{
+				$ocupado=false;
+			}
+		}
+		
 	} else {
 		?>
 		<script>	alert('Couch inexistente.');
@@ -362,29 +374,38 @@
 						</ul>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col s4">
+				<div class="row valign-wrapper">
+					<div class="col s3">
                     	<div class="left grey-text text-darken-2">
 							<h4>Detalles</h4>
 						</div>
                     </div>
 					<?php 	if ($idusuario==$idusuariocouch){
-								echo'<div class="col s3 left">
+								if ($ocupado) {
+									echo'<div class="chip_ocupado col s1">
+											Ocupado
+										</div>';
+								}else{
+									echo'<div class="chip_disponible col s1">
+											Disponible
+										</div>';
+								}
+								echo'<div class="col s4">
 										<form action="reservasdecouch.php" method="get">
 											<input type="hidden" name="idcouch" value="'.$idcouch.'">
-											<input class="waves-effect waves-light btn light-green z-depth-2" type="submit" value="Ver Reservas">
+											<input class="right waves-effect waves-light btn light-green z-depth-2" type="submit" value="Ver Reservas">
 										</form>
 									</div>
-									<div class="col s3 center">
+									<div class="col s2">
 										<form action="modificarcouch.php" method="post">
 											<input type="hidden" name="id" value="'.$idcouch.'">
-											<input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Modificar">
+											<input class="right waves-effect waves-light btn yellow darken-3 z-depth-2" type="submit" value="Modificar">
 										</form>
 									</div>
-									<div class="col s2 right">
+									<div class="col s2">
 										<form action="eliminarcouch.php" method="post">
 											<input type="hidden" name="id" value="'.$idcouch.'">
-											<input class="waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
+											<input class="right waves-effect waves-light btn red z-depth-2" type="submit" value="Borrar">
 										</form>
 									</div>';
 							}else{
