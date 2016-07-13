@@ -59,11 +59,13 @@
 					<ul class="right hide-on-med-and-down">
 						<li><a href="registro.php"  class="light-green-text">Registrarse</a></li>
 						<li><a href="login.php" class="light-green-text">Iniciar Sesión</a></li>
+						<li><a href="ayuda.php" class="light-green"><i class="large material-icons">help_outline</i></a></li>
 					</ul>
 					<!-- Opciones  de menu al costado-->
 					<ul class="side-nav" id="menulateral">
 						<li><a href="registro.php"  class="light-green-text">Registrarse</a></li>
 						<li><a href="login.php" class="light-green-text">Iniciar Sesión</a></li>
+						<li><a href="ayuda.php" class="light-green"><i class="large material-icons">help_outline</i></a></li>
 					</ul>
 			  </div>		
 			</nav>

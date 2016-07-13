@@ -16,8 +16,11 @@
 		}
 	//SQL
 	//Consulta datos de usuario
-	$consulta="SELECT * FROM usuario WHERE Id_Usuario='$idusuario'";
+	$consulta="SELECT * FROM usuario WHERE Id_Usuario='$idusuario' and Visible=1";
 	$consulta_execute = $conexion->query($consulta);
+	if ($consulta_execute->num_rows==0){
+		header("location: funciones/cerrar_sesion.php");
+	}
 	$resultado=$consulta_execute->fetch_assoc();
 	$tipo=$resultado['Id_TipoDeUsuario'];
 	$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
@@ -126,6 +129,7 @@
 						?>
 						<li><a class="dropdown-button light-green-text" href="#" data-activates="desplegable_cuenta">Mi cuenta</a></li>
 						<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
+						<li><a href="ayuda.php#aceptareserva" class="light-green"><i class="large material-icons">help_outline</i></a></li>
 					</ul>
 					<!-- Opciones  de menu lateral-->
 					<ul class="side-nav" id="menulateral">
@@ -137,6 +141,7 @@
 						?>
 						<li><a href="#"  class="dropdown-button light-green-text" data-activates="desplegable_lateral_cuenta">Mi cuenta</a></li>
 						<li><a href="funciones/cerrar_sesion.php" class="light-green-text">Cerrar Sesión</a></li>
+						<li><a href="ayuda.php#aceptareserva" class="light-green"><i class="large material-icons">help_outline</i></a></li>
 					</ul>
 			  </div>		
 			</nav>

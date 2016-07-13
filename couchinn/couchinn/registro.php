@@ -1,4 +1,16 @@
 <!doctype html>
+<?php
+	require_once("funciones/sesion.class.php");
+
+	$sesion = new sesion();
+	$idusuario = $sesion->get("id");
+
+	include('funciones/config.php');
+	
+	if ($idusuario){
+		header("location: index_login.php");
+	}
+?>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -26,11 +38,13 @@
 					<ul class="right hide-on-med-and-down">
 						<li><a href="registro.php"  class="light-green-text">Registrarse</a></li>
 						<li><a href="login.php"  class="light-green-text">Iniciar Sesión</a></li>
+						<li><a href="ayuda.php#registro" class="light-green"><i class="large material-icons">help_outline</i></a></li>
 				  </ul>
                   <!-- Opciones  de menu al costado-->
 					<ul class="side-nav" id="menulateral">
 						<li><a href="registro.php"  class="light-green-text">Registrarse</a></li>
 						<li><a href="login.php" class="light-green-text">Iniciar Sesión</a></li>
+						<li><a href="ayuda.php#registro" class="light-green"><i class="large material-icons">help_outline</i></a></li>
 					</ul>
 			  </div>		
 			</nav>
