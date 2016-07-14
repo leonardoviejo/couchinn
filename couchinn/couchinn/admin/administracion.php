@@ -23,7 +23,7 @@
 			$nombreusuario=$resultado["Nombre"].' '.$resultado["Apellido"];
 			$premium=$resultado["Premium"];
 			//Busqueda de ultimos 5 costos de Membresía
-			$consultacostos= "SELECT * FROM costospremium ORDER BY Id_Costo DESC LIMIT 5";
+			$consultacostos= "SELECT * FROM costospremium WHERE Id_Costo > 1 ORDER BY Id_Costo DESC";
 			$resultadocostos = $conexion->query($consultacostos);
 			//Busqueda de Costo de Membresía
 			$consulta= "SELECT * FROM costospremium ORDER BY Id_Costo DESC LIMIT 1";
@@ -235,10 +235,10 @@
 				<br>
 				<br>
 				<br>
-				<form name="calculo" method="post" onSubmit="return validarReserva()" action="listarusuariosperiodo.php">
+				<form name="calculo2" method="post" onSubmit="return validarReservaDos()" action="listarusuariosperiodo.php">
 					<div class="input-field">
 						<div class="grey-text">Fecha Inicio</div>
-						<input name="fechainicio" type="date" class="datepicker" id="fechainicio" title="Fecha de Inicio">
+						<input name="fechainicio" type="date" class="datepicker" id="fechainicioDos" title="Fecha de Inicio">
 	                </div>
 					<br>
 					<div class="center">
@@ -247,7 +247,7 @@
 					<br>
 					<div class="input-field">
 						<div class="grey-text">Fecha Fin</div>
-						<input name="fechafin" type="date" class="datepicker" id="fechafin" title="Fecha de Fin">
+						<input name="fechafin" type="date" class="datepicker" id="fechafinDos" title="Fecha de Fin">
 	                </div>
 					<br>
 					<br>

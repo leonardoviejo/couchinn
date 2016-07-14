@@ -162,6 +162,24 @@
 				<div class="center grey-text text-darken-2">
 					<h1> Lista de Usuarios </h1>
                 </div>
+				<br>
+				<div class="row">
+					<div class="center grey-text text-darken-2">
+					<?php
+					switch ($total_resultados){
+						case 0:
+							echo '<h5>No se han encontrado resultados.</h5>
+									<div class="divider"></div>';
+							break;
+						case 1:
+							echo '<h5>Se ha encontrado: '.$total_resultados.' resultado.</h5>';
+							break;
+						default:
+							echo '<h5>Se han encontrado: '.$total_resultados.' resultados.</h5>';	
+					}
+					?>
+					</div>
+				</div>
 				<div class="section">
 					<!-- Tabla-->
 					<?php if($consulta_execute->num_rows) { ?>
@@ -247,8 +265,6 @@
 									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
 									echo '<li class="disabled"><a href="#">1</a></li>';
 									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
-								}else{
-									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>';
 								}
 							}else{
 								$paginaant=$pagina-1;
@@ -264,7 +280,7 @@
 									}
 								}
 								if ($pagina==$total_paginas){
-									echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
+									//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 								}else{
 									$paginapos=$pagina+1;
 									echo '<li class="waves-effect"><a href="listarusuarios.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';

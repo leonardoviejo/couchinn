@@ -141,6 +141,24 @@
                         <h1> Lista de Couchs </h1>
                     </div>
 				</div>
+				<br>
+				<div class="row">
+					<div class="center grey-text text-darken-2">
+					<?php
+					switch ($total_resultados){
+						case 0:
+							echo '<h5>No se han encontrado resultados.</h5>
+									<div class="divider"></div>';
+							break;
+						case 1:
+							echo '<h5>Se ha encontrado: '.$total_resultados.' resultado.</h5>';
+							break;
+						default:
+							echo '<h5>Se han encontrado: '.$total_resultados.' resultados.</h5>';	
+					}
+					?>
+					</div>
+				</div>
 				<div class="section">
 					<!-- Tabla-->
 					<?php if($consulta_execute->num_rows) { ?>

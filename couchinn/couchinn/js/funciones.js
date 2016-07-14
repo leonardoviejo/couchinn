@@ -117,6 +117,29 @@
 		}
 	}
 	
+	function validarReservaDos(){
+		var fechainicio = document.getElementById("fechainicioDos").value;
+		fechainicioparse=Date.parse(fechainicio);
+		var fechafin = document.getElementById("fechafinDos").value;
+		fechafinparse=Date.parse(fechafin);
+		var mensaje="Se ha/n encontrado el/los siguente/s error/es: ";
+		var error=false;
+		if ((fechainicio == "")||(fechafin == "")){
+			mensaje=mensaje+ "Debe seleccionar las dos fechas";
+			error=true;
+		}
+		if (fechainicioparse>fechafinparse){
+			mensaje=mensaje+" ,Verifique que la fecha del comienzo de reserva es anterior a la fecha de fin de reserva.";
+			error=true;
+		}
+		if (error){
+			alert(mensaje);
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
 	function validarBusqueda(){
 		var fechainicio = document.getElementById("fechainicio").value;
 		fechainicioparse=Date.parse(fechainicio);

@@ -29,15 +29,17 @@
 			}else{
 				$fechaini=$_GET['fechainicio'];
 				$fechainis=date('d-m-Y',strtotime($fechaini));
-				$fechafin=$_GET['fechafin'];
-				$fechafins=date('d-m-Y',strtotime($fechafin));
+				$fechafinaux=$_GET['fechafin'];
+				$fechafins=date('d-m-Y',strtotime($fechafinaux));
+				$fechafin=date('Y-m-d-H-i-s', strtotime($fechafinaux) + 86399);
 				$completa=false;
 			}
 		}else{
 			$fechaini=$_POST['fechainicio'];
 			$fechainis=date('d-m-Y',strtotime($fechaini));
-			$fechafin=$_POST['fechafin'];
-			$fechafins=date('d-m-Y',strtotime($fechafin));
+			$fechafinaux=$_POST['fechafin'];
+			$fechafins=date('d-m-Y',strtotime($fechafinaux));
+			$fechafin=date('Y-m-d-H-i-s', strtotime($fechafinaux) + 86399);
 			$completa=false;
 		}	
 		//Conteo de paginado de resultado.
@@ -220,6 +222,24 @@
 				</div>
 				<div class="col s6 center">
 					<a class="waves-effect waves-light btn yellow darken-3 z-depth-2" href="listareserva.php">Listar Todas las Reservas</a>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="center grey-text text-darken-2">
+				<?php
+				switch ($total_resultados){
+					case 0:
+						echo '<h5>No se han encontrado resultados.</h5>
+								<div class="divider"></div>';
+						break;
+					case 1:
+						echo '<h5>Se ha encontrado: '.$total_resultados.' resultado.</h5>';
+						break;
+					default:
+						echo '<h5>Se han encontrado: '.$total_resultados.' resultados.</h5>';	
+				}
+				?>
 				</div>
 			</div>
 			<div class="section">
