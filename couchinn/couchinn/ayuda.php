@@ -269,7 +269,7 @@
 					</div>
 					<div class="col hide-on-small-only m3 l2">
 						<div class="toc-wrapper">
-							<ul class="section table-of-contents">
+							<ul class="section table-of-contents" style="background-color: #FFFFFF; box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);">
 								<li><a href="#introduccion">Introducción</a></li>
 								<li><a href="#registro">Registro</a></li>
 								<li><a href="#login">Inicio de Sesión</a></li>

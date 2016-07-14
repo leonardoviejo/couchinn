@@ -6704,6 +6704,7 @@ input[type=range]:focus::-ms-fill-upper {
   line-height: 1.5rem;
   letter-spacing: .4;
   display: inline-block;
+  
 }
 
 .table-of-contents a:hover {

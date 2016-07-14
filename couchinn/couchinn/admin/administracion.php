@@ -134,7 +134,7 @@
 				<br>
       			<p>Ingresa el nuevo monto y presiona Guardar.</p>
 				<br>
-				<form name="costos" method="post" action="funciones/actualiza_costos.php">
+				<form name="costos" method="post" onSubmit="return validarCosto()" action="funciones/actualiza_costos.php">
 					<div class="row">
 						<div class="grey-text col s12 center">Costo Actual: $<?php echo $costoactual ?></div>
 						<div class="grey-text col s12 center">Vigente desde: <?php echo $fechacosto ?> al <?php echo $hoy ?></div>
@@ -272,10 +272,10 @@
 				</div>
 				<!-- Inicio del Formulario-->
                 <div class="row">
-					<table class="col s6 offset-s3 highlight responsive-table">
+					<table class="col s5 left highlight responsive-table">
         				<thead>
 							<tr>
-								<th class="center" data-field="name"><h5>Operaciones</h5></th>
+								<th class="center" data-field="name"><h5>Couchs y Reservas</h5></th>
           					</tr>
         				</thead>
 						<tbody>
@@ -286,25 +286,54 @@
 								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Tipos de Couch" onClick="location.href='tiposdecouch.php'"></td>
 							</tr>
 							<tr>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar todas las Reservas" onClick="location.href='listareserva.php'"></td>
+							</tr>
+        				</tbody>
+      				</table>
+					<table class="col s5 right highlight responsive-table">
+        				<thead>
+							<tr>
+								<th class="center" data-field="name"><h5>Usuarios</h5></th>
+          					</tr>
+        				</thead>
+						<tbody>
+							<tr>
 								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Usuarios" onClick="location.href='listarusuarios.php'"></td>
 							</tr>
 							<tr>
+								<td class="center"><a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_ureg">Registrados de un Período</a></td>
+							</tr>
+        				</tbody>
+      				</table>
+				</div>
+				<div class="row">
+					<table class="col s5 left highlight responsive-table">
+        				<thead>
+							<tr>
+								<th class="center" data-field="name"><h5>Premium</h5></th>
+          					</tr>
+        				</thead>
+						<tbody>
+							<tr>
 								<td class="center"><a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_costos">Modificar Costo de Membresía</a></td>
-							</tr>
-							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Administradores" onClick="location.href='listaradmin.php'"></td>
-							</tr>
-							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Usuarios Premium" onClick="location.href='listarusuariospremium.php'"></td>
 							</tr>
 							<tr>
 								<td class="center"><a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_cal">Calcular Ganancias</a></td>
 							</tr>
 							<tr>
-								<td class="center"><a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_ureg">Listar Usuarios Registrados en Período</a></td>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Usuarios Premium" onClick="location.href='listarusuariospremium.php'"></td>
 							</tr>
+        				</tbody>
+      				</table>
+					<table class="col s5 right highlight responsive-table">
+        				<thead>
 							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar todas las Reservas" onClick="location.href='listareserva.php'"></td>
+								<th class="center" data-field="name"><h5>Administración</h5></th>
+          					</tr>
+        				</thead>
+						<tbody>
+							<tr>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Administradores" onClick="location.href='listaradmin.php'"></td>
 							</tr>
         				</tbody>
       				</table>

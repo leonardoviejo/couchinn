@@ -53,11 +53,11 @@
 		}
 		if (!$completa){
 			//Consultas SQL parcial aceptadas
-			$consulta = "SELECT * FROM reserva WHERE Estado='confirmada' and (FechaInicio >= '$fechaini' and FechaFin <= '$fechafin') ORDER BY Id_Couch ASC";
+			$consulta = "SELECT * FROM reserva WHERE Estado='confirmada' and (('$fechaini' between FechaInicio and FechaFin) or ('$fechafin' between FechaInicio and FechaFin) or (('$fechaini'<FechaInicio)and('$fechafin'>FechaInicio)) or (('$fechafin'>FechaFin)and('$fechaini'<FechaFin))) ORDER BY Id_Couch ASC";
 			$consulta_execute = $conexion->query($consulta);
 			$total_resultados=$consulta_execute->num_rows;
 			$total_paginas=ceil($total_resultados/$TAMANO_PAGINA);
-			$consulta = "SELECT c.Id_Couch, c.Titulo, c.Id_Provincia, c.Id_Localidad, c.Visible as CouchVisible, r.Estado, r.FechaInicio, r.FechaFin, r.FechaAlta, u.Nombre, u.Apellido, u.Id_Usuario, u.Visible as UsuarioVisible FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch inner JOIN usuario u ON r.Id_Usuario=u.Id_Usuario WHERE r.Estado='confirmada' and (FechaInicio >= '$fechaini' and FechaFin <= '$fechafin') ORDER BY Id_Couch ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+			$consulta = "SELECT c.Id_Couch, c.Titulo, c.Id_Provincia, c.Id_Localidad, c.Visible as CouchVisible, r.Estado, r.FechaInicio, r.FechaFin, r.FechaAlta, u.Nombre, u.Apellido, u.Id_Usuario, u.Visible as UsuarioVisible FROM reserva r inner JOIN couch c ON r.Id_Couch = c.Id_Couch inner JOIN usuario u ON r.Id_Usuario=u.Id_Usuario WHERE r.Estado='confirmada' and (('$fechaini' between FechaInicio and FechaFin) or ('$fechafin' between FechaInicio and FechaFin) or (('$fechaini'<FechaInicio)and('$fechafin'>FechaInicio)) or (('$fechafin'>FechaFin)and('$fechaini'<FechaFin))) ORDER BY Id_Couch ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
 			$consulta_execute = $conexion->query($consulta);
 		}else{
 			//Consultas SQL completa

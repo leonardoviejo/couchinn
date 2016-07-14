@@ -163,3 +163,12 @@
 		}
 	}
 	
+	function validarCosto(){
+		var monto = document.getElementById("monto").value;
+		if ((monto <= 0)||(monto>9999)){
+			alert('El monto ingresado no comple con un formato valido.');
+			return false;
+		}
+		return true;
+	}
+	

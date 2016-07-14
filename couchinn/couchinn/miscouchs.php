@@ -32,6 +32,8 @@
 		$pagina = $_GET["pagina"];
 		$inicio = ($pagina - 1) * $TAMANO_PAGINA;
 	}
+	//Fecha actual
+	$hoy = date('Y-m-d');
 	// Selecciono los couch del usuario para mostrar para el paginado
 	$consulta = "SELECT * FROM couch WHERE Visible=1 AND Id_Usuario='$idusuario' ORDER BY Titulo ASC";
 	$consulta_execute = $conexion->query($consulta);
@@ -166,6 +168,7 @@
 									<th data-field="name" class="center">Capacidad</th>
 									<th data-field="name" class="center">Tipo</th>
 									<th data-field="name" class="center">Fecha Creación</th>
+									<th data-field="name" class="center">Estado</th>
 								</tr>
 							</thead>
 							<?php 
@@ -181,7 +184,14 @@
 								$capacidad = $query_result['Capacidad'];
 								$tipocouch = $query_result['NombreTipo'];
 								$fechaalta = $query_result['FechaAlta'];
-								$fechaalta = date('d-m-Y', strtotime($fechaalta));						
+								$fechaalta = date('d-m-Y', strtotime($fechaalta));
+								$consulta5 = "SELECT * FROM reserva WHERE Id_Couch='$id' AND Estado='confirmada' AND FechaInicio <= '$hoy' AND FechaFin >= '$hoy'";
+								$resulta5 = $conexion->query($consulta5);
+								if($resulta5->num_rows) {
+									$ocupado=true;
+								}else{
+									$ocupado=false;
+								}
 							echo'
 							<tbody>
 								<tr>
@@ -189,7 +199,13 @@
 									<td class="center">'.$ubicacion.'</td>
 									<td class="center">'.$capacidad.'</td>
 									<td class="center">'.$tipocouch.'</td>
-									<td class="center">'.$fechaalta.'</td>
+									<td class="center">'.$fechaalta.'</td>';
+									if ($ocupado){
+										echo '<td class="center">Ocupado</td>';
+									}else{
+										echo '<td class="center">Disponible</td>';
+									}
+									echo '
 									<td class="">
 										<form action="vercouch.php" method="post">
 											<input type="hidden" name="id" value="'.$id.'">

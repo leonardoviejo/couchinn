@@ -162,7 +162,10 @@
 					<br>
 				<form name="eliminar" method="post" action="funciones/baja_usuario.php">
 					<input type="hidden" name="idusuario" id="idusuario">
-					<?php echo '<input type="hidden" name="idadmin" value="'.$idusuario.'">'?>
+					<?php echo '<input type="hidden" name="idadmin" value="'.$idusuario.'">
+					<input type="hidden" name="fechainicio" value="'.$fechaini.'">
+					<input type="hidden" name="fechafin" value="'.$fechafinaux.'">
+					'?>
 					<br>
 					<div class="divider"></div>
 					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Eliminar Usuario">
@@ -309,10 +312,7 @@
 									</td>';
 								}else{
 									echo '
-									<td class="center">
-										<a class="disabled waves-effect waves-light btn red z-depth-2">Usuario Eliminado</a>
-									</td>
-									<td class="center">
+									<td class="center" colspan="2">
 										<a class="disabled waves-effect waves-light btn red z-depth-2">Usuario Eliminado</a>
 									</td>';
 								}
@@ -411,6 +411,12 @@
 					selectMonths: true,
 					formatSubmit: 'yyyy-mm-dd',
 					hiddenName: true
+				});
+				$(document).on("click", ".modal-trigger", function () {
+					var idusuario = $(this).data('idusuario');
+					var nombre = $(this).data('nombre');
+					$(".modal-content #idusuario").val( idusuario );
+					$(".modal-content #nombre").val( nombre );
 				});
   			});
   		</script>
