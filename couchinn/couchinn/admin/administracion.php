@@ -223,6 +223,43 @@
   		</div>
 		<!-- Fin del modal para calcular ingresos-->
 		
+		<!-- Comienzo del modal para listar usuarios registrados-->
+		<div id="modal_ureg" class="modal">
+    		<div class="modal-content">
+				<br>
+				<br>
+      			<h4>Listar Usuarios Registrados en un Período</h4>
+				<br>
+				<br>
+      			<p>Seleccione fecha de inicio y fin y presione Visualizar.</p>
+				<br>
+				<br>
+				<br>
+				<form name="calculo" method="post" onSubmit="return validarReserva()" action="listarusuariosperiodo.php">
+					<div class="input-field">
+						<div class="grey-text">Fecha Inicio</div>
+						<input name="fechainicio" type="date" class="datepicker" id="fechainicio" title="Fecha de Inicio">
+	                </div>
+					<br>
+					<div class="center">
+						Hasta
+					</div>
+					<br>
+					<div class="input-field">
+						<div class="grey-text">Fecha Fin</div>
+						<input name="fechafin" type="date" class="datepicker" id="fechafin" title="Fecha de Fin">
+	                </div>
+					<br>
+					<br>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Visualizar">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal para listar usuarios registrados-->
+		
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -255,16 +292,19 @@
 								<td class="center"><a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_costos">Modificar Costo de Membresía</a></td>
 							</tr>
 							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Usuarios Premium" onClick="location.href='listarusuariospremium.php'"></td>
-							</tr>
-							<tr>
 								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Administradores" onClick="location.href='listaradmin.php'"></td>
 							</tr>
 							<tr>
-								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2 disabled" type="button" value="Listar Reservas" onClick="location.href='listarusuariospremium.php'"></td>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar Usuarios Premium" onClick="location.href='listarusuariospremium.php'"></td>
 							</tr>
 							<tr>
 								<td class="center"><a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_cal">Calcular Ganancias</a></td>
+							</tr>
+							<tr>
+								<td class="center"><a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_ureg">Listar Usuarios Registrados en Período</a></td>
+							</tr>
+							<tr>
+								<td class="center"><input class="waves-effect waves-light btn yellow darken-3 z-depth-2" type="button" value="Listar todas las Reservas" onClick="location.href='listareserva.php'"></td>
 							</tr>
         				</tbody>
       				</table>
