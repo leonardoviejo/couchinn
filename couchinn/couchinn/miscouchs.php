@@ -201,9 +201,17 @@
 									<td class="center">'.$tipocouch.'</td>
 									<td class="center">'.$fechaalta.'</td>';
 									if ($ocupado){
-										echo '<td class="center">Ocupado</td>';
+										echo '<td class="center">
+												<div class="chip_ocupado">
+													Ocupado
+												</div>
+											  </td>';
 									}else{
-										echo '<td class="center">Disponible</td>';
+										echo '<td class="center">
+												<div class="chip_disponible">
+													Disponible
+												</div>
+											  </td>';
 									}
 									echo '
 									<td class="">

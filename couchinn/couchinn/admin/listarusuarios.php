@@ -154,6 +154,43 @@
   		</div>
 		<!-- Fin del modal eliminacion de usuario-->
 		
+		<!-- Comienzo del modal para listar usuarios registrados-->
+		<div id="modal_ureg" class="modal">
+    		<div class="modal-content">
+				<br>
+				<br>
+      			<h4>Listar Usuarios Registrados en un Período</h4>
+				<br>
+				<br>
+      			<p>Seleccione fecha de inicio y fin y presione Visualizar.</p>
+				<br>
+				<br>
+				<br>
+				<form name="calculo" method="post" onSubmit="return validarReserva()" action="listarusuariosperiodo.php">
+					<div class="input-field">
+						<div class="grey-text">Fecha Inicio</div>
+						<input name="fechainicio" type="date" class="datepicker" id="fechainicio" title="Fecha de Inicio">
+	                </div>
+					<br>
+					<div class="center">
+						Hasta
+					</div>
+					<br>
+					<div class="input-field">
+						<div class="grey-text">Fecha Fin</div>
+						<input name="fechafin" type="date" class="datepicker" id="fechafin" title="Fecha de Fin">
+	                </div>
+					<br>
+					<br>
+					<br>
+					<div class="divider"></div>
+					<input class="waves-effect waves-light btn-flat light-green-text" type="submit" value="Visualizar">
+					<a class="right waves-effect waves-light btn-flat light-green-text modal-action modal-close">Cancelar</a>
+				</form>
+    		</div>
+  		</div>
+		<!-- Fin del modal para listar usuarios registrados-->
+		
 		<!-- Contenido de pagina--> 
         <div class="parallax-container-mio  z-depth-3">
         	<div class="parallax fondo-registro"></div>
@@ -162,6 +199,16 @@
 				<div class="center grey-text text-darken-2">
 					<h1> Lista de Usuarios </h1>
                 </div>
+				<div class="divider"></div>
+				<br>
+				<div class="row">
+					<div class="col s6 center">
+						<a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_ureg">Usuarios Registrados en Período</a>
+					</div>
+					<div class="col s6 center">
+						<a class="waves-effect waves-light btn yellow darken-3 z-depth-2" href="listarusuarios.php">Listar Usuarios Activos</a>
+					</div>
+				</div>
 				<br>
 				<div class="row">
 					<div class="center grey-text text-darken-2">
@@ -327,6 +374,14 @@
 					var nombre = $(this).data('nombre');
 					$(".modal-content #idusuario").val( idusuario );
 					$(".modal-content #nombre").val( nombre );
+				});
+				$('.datepicker').pickadate({
+					min:[2013,1,1],
+					max:'Today',
+					selectYears: true,
+					selectMonths: true,
+					formatSubmit: 'yyyy-mm-dd',
+					hiddenName: true
 				});
   			});
   		</script>

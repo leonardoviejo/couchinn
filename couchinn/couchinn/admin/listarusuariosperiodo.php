@@ -233,7 +233,7 @@
 					<a class="waves-effect waves-light btn yellow darken-3 z-depth-2 modal-trigger" href="#modal_ureg">Nuevo Período</a>
 				</div>
 				<div class="col s6 center">
-					<a class="waves-effect waves-light btn yellow darken-3 z-depth-2" href="listarusuarios.php">Listar Todos los Usuarios</a>
+					<a class="waves-effect waves-light btn yellow darken-3 z-depth-2" href="listarusuarios.php">Listar Usuarios Activos</a>
 				</div>
 			</div>
 			<br>
@@ -349,7 +349,7 @@
 							}
 						}else{
 							$paginaant=$pagina-1;
-							echo '<li class="waves-effect"><a href="listarusuariosperiodo.php?pagina='.$paginaant.'&fechainicio='.$fechainicio.'&fechafin='.$fechafin.'"><i class="material-icons">chevron_left</i></a></li>';
+							echo '<li class="waves-effect"><a href="listarusuariosperiodo.php?pagina='.$paginaant.'&fechainicio='.$fechaini.'&fechafin='.$fechafinaux.'"><i class="material-icons">chevron_left</i></a></li>';
 						}
 						if ($total_paginas > 1){
 							for ($i=1;$i<=$total_paginas;$i++){ 
@@ -357,14 +357,14 @@
 									//si muestro el índice de la página actual, no coloco enlace 
 									echo '<li class="active light-green"><a href="#!">'.$pagina.'</a></li>';
 								}else{
-									echo '<li class="waves-effect"><a href="listarusuariosperiodo.php?pagina='.$i.'&fechainicio='.$fechainicio.'&fechafin='.$fechafin.'">'.$i.'</a></li>';
+									echo '<li class="waves-effect"><a href="listarusuariosperiodo.php?pagina='.$i.'&fechainicio='.$fechaini.'&fechafin='.$fechafinaux.'">'.$i.'</a></li>';
 								}
 							}
 							if ($pagina==$total_paginas){
 								//echo '<li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>';
 							}else{
 								$paginapos=$pagina+1;
-								echo '<li class="waves-effect"><a href="listarusuariosperiodo.php?pagina='.$paginapos.'&fechainicio='.$fechainicio.'&fechafin='.$fechafin.'"><i class="material-icons">chevron_right</i></a></li>';
+								echo '<li class="waves-effect"><a href="listarusuariosperiodo.php?pagina='.$paginapos.'&fechainicio='.$fechaini.'&fechafin='.$fechafinaux.'"><i class="material-icons">chevron_right</i></a></li>';
 							}
 							
 						}

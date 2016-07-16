@@ -62,7 +62,7 @@
 			$resultado2 = $consulta_execute2->fetch_array();
 			$ganancia+=$resultado2['Costo'];
 		}
-		$consulta = "SELECT u.Id_Usuario, u.Nombre, u.Apellido, u.Email, u.FechaNac, u.Telefono, u.Premium, u.FechaAltaPremium, u.Visible, u.FechaAlta, t.Nombre AS NombreTipo, u.Id_CostoPremium FROM usuario u inner JOIN tipodeusuario t ON u.Id_TipoDeUsuario = t.Id_Tipo WHERE u.Premium=1 and (FechaAltaPremium >= '$fechaini' and FechaAltaPremium <= '$fechafin') ORDER BY FechaAlta ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
+		$consulta = "SELECT u.Id_Usuario, u.Nombre, u.Apellido, u.Email, u.FechaNac, u.Telefono, u.Premium, u.FechaAltaPremium, u.Visible, u.FechaAlta, t.Nombre AS NombreTipo, u.Id_CostoPremium FROM usuario u inner JOIN tipodeusuario t ON u.Id_TipoDeUsuario = t.Id_Tipo WHERE u.Premium=1 and (FechaAltaPremium >= '$fechaini' and FechaAltaPremium <= '$fechafin') ORDER BY FechaAltaPremium ASC LIMIT ".$inicio.",".$TAMANO_PAGINA."";
 		$consulta_execute = $conexion->query($consulta);
 ?>
 <html>

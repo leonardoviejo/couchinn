@@ -43,7 +43,7 @@
 			$completa=false;
 		}	
 		//Conteo de paginado de resultado.
-		$TAMANO_PAGINA=10;
+		$TAMANO_PAGINA=15;
 		if(!isset($_GET['pagina'])) {
 			$pagina=1;
 			$inicio=0;
@@ -481,7 +481,7 @@
 							if ($completa){
 								echo '<li class="waves-effect"><a href="listareserva.php?pagina='.$paginaant.'"><i class="material-icons">chevron_left</i></a></li>';
 							}else{
-								echo '<li class="waves-effect"><a href="listareserva.php?pagina='.$paginaant.'&fechainicio='.$fechainicio.'&fechafin='.$fechafin.'"><i class="material-icons">chevron_left</i></a></li>';
+								echo '<li class="waves-effect"><a href="listareserva.php?pagina='.$paginaant.'&fechainicio='.$fechaini.'&fechafin='.$fechafinaux.'"><i class="material-icons">chevron_left</i></a></li>';
 							}
 						}
 						if ($total_paginas > 1){
@@ -493,7 +493,7 @@
 									if ($completa){
 										echo '<li class="waves-effect"><a href="listareserva.php?pagina='.$i.'">'.$i.'</a></li>';
 									}else{
-										echo '<li class="waves-effect"><a href="listareserva.php?pagina='.$i.'&fechainicio='.$fechainicio.'&fechafin='.$fechafin.'">'.$i.'</a></li>';
+										echo '<li class="waves-effect"><a href="listareserva.php?pagina='.$i.'&fechainicio='.$fechaini.'&fechafin='.$fechafinaux.'">'.$i.'</a></li>';
 									}
 								}
 							}
@@ -504,7 +504,7 @@
 								if ($completa){
 									echo '<li class="waves-effect"><a href="listareserva.php?pagina='.$paginapos.'"><i class="material-icons">chevron_right</i></a></li>';
 								}else{
-									echo '<li class="waves-effect"><a href="listareserva.php?pagina='.$paginapos.'&fechainicio='.$fechainicio.'&fechafin='.$fechafin.'"><i class="material-icons">chevron_right</i></a></li>';
+									echo '<li class="waves-effect"><a href="listareserva.php?pagina='.$paginapos.'&fechainicio='.$fechaini.'&fechafin='.$fechafinaux.'"><i class="material-icons">chevron_right</i></a></li>';
 								}
 							}
 							
